@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { HeroButton } from './HeroButton'
+import HeroButton from './HeroButton'
 
 const HeroSection = () => {
   // Spring animations for smooth mouse tracking
