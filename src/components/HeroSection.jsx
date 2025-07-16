@@ -100,7 +100,8 @@ const HeroSection = () => {
             </motion.div>
             
             <h1 className="hero-title">
-              Tu clínica estética,<br/>
+            Tu clínica<br/>
+             estética,<br/>
               <span className="title-accent">más simple, más rentable.</span>
             </h1>
             

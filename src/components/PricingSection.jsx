@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import HeroButton from './HeroButton'
 
 const plans = [
   {
     name: 'Esencial',
     type: 'Clínicas pequeñas',
-    setup: '599€',
-    setupDescription: '3-5 días para puesta en marcha',
+    setup: '599€ (3-5 días para puesta en marcha)',
     monthly: '79€',
     description: 'Perfecto para clínicas independientes que empiezan con fidelización',
     features: [
@@ -25,8 +23,7 @@ const plans = [
   {
     name: 'Profesional',
     type: 'Clínicas en crecimiento',
-    setup: '899€',
-    setupDescription: '3-5 días para puesta en marcha',
+    setup: '899€ (3-5 días para puesta en marcha)',
     monthly: '119€',
     description: 'Para clínicas con varios tratamientos que buscan maximizar la retención',
     features: [
@@ -44,8 +41,7 @@ const plans = [
   {
     name: 'Premium',
     type: 'Clínicas establecidas',
-    setup: '1.199€',
-    setupDescription: '3-5 días para puesta en marcha',
+    setup: '1.199€ (3-5 días para puesta en marcha)',
     monthly: '149€',
     description: 'Máximo potencial con acompañamiento personalizado continuo',
     features: [
@@ -63,7 +59,7 @@ const plans = [
 ]
 
 export default function ClinicPricingSection() {
-  const [selectedPlan, setSelectedPlan] = useState('Profesional')
+  const [selectedPlan, setSelectedPlan] = useState(null)
 
   return (
     <section className="pricing-section">
@@ -185,14 +181,11 @@ export default function ClinicPricingSection() {
               {/* Pricing */}
               <div className="plan-pricing">
                 <div className="price-item">
-                  <span className="price-label">Setup inicial</span>
-                  <div className="price-details">
-                    <span className="price-value setup">{plan.setup}</span>
-                    <span className="price-note">{plan.setupDescription}</span>
-                  </div>
+                  <span className="price-label">Setup inicial:</span>
+                  <span className="price-value setup">{plan.setup}</span>
                 </div>
                 <div className="price-item main">
-                  <span className="price-label">Mensual</span>
+                  <span className="price-label">Mensual:</span>
                   <span className="price-value monthly">
                     {plan.monthly}
                     <span className="price-period">/mes</span>
@@ -216,28 +209,25 @@ export default function ClinicPricingSection() {
                 ))}
               </div>
 
-              {/* CTA Button - Usando HeroButton */}
-              <div className="plan-cta-container">
-                <HeroButton 
-                  variant={plan.highlight ? 'primary' : 'secondary'}
-                  onClick={() => setSelectedPlan(plan.name)}
-                  className={`plan-cta ${selectedPlan === plan.name ? 'selected' : ''}`}
+              {/* CTA Button */}
+              <motion.button
+                className={`plan-cta ${plan.highlight ? 'primary' : 'secondary'}`}
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setSelectedPlan(plan.name)}
+              >
+                <span className="cta-text">
+                  {selectedPlan === plan.name ? '¡Seleccionado!' : 'Solicitar demo gratuita'}
+                </span>
+                <motion.span 
+                  className="cta-arrow"
+                  animate={{ x: selectedPlan === plan.name ? 0 : 0 }}
+                  whileHover={{ x: 6 }}
+                  transition={{ type: "spring", stiffness: 400 }}
                 >
-                  {selectedPlan === plan.name ? '¡Plan seleccionado!' : 'Solicitar demo gratuita'}
-                </HeroButton>
-                
-                {selectedPlan === plan.name && (
-                  <motion.div 
-                    className="selected-indicator"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                  >
-                    <span className="selected-icon">✓</span>
-                    <span className="selected-text">Plan seleccionado</span>
-                  </motion.div>
-                )}
-              </div>
+                  {selectedPlan === plan.name ? '✓' : '→'}
+                </motion.span>
+              </motion.button>
             </motion.div>
           ))}
         </motion.div>
@@ -249,53 +239,36 @@ export default function ClinicPricingSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
         >
-          <div className="trust-content">
-            <h3 className="trust-title">Sin riesgos, con garantías</h3>
-            
-            <div className="trust-grid">
-              <div className="trust-item">
-                <div className="trust-icon">✓</div>
-                <div className="trust-details">
-                  <strong>Sin permanencia</strong>
-                  <span>Cancela cuando quieras</span>
-                </div>
-              </div>
-              <div className="trust-item">
-                <div className="trust-icon">🔒</div>
-                <div className="trust-details">
-                  <strong>Setup garantizado</strong>
-                  <span>O te devolvemos el dinero</span>
-                </div>
-              </div>
-              <div className="trust-item">
-                <div className="trust-icon">📞</div>
-                <div className="trust-details">
-                  <strong>Soporte incluido</strong>
-                  <span>Siempre disponible para ti</span>
-                </div>
-              </div>
-              <div className="trust-item">
-                <div className="trust-icon">🎯</div>
-                <div className="trust-details">
-                  <strong>Prueba gratuita</strong>
-                  <span>Demo de 30 días sin compromiso</span>
-                </div>
+          <h3 className="trust-title">Sin riesgos, con garantías</h3>
+          <div className="trust-grid">
+            <div className="trust-item">
+              <div className="trust-icon">✓</div>
+              <div className="trust-content">
+                <strong>Sin permanencia</strong>
+                <span>Cancela cuando quieras</span>
               </div>
             </div>
-            
-            <motion.div 
-              className="final-cta"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-            >
-              <p className="final-cta-text">
-                ¿Listo para transformar tu clínica? <strong>Hablemos hoy mismo.</strong>
-              </p>
-              <HeroButton size="large">
-                Solicitar demo personalizada
-              </HeroButton>
-            </motion.div>
+            <div className="trust-item">
+              <div className="trust-icon">✓</div>
+              <div className="trust-content">
+                <strong>Setup garantizado</strong>
+                <span>O te devolvemos el dinero</span>
+              </div>
+            </div>
+            <div className="trust-item">
+              <div className="trust-icon">✓</div>
+              <div className="trust-content">
+                <strong>Soporte incluido</strong>
+                <span>Siempre disponible para ti</span>
+              </div>
+            </div>
+            <div className="trust-item">
+              <div className="trust-icon">✓</div>
+              <div className="trust-content">
+                <strong>Prueba gratuita</strong>
+                <span>Demo de 30 días sin compromiso</span>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
@@ -317,7 +290,7 @@ export default function ClinicPricingSection() {
           left: 0;
           pointer-events: none;
           filter: blur(80px);
-          opacity: 0.6;
+          opacity: 0.4;
         }
         
         .orb {
@@ -327,19 +300,19 @@ export default function ClinicPricingSection() {
         }
         
         .orb-1 {
-          width: 500px;
-          height: 500px;
-          background: radial-gradient(circle, rgba(255, 218, 225, 0.7) 0%, transparent 70%);
+          width: 400px;
+          height: 400px;
+          background: radial-gradient(circle, rgba(255, 218, 225, 0.6) 0%, transparent 70%);
           top: 20%;
-          left: -150px;
+          left: -100px;
         }
         
         .orb-2 {
-          width: 400px;
-          height: 400px;
-          background: radial-gradient(circle, rgba(255, 237, 213, 0.7) 0%, transparent 70%);
+          width: 500px;
+          height: 500px;
+          background: radial-gradient(circle, rgba(255, 237, 213, 0.6) 0%, transparent 70%);
           bottom: 10%;
-          right: -100px;
+          right: -150px;
         }
         
         .container {
@@ -377,11 +350,11 @@ export default function ClinicPricingSection() {
         }
         
         .pricing-title {
-          font-size: clamp(3rem, 5vw, 4rem);
+          font-size: clamp(2.5rem, 4vw, 3.5rem);
           font-weight: 700;
           line-height: 1.1;
-          margin-bottom: 32px;
-          letter-spacing: -1.5px;
+          margin-bottom: 24px;
+          letter-spacing: -1px;
           color: #1a1a1a;
         }
         
@@ -393,10 +366,10 @@ export default function ClinicPricingSection() {
         }
         
         .pricing-subtitle {
-          font-size: 1.25rem;
+          font-size: 1.2rem;
           line-height: 1.6;
           color: #4a4a4a;
-          margin-bottom: 48px;
+          margin-bottom: 40px;
           font-weight: 400;
           max-width: 600px;
           margin-left: auto;
@@ -404,19 +377,19 @@ export default function ClinicPricingSection() {
         }
         
         .pricing-explanation {
-          background: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(20px);
+          background: linear-gradient(135deg, rgba(232, 180, 184, 0.1) 0%, rgba(255, 237, 213, 0.1) 100%);
           border: 1px solid rgba(232, 180, 184, 0.2);
           border-radius: 20px;
           padding: 32px;
+          backdrop-filter: blur(10px);
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
         }
         
         .explanation-title {
           font-size: 1.1rem;
           font-weight: 600;
-          color: #2d2d2d;
-          margin-bottom: 24px;
+          color: #E8B4B8;
+          margin-bottom: 20px;
           text-align: center;
         }
         
@@ -438,17 +411,16 @@ export default function ClinicPricingSection() {
         .explanation-number {
           background: linear-gradient(135deg, #E8B4B8 0%, #D9A5A9 100%);
           color: white;
-          width: 28px;
-          height: 28px;
+          width: 24px;
+          height: 24px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 14px;
-          font-weight: 700;
+          font-size: 12px;
+          font-weight: 600;
           flex-shrink: 0;
           margin-top: 2px;
-          box-shadow: 0 4px 12px rgba(232, 180, 184, 0.3);
         }
         
         .plans-grid {
@@ -461,7 +433,7 @@ export default function ClinicPricingSection() {
         .plan-card {
           background: rgba(255, 255, 255, 0.9);
           backdrop-filter: blur(20px);
-          border: 1px solid rgba(232, 180, 184, 0.2);
+          border: 1px solid rgba(232, 180, 184, 0.15);
           border-radius: 24px;
           padding: 40px 32px;
           position: relative;
@@ -511,7 +483,6 @@ export default function ClinicPricingSection() {
           font-weight: 700;
           color: #1a1a1a;
           margin-bottom: 8px;
-          letter-spacing: -0.5px;
         }
         
         .plan-type {
@@ -523,7 +494,7 @@ export default function ClinicPricingSection() {
         
         .plan-description {
           font-size: 15px;
-          color: #6a6a6a;
+          color: #666;
           line-height: 1.5;
           max-width: 300px;
           margin: 0 auto;
@@ -541,40 +512,28 @@ export default function ClinicPricingSection() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 16px;
+          margin-bottom: 12px;
         }
         
         .price-item.main {
           margin-bottom: 0;
-          padding-top: 16px;
+          padding-top: 12px;
           border-top: 1px solid rgba(232, 180, 184, 0.15);
         }
         
         .price-label {
           font-size: 14px;
-          color: #6a6a6a;
-          font-weight: 600;
-        }
-        
-        .price-details {
-          text-align: right;
+          color: #666;
+          font-weight: 500;
         }
         
         .price-value {
           font-weight: 700;
           color: #1a1a1a;
-          display: block;
         }
         
         .price-value.setup {
           font-size: 1.2rem;
-          margin-bottom: 4px;
-        }
-        
-        .price-note {
-          font-size: 12px;
-          color: #6a6a6a;
-          font-weight: 500;
         }
         
         .price-value.monthly {
@@ -585,7 +544,7 @@ export default function ClinicPricingSection() {
         .price-period {
           font-size: 14px;
           font-weight: 400;
-          color: #6a6a6a;
+          color: #666;
         }
         
         .plan-features {
@@ -602,7 +561,7 @@ export default function ClinicPricingSection() {
         }
         
         .feature-check {
-          color: #059669;
+          color: #E8B4B8;
           margin-right: 12px;
           font-weight: 600;
           font-size: 16px;
@@ -612,123 +571,116 @@ export default function ClinicPricingSection() {
         
         .feature-text {
           flex: 1;
-          font-weight: 500;
-        }
-        
-        .plan-cta-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 12px;
         }
         
         .plan-cta {
           width: 100%;
-        }
-        
-        .selected-indicator {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          color: #059669;
-          font-size: 14px;
+          padding: 16px 24px;
+          border: none;
+          border-radius: 12px;
+          font-size: 16px;
           font-weight: 600;
-        }
-        
-        .selected-icon {
-          background: #059669;
-          color: white;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
+          cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 12px;
+          gap: 8px;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          letter-spacing: 0.3px;
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .plan-cta.primary {
+          background: linear-gradient(135deg, #E8B4B8 0%, #D9A5A9 100%);
+          color: white;
+          box-shadow: 0 8px 24px rgba(232, 180, 184, 0.3);
+        }
+        
+        .plan-cta.primary:hover {
+          box-shadow: 0 12px 32px rgba(232, 180, 184, 0.4);
+        }
+        
+        .plan-cta.secondary {
+          background: rgba(232, 180, 184, 0.1);
+          color: #E8B4B8;
+          border: 2px solid rgba(232, 180, 184, 0.3);
+        }
+        
+        .plan-cta.secondary:hover {
+          background: rgba(232, 180, 184, 0.15);
+          border-color: rgba(232, 180, 184, 0.5);
+        }
+        
+        .cta-text {
+          font-weight: 600;
+        }
+        
+        .cta-arrow {
+          font-size: 16px;
+          font-weight: 600;
         }
         
         .trust-section {
           background: rgba(255, 255, 255, 0.9);
           backdrop-filter: blur(20px);
-          border: 1px solid rgba(232, 180, 184, 0.2);
-          border-radius: 24px;
-          padding: 56px 40px;
+          border: 1px solid rgba(232, 180, 184, 0.15);
+          border-radius: 20px;
+          padding: 40px 32px;
           text-align: center;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
         }
         
-        .trust-content {
-          max-width: 1000px;
-          margin: 0 auto;
-        }
-        
         .trust-title {
-          font-size: 1.8rem;
-          font-weight: 700;
+          font-size: 1.5rem;
+          font-weight: 600;
           color: #1a1a1a;
-          margin-bottom: 40px;
-          letter-spacing: -0.5px;
+          margin-bottom: 32px;
         }
         
         .trust-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
           gap: 32px;
-          margin-bottom: 48px;
         }
         
         .trust-item {
           display: flex;
+          flex-direction: column;
           align-items: center;
-          gap: 16px;
-          text-align: left;
+          text-align: center;
+          gap: 12px;
         }
         
         .trust-icon {
           background: linear-gradient(135deg, #E8B4B8 0%, #D9A5A9 100%);
           color: white;
-          width: 48px;
-          height: 48px;
+          width: 40px;
+          height: 40px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 600;
           box-shadow: 0 4px 12px rgba(232, 180, 184, 0.3);
-          flex-shrink: 0;
         }
         
-        .trust-details {
+        .trust-content {
           display: flex;
           flex-direction: column;
           gap: 4px;
         }
         
-        .trust-details strong {
+        .trust-content strong {
           color: #1a1a1a;
           font-weight: 600;
-          font-size: 15px;
-        }
-        
-        .trust-details span {
-          color: #6a6a6a;
           font-size: 14px;
-          font-weight: 500;
         }
         
-        .final-cta {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 24px;
-        }
-        
-        .final-cta-text {
-          font-size: 1.1rem;
-          color: #4a4a4a;
-          line-height: 1.6;
-          max-width: 400px;
+        .trust-content span {
+          color: #666;
+          font-size: 13px;
         }
         
         @media (max-width: 1024px) {
@@ -740,16 +692,11 @@ export default function ClinicPricingSection() {
           .plan-card.highlighted {
             transform: scale(1);
           }
-          
-          .trust-item {
-            text-align: center;
-            flex-direction: column;
-          }
         }
         
         @media (max-width: 768px) {
           .pricing-section {
-            padding: 100px 0 60px;
+            padding: 80px 0 60px;
           }
           
           .container {
@@ -761,13 +708,7 @@ export default function ClinicPricingSection() {
           }
           
           .pricing-title {
-            font-size: clamp(2.5rem, 8vw, 3.5rem);
-            margin-bottom: 24px;
-          }
-          
-          .pricing-subtitle {
-            font-size: 1.1rem;
-            margin-bottom: 40px;
+            font-size: clamp(2rem, 6vw, 2.5rem);
           }
           
           .pricing-explanation {
@@ -790,16 +731,12 @@ export default function ClinicPricingSection() {
           }
           
           .trust-grid {
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 24px;
           }
           
           .trust-section {
-            padding: 40px 24px;
-          }
-          
-          .trust-title {
-            font-size: 1.5rem;
+            padding: 32px 24px;
           }
         }
         
@@ -819,11 +756,6 @@ export default function ClinicPricingSection() {
           .trust-grid {
             grid-template-columns: 1fr;
             gap: 20px;
-          }
-          
-          .trust-item {
-            flex-direction: column;
-            text-align: center;
           }
         }
         
