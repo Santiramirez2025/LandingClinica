@@ -8,7 +8,6 @@ const HeroButton = () => {
     background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)',
     color: 'white',
     padding: 0,
-    border: 'none',
     borderRadius: '14px',
     fontSize: '17px',
     fontWeight: 600,
