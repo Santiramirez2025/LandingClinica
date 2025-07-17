@@ -52,6 +52,16 @@ const HeroSection = () => {
     }
   }, [mouseX, mouseY, isMobile])
 
+  const scrollToPricing = () => {
+    const pricingElement = document.querySelector('#pricing-section')
+    if (pricingElement) {
+      pricingElement.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
+  }
+
   return (
     <section className="hero">
       {/* Gradient Background */}
@@ -118,7 +128,7 @@ const HeroSection = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
               >
-                <button className="cta-link">
+                <button className="cta-link" onClick={scrollToPricing}>
                   Ver precios y planes
                 </button>
               </motion.div>
@@ -1193,82 +1203,6 @@ const HeroSection = () => {
           
           .hero-visual {
             transform: none !important;
-          }
-        }
-        
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-          .hero {
-            background: linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 100%);
-          }
-          
-          .hero-title {
-            color: #ffffff;
-          }
-          
-          .hero-subtitle {
-            color: #a0a0a0;
-          }
-          
-          .badge-text {
-            background: linear-gradient(135deg, rgba(255, 229, 229, 0.1) 0%, rgba(255, 240, 229, 0.1) 100%);
-            border: 1px solid rgba(255, 200, 200, 0.2);
-            color: #E8B4B8;
-          }
-          
-          .indicator-number {
-            color: #ffffff;
-          }
-          
-          .indicator-text {
-            color: #a0a0a0;
-          }
-          
-          .note-item {
-            color: #a0a0a0;
-          }
-          
-          .phone-screen {
-            background: #1a1a1a;
-          }
-          
-          .status-bar {
-            background: rgba(0, 0, 0, 0.8);
-            color: #ffffff;
-          }
-          
-          .app-header h3 {
-            color: #ffffff;
-          }
-          
-          .app-header p {
-            color: #a0a0a0;
-          }
-          
-          .metric-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-          }
-          
-          .metric-value {
-            color: #ffffff;
-          }
-          
-          .metric-label {
-            color: #a0a0a0;
-          }
-          
-          .schedule-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-          }
-          
-          .client-name {
-            color: #ffffff;
-          }
-          
-          .treatment {
-            color: #a0a0a0;
           }
         }
         

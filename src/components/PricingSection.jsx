@@ -62,7 +62,7 @@ export default function ClinicPricingSection() {
   const [selectedPlan, setSelectedPlan] = useState(null)
 
   return (
-    <section className="pricing-section">
+    <section id="pricing-section" className="pricing-section">
       {/* Gradient Background */}
       <div className="gradient-orbs">
         <motion.div 
