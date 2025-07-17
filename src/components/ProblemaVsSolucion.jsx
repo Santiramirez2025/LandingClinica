@@ -256,12 +256,12 @@ const CasosExito = ({ onClose }) => {
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 20px;
+          padding: 16px;
         }
 
         .casos-exito-modal {
           background: white;
-          border-radius: 24px;
+          border-radius: 20px;
           max-width: 900px;
           width: 100%;
           max-height: 90vh;
@@ -274,23 +274,23 @@ const CasosExito = ({ onClose }) => {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 30px 40px 20px;
+          padding: 24px 24px 16px;
           border-bottom: 1px solid #f0f0f0;
         }
 
         .modal-title {
           display: flex;
           align-items: center;
-          gap: 15px;
+          gap: 12px;
         }
 
         .modal-icon {
-          font-size: 32px;
+          font-size: 28px;
           display: inline-block;
         }
 
         .modal-title h2 {
-          font-size: 24px;
+          font-size: 20px;
           font-weight: 600;
           color: #2C2825;
           margin: 0;
@@ -299,12 +299,17 @@ const CasosExito = ({ onClose }) => {
         .close-button {
           background: none;
           border: none;
-          font-size: 32px;
+          font-size: 28px;
           color: #666;
           cursor: pointer;
-          padding: 5px;
+          padding: 4px;
           border-radius: 50%;
           transition: all 0.3s ease;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .close-button:hover {
@@ -313,21 +318,21 @@ const CasosExito = ({ onClose }) => {
         }
 
         .modal-content {
-          padding: 30px 40px;
+          padding: 24px;
         }
 
         .casos-grid {
           display: flex;
           flex-direction: column;
-          gap: 20px;
-          margin-bottom: 40px;
+          gap: 16px;
+          margin-bottom: 32px;
         }
 
         .caso-card {
           background: linear-gradient(135deg, #FFFFFF 0%, #FDFBF7 100%);
           border: 1px solid #e8e8e8;
           border-radius: 16px;
-          padding: 24px;
+          padding: 20px;
           cursor: pointer;
           transition: all 0.3s ease;
           overflow: hidden;
@@ -345,53 +350,61 @@ const CasosExito = ({ onClose }) => {
 
         .caso-header {
           display: flex;
-          align-items: center;
-          gap: 16px;
+          align-items: flex-start;
+          gap: 12px;
           margin-bottom: 16px;
         }
 
         .caso-avatar {
-          font-size: 32px;
-          width: 50px;
-          height: 50px;
+          font-size: 24px;
+          width: 44px;
+          height: 44px;
           display: flex;
           align-items: center;
           justify-content: center;
           background: rgba(232, 180, 184, 0.1);
           border-radius: 50%;
+          flex-shrink: 0;
         }
 
         .caso-info {
           flex: 1;
+          min-width: 0;
         }
 
         .caso-clinica {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 600;
           color: #2C2825;
           margin: 0 0 4px 0;
+          line-height: 1.3;
         }
 
         .caso-especialidad {
           font-size: 14px;
           color: #666;
           margin: 0;
+          line-height: 1.3;
         }
 
         .caso-resultado {
           text-align: right;
+          flex-shrink: 0;
         }
 
         .resultado-numero {
           display: block;
-          font-size: 18px;
+          font-size: 14px;
           font-weight: 700;
           color: #E8B4B8;
+          line-height: 1.2;
+          margin-bottom: 2px;
         }
 
         .resultado-tiempo {
           font-size: 12px;
           color: #666;
+          line-height: 1.2;
         }
 
         .caso-preview {
@@ -413,8 +426,9 @@ const CasosExito = ({ onClose }) => {
         .preview-label {
           font-weight: 600;
           color: #2C2825;
-          min-width: 70px;
+          min-width: 68px;
           font-size: 14px;
+          flex-shrink: 0;
         }
 
         .preview-text {
@@ -425,21 +439,21 @@ const CasosExito = ({ onClose }) => {
 
         .caso-details {
           border-top: 1px solid #f0f0f0;
-          padding-top: 20px;
+          padding-top: 16px;
         }
 
         .testimonial {
           background: rgba(232, 180, 184, 0.05);
-          padding: 20px;
+          padding: 16px;
           border-radius: 12px;
-          margin-bottom: 24px;
+          margin-bottom: 20px;
         }
 
         .testimonial-text {
           font-style: italic;
           color: #2C2825;
-          margin: 0 0 12px 0;
-          font-size: 16px;
+          margin: 0 0 8px 0;
+          font-size: 14px;
           line-height: 1.5;
         }
 
@@ -447,7 +461,7 @@ const CasosExito = ({ onClose }) => {
           font-weight: 600;
           color: #E8B4B8;
           margin: 0;
-          font-size: 14px;
+          font-size: 13px;
         }
 
         .metricas-detalle h4 {
@@ -459,27 +473,27 @@ const CasosExito = ({ onClose }) => {
         .metricas-grid {
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 12px;
         }
 
         .metric-bar {
           background: #f8f8f8;
           border-radius: 12px;
-          padding: 16px;
+          padding: 14px;
         }
 
         .metric-label {
           font-weight: 600;
           color: #2C2825;
           margin-bottom: 8px;
-          font-size: 14px;
+          font-size: 13px;
         }
 
         .metric-comparison {
           display: flex;
           align-items: center;
-          gap: 16px;
-          margin-bottom: 12px;
+          gap: 12px;
+          margin-bottom: 10px;
         }
 
         .metric-before,
@@ -487,11 +501,12 @@ const CasosExito = ({ onClose }) => {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 4px;
+          gap: 2px;
+          flex: 1;
         }
 
         .metric-value {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 700;
         }
 
@@ -504,13 +519,14 @@ const CasosExito = ({ onClose }) => {
         }
 
         .metric-text {
-          font-size: 12px;
+          font-size: 11px;
           color: #666;
         }
 
         .metric-arrow {
-          font-size: 20px;
+          font-size: 16px;
           color: #E8B4B8;
+          flex-shrink: 0;
         }
 
         .metric-progress {
@@ -530,28 +546,28 @@ const CasosExito = ({ onClose }) => {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 8px;
+          gap: 6px;
           color: #E8B4B8;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 500;
-          margin-top: 16px;
+          margin-top: 12px;
         }
 
         .expand-icon {
           display: inline-block;
-          font-size: 12px;
+          font-size: 10px;
         }
 
         .modal-footer {
           border-top: 1px solid #f0f0f0;
-          padding-top: 30px;
+          padding-top: 24px;
         }
 
         .footer-stats {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 30px;
-          margin-bottom: 30px;
+          gap: 20px;
+          margin-bottom: 24px;
         }
 
         .stat-item {
@@ -560,15 +576,16 @@ const CasosExito = ({ onClose }) => {
 
         .stat-number {
           display: block;
-          font-size: 24px;
+          font-size: 20px;
           font-weight: 700;
           color: #E8B4B8;
-          margin-bottom: 8px;
+          margin-bottom: 6px;
         }
 
         .stat-label {
-          font-size: 14px;
+          font-size: 12px;
           color: #666;
+          line-height: 1.3;
         }
 
         .demo-button {
@@ -576,15 +593,15 @@ const CasosExito = ({ onClose }) => {
           background: linear-gradient(135deg, #E8B4B8 0%, #D9A5A9 100%);
           color: white;
           border: none;
-          padding: 18px 24px;
+          padding: 16px 20px;
           border-radius: 12px;
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 600;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 12px;
+          gap: 10px;
           transition: all 0.3s ease;
         }
 
@@ -593,32 +610,131 @@ const CasosExito = ({ onClose }) => {
         }
 
         .button-icon {
-          font-size: 20px;
+          font-size: 18px;
         }
 
-        @media (max-width: 768px) {
-          .casos-exito-modal {
-            margin: 10px;
-            max-height: 95vh;
+        @media (max-width: 640px) {
+          .casos-exito-overlay {
+            padding: 12px;
           }
 
-          .modal-header,
+          .casos-exito-modal {
+            border-radius: 16px;
+            max-height: 92vh;
+          }
+
+          .modal-header {
+            padding: 20px 20px 12px;
+          }
+
+          .modal-title h2 {
+            font-size: 18px;
+          }
+
+          .modal-icon {
+            font-size: 24px;
+          }
+
+          .close-button {
+            font-size: 24px;
+            width: 36px;
+            height: 36px;
+          }
+
           .modal-content {
             padding: 20px;
           }
 
+          .caso-card {
+            padding: 16px;
+          }
+
+          .caso-header {
+            gap: 10px;
+          }
+
+          .caso-avatar {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+          }
+
+          .caso-clinica {
+            font-size: 15px;
+          }
+
+          .caso-especialidad {
+            font-size: 13px;
+          }
+
+          .resultado-numero {
+            font-size: 13px;
+          }
+
+          .preview-label {
+            min-width: 60px;
+            font-size: 13px;
+          }
+
+          .preview-text {
+            font-size: 13px;
+          }
+
+          .testimonial {
+            padding: 14px;
+          }
+
+          .testimonial-text {
+            font-size: 13px;
+          }
+
           .footer-stats {
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 16px;
+            text-align: center;
+          }
+
+          .stat-number {
+            font-size: 18px;
           }
 
           .metric-comparison {
-            flex-direction: column;
             gap: 8px;
           }
 
+          .metric-value {
+            font-size: 14px;
+          }
+
           .metric-arrow {
-            transform: rotate(90deg);
+            font-size: 14px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .modal-header {
+            padding: 16px 16px 12px;
+          }
+
+          .modal-content {
+            padding: 16px;
+          }
+
+          .footer-stats {
+            gap: 12px;
+          }
+
+          .demo-button {
+            padding: 14px 16px;
+            font-size: 14px;
+          }
+
+          .modal-title {
+            gap: 8px;
+          }
+
+          .modal-title h2 {
+            font-size: 16px;
           }
         }
       `}</style>
@@ -635,8 +751,8 @@ const ProblemaVsSolucion = () => {
   const mouseY = useMotionValue(0)
   
   // Transform mouse position for parallax effect
-  const backgroundX = useTransform(mouseX, [-100, 100], [-5, 5])
-  const backgroundY = useTransform(mouseY, [-100, 100], [-5, 5])
+  const backgroundX = useTransform(mouseX, [-100, 100], [-3, 3])
+  const backgroundY = useTransform(mouseY, [-100, 100], [-3, 3])
   
   const problemas = [
     {
@@ -697,8 +813,8 @@ const ProblemaVsSolucion = () => {
       const rect = e.currentTarget.getBoundingClientRect()
       const x = e.clientX - rect.left - rect.width / 2
       const y = e.clientY - rect.top - rect.height / 2
-      mouseX.set(x / 5)
-      mouseY.set(y / 5)
+      mouseX.set(x / 8)
+      mouseY.set(y / 8)
     }
     
     window.addEventListener('mousemove', handleMouseMove)
@@ -720,7 +836,7 @@ const ProblemaVsSolucion = () => {
         {/* Header Section */}
         <motion.div 
           className="section-header"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
@@ -777,7 +893,7 @@ const ProblemaVsSolucion = () => {
           <motion.div 
             className="tab-indicator"
             animate={{ x: activeTab === 'problema' ? 0 : '100%' }}
-            transition={{ type: "spring", stiffness: 300 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
           />
         </motion.div>
 
@@ -790,17 +906,17 @@ const ProblemaVsSolucion = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.4 }}
             >
               {problemas.map((problema, index) => (
                 <motion.div
                   key={index}
                   className="card pain-card"
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.02, y: -5 }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  whileHover={{ scale: 1.02, y: -8 }}
                   onHoverStart={() => setHoveredIndex(index)}
                   onHoverEnd={() => setHoveredIndex(null)}
                 >
@@ -813,8 +929,8 @@ const ProblemaVsSolucion = () => {
                   <div className="card-header">
                     <motion.span 
                       className="card-icon"
-                      animate={{ rotate: hoveredIndex === index ? [0, -10, 10, 0] : 0 }}
-                      transition={{ duration: 0.4 }}
+                      animate={{ rotate: hoveredIndex === index ? [0, -8, 8, 0] : 0 }}
+                      transition={{ duration: 0.5 }}
                     >
                       {problema.icon}
                     </motion.span>
@@ -842,17 +958,17 @@ const ProblemaVsSolucion = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.4 }}
             >
               {soluciones.map((solucion, index) => (
                 <motion.div
                   key={index}
                   className="card solution-card"
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.02, y: -5 }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  whileHover={{ scale: 1.02, y: -8 }}
                   onHoverStart={() => setHoveredIndex(index)}
                   onHoverEnd={() => setHoveredIndex(null)}
                 >
@@ -869,7 +985,7 @@ const ProblemaVsSolucion = () => {
                     <motion.span 
                       className="card-icon"
                       animate={{ 
-                        scale: hoveredIndex === index ? [1, 1.2, 1] : 1,
+                        scale: hoveredIndex === index ? [1, 1.1, 1] : 1,
                       }}
                       transition={{ duration: 0.6 }}
                     >
@@ -913,7 +1029,7 @@ const ProblemaVsSolucion = () => {
             <span>Ver casos de éxito</span>
             <motion.span 
               className="cta-arrow"
-              animate={{ x: [0, 5, 0] }}
+              animate={{ x: [0, 4, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
               →
@@ -929,7 +1045,7 @@ const ProblemaVsSolucion = () => {
       
       <style jsx>{`
         .problema-solucion {
-          padding: 120px 0;
+          padding: 80px 0;
           position: relative;
           overflow: hidden;
           background: linear-gradient(180deg, #FDFBF7 0%, #FFF8F3 100%);
@@ -948,38 +1064,38 @@ const ProblemaVsSolucion = () => {
         .gradient-sphere {
           position: absolute;
           border-radius: 50%;
-          filter: blur(80px);
-          opacity: 0.4;
+          filter: blur(60px);
+          opacity: 0.3;
         }
         
         .sphere-1 {
-          width: 600px;
-          height: 600px;
-          background: radial-gradient(circle, rgba(255, 225, 235, 0.8) 0%, transparent 70%);
-          top: -200px;
-          left: -200px;
+          width: 400px;
+          height: 400px;
+          background: radial-gradient(circle, rgba(255, 225, 235, 0.6) 0%, transparent 70%);
+          top: -150px;
+          left: -150px;
           animation: float 20s ease-in-out infinite;
         }
         
         .sphere-2 {
-          width: 500px;
-          height: 500px;
-          background: radial-gradient(circle, rgba(255, 237, 213, 0.8) 0%, transparent 70%);
-          bottom: -200px;
-          right: -200px;
+          width: 350px;
+          height: 350px;
+          background: radial-gradient(circle, rgba(255, 237, 213, 0.6) 0%, transparent 70%);
+          bottom: -150px;
+          right: -150px;
           animation: float 25s ease-in-out infinite reverse;
         }
         
         @keyframes float {
           0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(30px, -30px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
+          33% { transform: translate(20px, -20px) scale(1.05); }
+          66% { transform: translate(-15px, 15px) scale(0.95); }
         }
         
         .container {
           max-width: 1200px;
           margin: 0 auto;
-          padding: 0 40px;
+          padding: 0 24px;
           position: relative;
           z-index: 1;
         }
@@ -987,30 +1103,30 @@ const ProblemaVsSolucion = () => {
         /* Header Section */
         .section-header {
           text-align: center;
-          margin-bottom: 60px;
+          margin-bottom: 48px;
         }
         
         .section-badge {
           display: inline-block;
           background: linear-gradient(135deg, rgba(232, 180, 184, 0.1) 0%, rgba(212, 175, 55, 0.1) 100%);
           border: 1px solid rgba(232, 180, 184, 0.2);
-          padding: 8px 24px;
-          border-radius: 30px;
+          padding: 8px 20px;
+          border-radius: 25px;
           font-size: 14px;
           font-weight: 500;
           color: #C97575;
-          letter-spacing: 0.5px;
-          margin-bottom: 24px;
+          letter-spacing: 0.3px;
+          margin-bottom: 20px;
         }
         
         .section-title {
-          font-size: clamp(2.5rem, 4vw, 3.5rem);
+          font-size: clamp(2rem, 5vw, 3rem);
           font-weight: 300;
           line-height: 1.2;
-          margin-bottom: 20px;
+          margin-bottom: 16px;
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 4px;
         }
         
         .title-regular {
@@ -1025,36 +1141,36 @@ const ProblemaVsSolucion = () => {
         }
         
         .section-description {
-          font-size: 1.125rem;
+          font-size: 1.0625rem;
           color: #6B6560;
-          max-width: 600px;
+          max-width: 580px;
           margin: 0 auto;
-          line-height: 1.7;
+          line-height: 1.6;
         }
         
         /* Tab Switcher */
         .tab-switcher {
           display: flex;
           justify-content: center;
-          margin-bottom: 60px;
+          margin-bottom: 48px;
           position: relative;
-          background: rgba(255, 255, 255, 0.5);
+          background: rgba(255, 255, 255, 0.4);
           backdrop-filter: blur(10px);
-          border: 1px solid rgba(232, 180, 184, 0.1);
-          border-radius: 60px;
-          padding: 6px;
-          max-width: 500px;
+          border: 1px solid rgba(232, 180, 184, 0.08);
+          border-radius: 50px;
+          padding: 4px;
+          max-width: 480px;
           margin-left: auto;
           margin-right: auto;
         }
         
         .tab {
           flex: 1;
-          padding: 16px 32px;
+          padding: 14px 28px;
           background: transparent;
           border: none;
-          border-radius: 50px;
-          font-size: 16px;
+          border-radius: 46px;
+          font-size: 15px;
           font-weight: 500;
           color: #6B6560;
           cursor: pointer;
@@ -1062,7 +1178,7 @@ const ProblemaVsSolucion = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
+          gap: 8px;
           position: relative;
           z-index: 2;
         }
@@ -1072,18 +1188,18 @@ const ProblemaVsSolucion = () => {
         }
         
         .tab-icon {
-          font-size: 20px;
+          font-size: 18px;
         }
         
         .tab-indicator {
           position: absolute;
-          top: 6px;
-          left: 6px;
-          width: calc(50% - 6px);
-          height: calc(100% - 12px);
+          top: 4px;
+          left: 4px;
+          width: calc(50% - 4px);
+          height: calc(100% - 8px);
           background: white;
-          border-radius: 50px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+          border-radius: 46px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
           z-index: 1;
         }
         
@@ -1091,35 +1207,35 @@ const ProblemaVsSolucion = () => {
         .content-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 30px;
-          margin-bottom: 60px;
+          gap: 24px;
+          margin-bottom: 48px;
         }
         
         /* Card Styles */
         .card {
           background: white;
-          border-radius: 24px;
-          padding: 36px;
+          border-radius: 20px;
+          padding: 28px;
           position: relative;
           overflow: hidden;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: all 0.4s ease;
         }
         
         .pain-card {
           background: linear-gradient(135deg, #FFFFFF 0%, #FFF5F5 100%);
-          border: 1px solid rgba(232, 180, 184, 0.1);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+          border: 1px solid rgba(232, 180, 184, 0.08);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
         }
         
         .solution-card {
           background: linear-gradient(135deg, #FFFFFF 0%, #FFFAF0 100%);
-          border: 1px solid rgba(212, 175, 55, 0.1);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+          border: 1px solid rgba(212, 175, 55, 0.08);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
         }
         
         .card:hover {
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
         }
         
         .card-glow {
@@ -1128,18 +1244,18 @@ const ProblemaVsSolucion = () => {
           left: -50%;
           width: 200%;
           height: 200%;
-          background: radial-gradient(circle, rgba(232, 180, 184, 0.1) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(232, 180, 184, 0.08) 0%, transparent 70%);
           opacity: 0;
           pointer-events: none;
         }
         
         .card-sparkle {
           position: absolute;
-          top: 20px;
-          right: 20px;
-          width: 30px;
-          height: 30px;
-          background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%);
+          top: 16px;
+          right: 16px;
+          width: 24px;
+          height: 24px;
+          background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
           border-radius: 50%;
           opacity: 0;
         }
@@ -1147,34 +1263,35 @@ const ProblemaVsSolucion = () => {
         .card-header {
           display: flex;
           align-items: center;
-          gap: 16px;
-          margin-bottom: 20px;
+          gap: 14px;
+          margin-bottom: 16px;
         }
         
         .card-icon {
-          font-size: 36px;
+          font-size: 32px;
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 60px;
-          height: 60px;
-          background: rgba(255, 255, 255, 0.8);
-          border-radius: 20px;
+          width: 56px;
+          height: 56px;
+          background: rgba(255, 255, 255, 0.7);
+          border-radius: 16px;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         }
         
         .card-title {
-          font-size: 1.25rem;
+          font-size: 1.125rem;
           font-weight: 600;
           color: #2C2825;
           flex: 1;
+          line-height: 1.3;
         }
         
         .card-description {
-          font-size: 16px;
-          line-height: 1.6;
+          font-size: 15px;
+          line-height: 1.5;
           color: #6B6560;
-          margin-bottom: 24px;
+          margin-bottom: 20px;
         }
         
         /* Badges */
@@ -1182,105 +1299,237 @@ const ProblemaVsSolucion = () => {
         .benefit-badge {
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          padding: 8px 16px;
-          border-radius: 30px;
-          font-size: 14px;
+          gap: 6px;
+          padding: 6px 14px;
+          border-radius: 25px;
+          font-size: 13px;
           font-weight: 500;
         }
         
         .impact-badge {
-          background: rgba(255, 59, 48, 0.08);
+          background: rgba(255, 59, 48, 0.06);
           color: #C74343;
         }
         
         .benefit-badge {
-          background: rgba(52, 199, 89, 0.08);
+          background: rgba(52, 199, 89, 0.06);
           color: #34A853;
         }
         
         /* Transformation CTA */
         .transformation-cta {
           text-align: center;
-          padding: 60px 0 0;
+          padding: 40px 0 0;
         }
         
         .cta-text {
-          font-size: 18px;
+          font-size: 17px;
           color: #6B6560;
-          margin-bottom: 24px;
+          margin-bottom: 20px;
+          line-height: 1.5;
         }
         
         .cta-button {
           background: linear-gradient(135deg, #E8B4B8 0%, #D9A5A9 100%);
           color: white;
-          padding: 18px 40px;
+          padding: 16px 32px;
           border: none;
-          border-radius: 60px;
-          font-size: 16px;
+          border-radius: 50px;
+          font-size: 15px;
           font-weight: 500;
           cursor: pointer;
           display: inline-flex;
           align-items: center;
-          gap: 12px;
-          box-shadow: 0 10px 30px rgba(232, 180, 184, 0.3);
+          gap: 10px;
+          box-shadow: 0 8px 24px rgba(232, 180, 184, 0.25);
           transition: all 0.3s ease;
         }
         
         .cta-button:hover {
-          box-shadow: 0 15px 40px rgba(232, 180, 184, 0.4);
+          box-shadow: 0 12px 32px rgba(232, 180, 184, 0.35);
         }
         
         .cta-arrow {
-          font-size: 20px;
+          font-size: 18px;
           display: inline-block;
         }
         
-        /* Responsive Design */
+        /* Mobile Responsive Design */
         @media (max-width: 768px) {
           .problema-solucion {
-            padding: 80px 0;
+            padding: 60px 0;
           }
           
           .container {
             padding: 0 20px;
           }
           
+          .section-header {
+            margin-bottom: 36px;
+          }
+          
+          .section-badge {
+            font-size: 13px;
+            padding: 6px 16px;
+            margin-bottom: 16px;
+          }
+          
           .section-title {
-            font-size: clamp(2rem, 6vw, 2.5rem);
+            font-size: clamp(1.75rem, 8vw, 2.25rem);
+          }
+          
+          .section-description {
+            font-size: 16px;
           }
           
           .tab-switcher {
-            flex-direction: column;
             max-width: 100%;
-            padding: 4px;
+            margin-bottom: 36px;
           }
           
           .tab {
-            padding: 14px 24px;
+            padding: 12px 20px;
+            font-size: 14px;
+            gap: 6px;
           }
           
           .tab-text {
-            display: none;
+            font-size: 13px;
           }
           
-          .tab-indicator {
-            display: none;
+          .tab-icon {
+            font-size: 16px;
           }
           
           .content-grid {
             grid-template-columns: 1fr;
             gap: 20px;
+            margin-bottom: 36px;
           }
           
           .card {
-            padding: 28px;
+            padding: 24px;
+          }
+          
+          .card-header {
+            gap: 12px;
+            margin-bottom: 14px;
           }
           
           .card-icon {
             width: 48px;
             height: 48px;
             font-size: 28px;
+            border-radius: 14px;
+          }
+          
+          .card-title {
+            font-size: 1.0625rem;
+          }
+          
+          .card-description {
+            font-size: 14px;
+            margin-bottom: 16px;
+          }
+          
+          .impact-badge,
+          .benefit-badge {
+            font-size: 12px;
+            padding: 5px 12px;
+          }
+          
+          .transformation-cta {
+            padding: 32px 0 0;
+          }
+          
+          .cta-text {
+            font-size: 16px;
+            margin-bottom: 18px;
+          }
+          
+          .cta-button {
+            padding: 14px 28px;
+            font-size: 14px;
+            gap: 8px;
+          }
+          
+          .sphere-1 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -100px;
+          }
+          
+          .sphere-2 {
+            width: 250px;
+            height: 250px;
+            bottom: -100px;
+            right: -100px;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .problema-solucion {
+            padding: 48px 0;
+          }
+          
+          .container {
+            padding: 0 16px;
+          }
+          
+          .section-header {
+            margin-bottom: 32px;
+          }
+          
+          .tab-switcher {
+            margin-bottom: 32px;
+            padding: 3px;
+          }
+          
+          .tab {
+            padding: 10px 16px;
+            gap: 4px;
+          }
+          
+          .tab-text {
+            display: none;
+          }
+          
+          .content-grid {
+            gap: 16px;
+            margin-bottom: 32px;
+          }
+          
+          .card {
+            padding: 20px;
+          }
+          
+          .card-header {
+            gap: 10px;
+          }
+          
+          .card-icon {
+            width: 44px;
+            height: 44px;
+            font-size: 24px;
+            border-radius: 12px;
+          }
+          
+          .card-title {
+            font-size: 1rem;
+          }
+          
+          .transformation-cta {
+            padding: 28px 0 0;
+          }
+          
+          .cta-text {
+            font-size: 15px;
+          }
+          
+          .cta-button {
+            padding: 12px 24px;
+            border-radius: 40px;
           }
         }
         
@@ -1297,34 +1546,31 @@ const ProblemaVsSolucion = () => {
           }
         }
         
-        /* Dark Mode */
-        @media (prefers-color-scheme: dark) {
-          .problema-solucion {
-            background: linear-gradient(180deg, #1a1a1a 0%, #2C2825 100%);
-          }
-          
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
           .card {
-            background: #2C2825;
-            border-color: rgba(255, 255, 255, 0.1);
+            border-width: 2px;
           }
           
-          .card-title {
-            color: #FDFBF7;
+          .section-badge {
+            border-width: 2px;
           }
           
-          .card-description,
-          .section-description,
-          .cta-text {
-            color: #A8A39E;
+          .tab-switcher {
+            border-width: 2px;
           }
-          
-          .tab {
-            color: #A8A39E;
-          }
-          
-          .tab.active {
-            color: #FDFBF7;
-          }
+        }
+        
+        /* Focus styles for accessibility */
+        .tab:focus,
+        .cta-button:focus {
+          outline: 2px solid #E8B4B8;
+          outline-offset: 2px;
+        }
+        
+        .card:focus {
+          outline: 2px solid #E8B4B8;
+          outline-offset: 1px;
         }
       `}</style>
     </section>
