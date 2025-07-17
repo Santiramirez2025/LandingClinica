@@ -140,6 +140,9 @@ const LeadMagnet = () => {
           text-align: center;
           position: relative;
           overflow: hidden;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
         }
         
         .lead-magnet::before {
@@ -161,6 +164,7 @@ const LeadMagnet = () => {
         .container {
           max-width: 1200px;
           margin: 0 auto;
+          width: 100%;
         }
         
         .content-wrapper {
@@ -172,6 +176,7 @@ const LeadMagnet = () => {
           font-size: 2.5rem;
           margin-bottom: 20px;
           text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+          line-height: 1.2;
         }
         
         .lead-magnet p {
@@ -267,6 +272,8 @@ const LeadMagnet = () => {
           align-items: center;
           z-index: 1000;
           animation: modalFadeIn 0.3s ease;
+          padding: 20px;
+          box-sizing: border-box;
         }
         
         @keyframes modalFadeIn {
@@ -282,9 +289,10 @@ const LeadMagnet = () => {
           padding: 40px;
           border-radius: 20px;
           position: relative;
-          margin: 20px;
           color: #333;
           animation: modalSlideIn 0.3s ease;
+          width: 100%;
+          box-sizing: border-box;
         }
         
         @keyframes modalSlideIn {
@@ -302,6 +310,7 @@ const LeadMagnet = () => {
           cursor: pointer;
           color: #999;
           transition: color 0.3s ease;
+          z-index: 10;
         }
         
         .close-btn:hover {
@@ -313,6 +322,7 @@ const LeadMagnet = () => {
           text-align: center;
           margin-bottom: 30px;
           font-size: 2rem;
+          padding-right: 50px;
         }
         
         .guide-sections {
@@ -361,26 +371,202 @@ const LeadMagnet = () => {
           transform: translateY(-2px);
         }
         
+        /* Responsive Design */
         @media (max-width: 768px) {
+          .lead-magnet {
+            padding: 60px 15px;
+            min-height: 100vh;
+          }
+          
           .lead-magnet h2 {
             font-size: 2rem;
+            margin-bottom: 15px;
           }
           
           .lead-magnet p {
             font-size: 1.1rem;
+            margin-bottom: 30px;
+            padding: 0 10px;
           }
           
           .lead-form {
-            padding: 20px;
+            padding: 25px 20px;
+            margin: 30px auto 0;
+            border-radius: 15px;
+          }
+          
+          .lead-form input {
+            padding: 16px 20px;
+            font-size: 0.95rem;
+          }
+          
+          .cta-submit {
+            padding: 16px 25px;
+            font-size: 1rem;
+          }
+          
+          .guide-modal {
+            padding: 10px;
+            align-items: flex-start;
+            padding-top: 20px;
           }
           
           .guide-content {
-            padding: 20px;
-            margin: 10px;
+            padding: 25px 20px;
+            margin: 0;
+            max-height: 85vh;
+            border-radius: 15px;
           }
           
           .guide-content h2 {
+            font-size: 1.6rem;
+            padding-right: 40px;
+            margin-bottom: 25px;
+          }
+          
+          .close-btn {
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+          }
+          
+          .guide-section {
+            padding: 15px;
+            margin-bottom: 20px;
+          }
+          
+          .guide-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+          }
+          
+          .guide-section p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+          }
+          
+          .contact-btn {
+            padding: 12px 25px;
+            font-size: 0.9rem;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .lead-magnet {
+            padding: 40px 10px;
+          }
+          
+          .lead-magnet h2 {
+            font-size: 1.7rem;
+            line-height: 1.3;
+          }
+          
+          .lead-magnet p {
+            font-size: 1rem;
+            padding: 0 5px;
+          }
+          
+          .lead-form {
+            padding: 20px 15px;
+            margin: 25px auto 0;
+          }
+          
+          .lead-form input {
+            padding: 14px 18px;
+            font-size: 0.9rem;
+          }
+          
+          .cta-submit {
+            padding: 14px 20px;
+            font-size: 0.95rem;
+          }
+          
+          .guide-content {
+            padding: 20px 15px;
+            max-height: 80vh;
+          }
+          
+          .guide-content h2 {
+            font-size: 1.4rem;
+            padding-right: 35px;
+          }
+          
+          .close-btn {
+            top: 12px;
+            right: 15px;
+            font-size: 1.6rem;
+          }
+          
+          .guide-section {
+            padding: 12px;
+          }
+          
+          .guide-section h3 {
+            font-size: 1rem;
+          }
+          
+          .guide-section p {
+            font-size: 0.85rem;
+          }
+          
+          .contact-btn {
+            padding: 10px 20px;
+            font-size: 0.85rem;
+          }
+        }
+        
+        @media (max-width: 360px) {
+          .lead-magnet h2 {
             font-size: 1.5rem;
+          }
+          
+          .lead-magnet p {
+            font-size: 0.95rem;
+          }
+          
+          .guide-content h2 {
+            font-size: 1.3rem;
+          }
+          
+          .guide-section h3 {
+            font-size: 0.95rem;
+          }
+          
+          .guide-section p {
+            font-size: 0.8rem;
+          }
+        }
+        
+        /* Landscape orientation for mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+          .lead-magnet {
+            padding: 30px 15px;
+            min-height: auto;
+          }
+          
+          .lead-magnet h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+          }
+          
+          .lead-magnet p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+          }
+          
+          .lead-form {
+            margin: 20px auto 0;
+            padding: 20px;
+          }
+          
+          .guide-modal {
+            padding: 15px;
+            align-items: flex-start;
+          }
+          
+          .guide-content {
+            max-height: 85vh;
+            padding: 20px;
           }
         }
       `}</style>
