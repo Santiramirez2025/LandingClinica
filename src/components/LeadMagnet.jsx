@@ -1,47 +1,26 @@
 import { useState } from 'react'
 
 const LeadMagnet = () => {
-  const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [clicked, setClicked] = useState(false)
   const [showGuide, setShowGuide] = useState(false)
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!email) return
+  const handleClick = () => {
+    setClicked(true)
     
-    console.log('Email:', email)
-    setSubmitted(true)
-    
-    // Abrir la guía después de un breve delay para mostrar confirmación
+    // Mostrar confirmación brevemente
     setTimeout(() => {
       openGuide()
     }, 500)
     
-    // Reset del formulario
+    // Reset del botón
     setTimeout(() => {
-      setSubmitted(false)
-      setEmail('')
-    }, 3000)
+      setClicked(false)
+    }, 2000)
   }
 
   const openGuide = () => {
-    if (!email && !submitted) {
-      alert('Por favor ingresa tu email primero')
-      return
-    }
-    
-    // Abrir la guía directamente desde la raíz del proyecto
-    try {
-      const newWindow = window.open('/guia-fidelizacion.html', '_blank')
-      if (!newWindow) {
-        // Si el popup fue bloqueado, intentar navegación directa
-        window.location.href = '/guia-fidelizacion.html'
-      }
-    } catch (error) {
-      console.log('Error opening guide:', error)
-      // Fallback: navegación directa
-      window.location.href = '/guia-fidelizacion.html'
-    }
+    // Abrir la guía en una nueva pestaña
+    setShowGuide(true)
   }
 
   const GuideContent = () => (
@@ -105,25 +84,18 @@ const LeadMagnet = () => {
             <p>Descargá GRATIS la Guía Secreta para Fidelizar Pacientes VIP en tu Clínica Estética</p>
             
             <div className="lead-form">
-              <input 
-                type="email" 
-                placeholder="Tu email profesional"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={submitted}
-              />
               <button 
                 className="cta-submit"
-                onClick={handleSubmit}
-                disabled={submitted || !email}
+                onClick={handleClick}
+                disabled={clicked}
               >
-                {submitted ? '¡Enviado! 💕' : 'Obtener Guía Gratis'}
+                {clicked ? '¡Abriendo Guía! 💕' : 'Obtener Guía Gratis'}
               </button>
             </div>
             
-            {submitted && (
+            {clicked && (
               <div className="success-message">
-                <p>✅ ¡Email registrado! Abriendo tu guía...</p>
+                <p>✅ ¡Preparando tu guía exclusiva!</p>
               </div>
             )}
           </div>
@@ -198,38 +170,15 @@ const LeadMagnet = () => {
           border: 1px solid rgba(255,255,255,0.2);
         }
         
-        .lead-form input {
-          width: 100%;
-          padding: 18px 25px;
-          border: none;
-          border-radius: 30px;
-          margin-bottom: 20px;
-          font-family: 'Poppins', sans-serif;
-          font-size: 1rem;
-          box-sizing: border-box;
-          transition: all 0.3s ease;
-        }
-        
-        .lead-form input:focus {
-          outline: none;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
-        .lead-form input:disabled {
-          background: #f0f0f0;
-          cursor: not-allowed;
-        }
-        
         .cta-submit {
           background: white;
           color: #ff6b9d;
           width: 100%;
-          padding: 18px 30px;
+          padding: 20px 30px;
           border: none;
           border-radius: 30px;
           font-weight: 600;
-          font-size: 1.1rem;
+          font-size: 1.2rem;
           cursor: pointer;
           transition: all 0.3s ease;
           font-family: 'Poppins', sans-serif;
@@ -395,14 +344,9 @@ const LeadMagnet = () => {
             border-radius: 15px;
           }
           
-          .lead-form input {
-            padding: 16px 20px;
-            font-size: 0.95rem;
-          }
-          
           .cta-submit {
-            padding: 16px 25px;
-            font-size: 1rem;
+            padding: 18px 25px;
+            font-size: 1.1rem;
           }
           
           .guide-modal {
@@ -471,14 +415,9 @@ const LeadMagnet = () => {
             margin: 25px auto 0;
           }
           
-          .lead-form input {
-            padding: 14px 18px;
-            font-size: 0.9rem;
-          }
-          
           .cta-submit {
-            padding: 14px 20px;
-            font-size: 0.95rem;
+            padding: 16px 20px;
+            font-size: 1rem;
           }
           
           .guide-content {

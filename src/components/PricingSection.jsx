@@ -7,7 +7,7 @@ const plans = [
     type: 'Clínicas independientes',
     setup: '599€',
     monthly: '79€',
-    setupTime: '3-5 días',
+    setupTime: '3-7 días',
     description: 'Ideal para clínicas que inician su transformación digital en fidelización de pacientes',
     features: [
       'Configuración personalizada completa',
@@ -27,7 +27,7 @@ const plans = [
     type: 'Clínicas en expansión',
     setup: '899€',
     monthly: '119€',
-    setupTime: '3-5 días',
+    setupTime: '3-7 días',
     description: 'Perfecto para clínicas con múltiples tratamientos que buscan maximizar la retención',
     features: [
       'Todo lo del plan Esencial',
@@ -47,7 +47,7 @@ const plans = [
     type: 'Clínicas consolidadas',
     setup: '1.199€',
     monthly: '149€',
-    setupTime: '3-5 días',
+    setupTime: '3-7 días',
     description: 'Máximo rendimiento con acompañamiento estratégico personalizado continuo',
     features: [
       'Todo lo del plan Profesional',
