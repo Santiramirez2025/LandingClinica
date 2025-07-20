@@ -1168,7 +1168,7 @@ const ProblemaVsSolucion = () => {
           <div className="cta-content">
             <h3 className="cta-title">¿Listo para la transformación?</h3>
             <p className="cta-text">
-              Más de 350 clínicas en España ya han transformado su negocio. 
+              Más de 200 clínicas en España ya han transformado su negocio. 
               Descubre cómo en casos reales.
             </p>
           </div>
