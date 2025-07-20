@@ -1,329 +1,493 @@
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
+import React, { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Check, Star, Shield, Clock, Users, HeartHandshake, Phone, MessageCircle, ChevronRight, Zap, TrendingUp, Award } from 'lucide-react'
 
 const plans = [
   {
+    id: 'esencial',
     name: 'Esencial',
+    tagline: 'Inicia tu transformación digital',
     type: 'Clínicas independientes',
-    setup: '599€',
-    monthly: '79€',
+    setup: 599,
+    monthly: 79,
     setupTime: '3-7 días',
-    description: 'Ideal para clínicas que inician su transformación digital en fidelización de pacientes',
+    description: 'Ideal para clínicas que buscan digitalizar su gestión de pacientes y aumentar la fidelización',
     features: [
-      'Configuración personalizada completa',
-      'Formación inicial intensiva (2 sesiones)',
-      'Seguimiento automático post-tratamiento',
-      'Recordatorios inteligentes por WhatsApp/SMS',
-      'Sistema básico de fidelización',
-      'Soporte técnico por email',
-      'Reportes mensuales de rendimiento'
+      { text: 'Configuración personalizada completa', highlight: false },
+      { text: 'Formación inicial intensiva (2 sesiones)', highlight: false },
+      { text: 'Seguimiento automático post-tratamiento', highlight: true },
+      { text: 'WhatsApp Business API integrado', highlight: true },
+      { text: 'Sistema básico de fidelización', highlight: false },
+      { text: 'Soporte técnico por email', highlight: false },
+      { text: 'Reportes mensuales de rendimiento', highlight: false },
+      { text: 'Hasta 500 pacientes activos', highlight: false }
     ],
+    metrics: {
+      retention: '+15%',
+      revenue: '+20%',
+      time: '-3h/semana'
+    },
     highlight: false,
     icon: '🏥',
-    bestFor: 'Clínicas con 1-2 especialistas'
+    bestFor: '1-2 especialistas',
+    color: '#94A3B8',
+    popular: false
   },
   {
+    id: 'profesional',
     name: 'Profesional',
-    type: 'Clínicas en expansión',
-    setup: '899€',
-    monthly: '119€',
+    tagline: 'Maximiza tu retención',
+    type: 'Clínicas en crecimiento',
+    setup: 899,
+    monthly: 119,
     setupTime: '3-7 días',
-    description: 'Perfecto para clínicas con múltiples tratamientos que buscan maximizar la retención',
+    description: 'Para clínicas que quieren automatizar completamente su comunicación y maximizar el lifetime value',
     features: [
-      'Todo lo del plan Esencial',
-      'Mensajes personalizados por tipo de tratamiento',
-      'Segmentación automática de pacientes',
-      'Análisis detallado de ROI y retención',
-      'Soporte prioritario (email + chat en vivo)',
-      'Formación trimestral especializada',
-      'Integraciones con tu software actual'
+      { text: 'Todo lo del plan Esencial', highlight: false },
+      { text: 'IA para mensajes personalizados', highlight: true },
+      { text: 'Segmentación avanzada de pacientes', highlight: true },
+      { text: 'ROI tracking en tiempo real', highlight: true },
+      { text: 'Soporte prioritario multicanal', highlight: false },
+      { text: 'Formación trimestral especializada', highlight: false },
+      { text: 'API e integraciones ilimitadas', highlight: true },
+      { text: 'Hasta 2.000 pacientes activos', highlight: false }
     ],
+    metrics: {
+      retention: '+35%',
+      revenue: '+45%',
+      time: '-8h/semana'
+    },
     highlight: true,
     icon: '⭐',
-    bestFor: 'Clínicas con 3-10 especialistas'
+    bestFor: '3-10 especialistas',
+    color: '#E8B4B8',
+    popular: true,
+    savings: 'Ahorra 180€/año'
   },
   {
+    id: 'premium',
     name: 'Premium',
-    type: 'Clínicas consolidadas',
-    setup: '1.199€',
-    monthly: '149€',
+    tagline: 'Crecimiento exponencial',
+    type: 'Clínicas líderes',
+    setup: 1199,
+    monthly: 149,
     setupTime: '3-7 días',
-    description: 'Máximo rendimiento con acompañamiento estratégico personalizado continuo',
+    description: 'Solución completa con consultoría estratégica para dominar tu mercado local',
     features: [
-      'Todo lo del plan Profesional',
-      'Consultoría mensual estratégica 1:1',
-      'Análisis predictivo y optimización IA',
-      'Integraciones personalizadas completas',
-      'Soporte VIP con respuesta en 2 horas',
-      'Formación continua para todo el equipo',
-      'Acceso prioritario a nuevas funcionalidades'
+      { text: 'Todo lo del plan Profesional', highlight: false },
+      { text: 'Account Manager dedicado', highlight: true },
+      { text: 'Análisis predictivo con IA', highlight: true },
+      { text: 'Campañas multicanal automatizadas', highlight: true },
+      { text: 'Soporte VIP 24/7', highlight: true },
+      { text: 'Formación continua ilimitada', highlight: false },
+      { text: 'Desarrollo de features a medida', highlight: true },
+      { text: 'Pacientes ilimitados', highlight: true }
     ],
+    metrics: {
+      retention: '+50%',
+      revenue: '+75%',
+      time: '-15h/semana'
+    },
     highlight: false,
     icon: '👑',
-    bestFor: 'Clínicas con +10 especialistas'
+    bestFor: '+10 especialistas',
+    color: '#D4A574',
+    popular: false
+  }
+]
+
+const testimonials = [
+  {
+    name: "Dra. María García",
+    clinic: "Clínica Belleza Madrid",
+    text: "En 3 meses aumentamos un 40% la recurrencia de tratamientos",
+    rating: 5,
+    plan: "Profesional"
+  },
+  {
+    name: "Dr. Carlos Ruiz",
+    clinic: "Centro Estético Barcelona",
+    text: "El ROI es increíble. Recuperamos la inversión en 2 meses",
+    rating: 5,
+    plan: "Premium"
   }
 ]
 
 export default function ClinicPricingSection() {
-  const [selectedPlan, setSelectedPlan] = useState(null)
+  const [selectedPlan, setSelectedPlan] = useState('profesional')
+  const [billingCycle, setBillingCycle] = useState('monthly')
+  const [showComparison, setShowComparison] = useState(false)
+  const [hoveredPlan, setHoveredPlan] = useState(null)
+
+  // Calcular descuentos para pago anual
+  const getAnnualPrice = (monthlyPrice) => {
+    const annual = monthlyPrice * 12
+    const discount = annual * 0.15 // 15% descuento
+    return Math.round(annual - discount)
+  }
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('es-ES', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(price)
+  }
 
   return (
     <section className="pricing-section">
-      {/* Gradient Background */}
-      <div className="gradient-background">
-        <motion.div 
-          className="gradient-orb gradient-orb-1"
-          animate={{ 
-            x: [0, -40, 0],
-            y: [0, 30, 0],
-          }}
-          transition={{ 
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div 
-          className="gradient-orb gradient-orb-2"
-          animate={{ 
-            x: [0, 60, 0],
-            y: [0, -40, 0],
-          }}
-          transition={{ 
-            duration: 25,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
+      {/* Animated Background */}
+      <div className="animated-bg">
+        <div className="gradient-sphere gradient-1" />
+        <div className="gradient-sphere gradient-2" />
+        <div className="gradient-sphere gradient-3" />
       </div>
 
       <div className="container">
-        {/* Header */}
+        {/* Header Section */}
         <motion.div 
           className="pricing-header"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
         >
-          <motion.div 
-            className="trust-badge"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <span className="badge-icon">💰</span>
-            <span className="badge-text">Precios transparentes, sin sorpresas</span>
+          <motion.div className="header-badge">
+            <Zap className="badge-icon" />
+            <span>Planes adaptados al sector estético español</span>
           </motion.div>
           
-          <h2 className="main-title">
-            Planes diseñados para el
-            <span className="title-highlight"> crecimiento de tu clínica</span>
-          </h2>
+          <h1 className="main-title">
+            Precios transparentes que
+            <span className="title-gradient"> impulsan tu clínica</span>
+          </h1>
           
           <p className="subtitle">
-            Inversión inicial única + suscripción mensual. Sin comisiones por paciente, sin letra pequeña.
+            Sin comisiones ocultas, sin sorpresas. Inversión clara con ROI garantizado
           </p>
-          
-          {/* Pricing Model Explanation */}
-          <motion.div 
-            className="pricing-model"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <h3 className="model-title">Modelo de inversión simple y claro</h3>
-            <div className="model-steps">
-              <div className="step">
-                <div className="step-number">1</div>
-                <div className="step-content">
-                  <h4>Inversión inicial</h4>
-                  <p>Configuración, personalización y formación completa</p>
-                </div>
-              </div>
-              <div className="step">
-                <div className="step-number">2</div>
-                <div className="step-content">
-                  <h4>Suscripción mensual</h4>
-                  <p>Uso ilimitado, soporte continuo y actualizaciones</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+
+          {/* Billing Toggle */}
+          <div className="billing-toggle">
+            <button
+              className={`toggle-option ${billingCycle === 'monthly' ? 'active' : ''}`}
+              onClick={() => setBillingCycle('monthly')}
+            >
+              Mensual
+            </button>
+            <button
+              className={`toggle-option ${billingCycle === 'annual' ? 'active' : ''}`}
+              onClick={() => setBillingCycle('annual')}
+            >
+              <span>Anual</span>
+              <span className="discount-badge">-15%</span>
+            </button>
+          </div>
         </motion.div>
 
-        {/* Plans Grid */}
+        {/* Trust Indicators */}
         <motion.div 
-          className="plans-container"
-          initial={{ opacity: 0, y: 40 }}
+          className="trust-indicators"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          transition={{ delay: 0.2 }}
         >
+          <div className="indicator">
+            <Users className="indicator-icon" />
+            <div className="indicator-content">
+              <strong>+500</strong>
+              <span>Clínicas activas</span>
+            </div>
+          </div>
+          <div className="indicator">
+            <TrendingUp className="indicator-icon" />
+            <div className="indicator-content">
+              <strong>+40%</strong>
+              <span>Aumento medio ingresos</span>
+            </div>
+          </div>
+          <div className="indicator">
+            <Award className="indicator-icon" />
+            <div className="indicator-content">
+              <strong>4.9/5</strong>
+              <span>Satisfacción clientes</span>
+            </div>
+          </div>
+          <div className="indicator">
+            <Shield className="indicator-icon" />
+            <div className="indicator-content">
+              <strong>RGPD</strong>
+              <span>100% Compliance</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Pricing Cards */}
+        <div className="plans-grid">
           {plans.map((plan, index) => (
             <motion.div
-              key={plan.name}
-              className={`plan-card ${plan.highlight ? 'plan-featured' : ''}`}
-              initial={{ opacity: 0, y: 30 }}
+              key={plan.id}
+              className={`plan-card ${plan.highlight ? 'featured' : ''} ${selectedPlan === plan.id ? 'selected' : ''}`}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 * index }}
-              whileHover={{ 
-                y: -5,
-                transition: { type: "spring", stiffness: 300 }
+              transition={{ delay: index * 0.1 + 0.3 }}
+              onMouseEnter={() => setHoveredPlan(plan.id)}
+              onMouseLeave={() => setHoveredPlan(null)}
+              onClick={() => setSelectedPlan(plan.id)}
+              style={{
+                '--plan-color': plan.color
               }}
             >
-              {plan.highlight && (
-                <div className="featured-badge">
-                  <span>⭐ Más elegido</span>
+              {plan.popular && (
+                <div className="popular-badge">
+                  <Star size={14} />
+                  <span>Más elegido</span>
                 </div>
               )}
 
               <div className="plan-header">
                 <div className="plan-icon">{plan.icon}</div>
                 <h3 className="plan-name">{plan.name}</h3>
-                <p className="plan-type">{plan.type}</p>
-                <p className="plan-best-for">{plan.bestFor}</p>
+                <p className="plan-tagline">{plan.tagline}</p>
+                <p className="plan-target">{plan.bestFor}</p>
               </div>
 
-              <div className="plan-description">
-                <p>{plan.description}</p>
-              </div>
-
-              {/* Pricing Display */}
-              <div className="pricing-display">
-                <div className="price-row">
-                  <span className="price-label">Configuración inicial</span>
-                  <div className="price-info">
-                    <span className="price-amount">{plan.setup}</span>
-                    <span className="price-note">({plan.setupTime})</span>
+              <div className="plan-pricing">
+                <div className="setup-fee">
+                  <span className="fee-label">Configuración inicial</span>
+                  <div className="fee-amount">
+                    <span className="amount">{formatPrice(plan.setup)}</span>
+                    <span className="time">({plan.setupTime})</span>
                   </div>
                 </div>
-                <div className="price-row price-main">
-                  <span className="price-label">Suscripción mensual</span>
-                  <div className="price-info">
-                    <span className="price-amount-main">{plan.monthly}</span>
-                    <span className="price-period">/mes</span>
+                
+                <div className="monthly-fee">
+                  <span className="fee-label">
+                    {billingCycle === 'monthly' ? 'Mensualidad' : 'Precio anual'}
+                  </span>
+                  <div className="fee-amount-main">
+                    <span className="currency">€</span>
+                    <span className="amount">
+                      {billingCycle === 'monthly' 
+                        ? plan.monthly 
+                        : Math.round(getAnnualPrice(plan.monthly) / 12)
+                      }
+                    </span>
+                    <span className="period">/mes</span>
                   </div>
+                  {billingCycle === 'annual' && plan.savings && (
+                    <span className="savings">{plan.savings}</span>
+                  )}
                 </div>
               </div>
 
-              {/* Features List */}
-              <div className="features-section">
+              <div className="plan-metrics">
+                <div className="metric">
+                  <span className="metric-value">{plan.metrics.retention}</span>
+                  <span className="metric-label">Retención</span>
+                </div>
+                <div className="metric">
+                  <span className="metric-value">{plan.metrics.revenue}</span>
+                  <span className="metric-label">Ingresos</span>
+                </div>
+                <div className="metric">
+                  <span className="metric-value">{plan.metrics.time}</span>
+                  <span className="metric-label">Tiempo</span>
+                </div>
+              </div>
+
+              <div className="plan-features">
                 <h4 className="features-title">Incluye:</h4>
-                <div className="features-list">
-                  {plan.features.map((feature, i) => (
-                    <motion.div 
+                <ul className="features-list">
+                  {plan.features.slice(0, hoveredPlan === plan.id ? plan.features.length : 5).map((feature, i) => (
+                    <motion.li 
                       key={i}
-                      className="feature-item"
-                      initial={{ opacity: 0, x: -20 }}
+                      className={`feature ${feature.highlight ? 'highlight' : ''}`}
+                      initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.5 + (i * 0.1) }}
+                      transition={{ delay: i * 0.05 }}
                     >
-                      <span className="feature-check">✓</span>
-                      <span className="feature-text">{feature}</span>
-                    </motion.div>
+                      <Check className="feature-icon" />
+                      <span>{feature.text}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+                {plan.features.length > 5 && hoveredPlan !== plan.id && (
+                  <button className="show-more">
+                    Ver más características
+                  </button>
+                )}
+              </div>
+
+              <div className="plan-actions">
+                <motion.button
+                  className={`cta-button ${plan.highlight ? 'primary' : 'secondary'}`}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span>Solicitar demo gratuita</span>
+                  <ChevronRight className="button-icon" />
+                </motion.button>
+                
+                <button className="contact-button">
+                  <Phone size={16} />
+                  <span>Hablar con ventas</span>
+                </button>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Comparison Table Button */}
+        <motion.div 
+          className="comparison-toggle"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+        >
+          <button 
+            className="comparison-button"
+            onClick={() => setShowComparison(!showComparison)}
+          >
+            {showComparison ? 'Ocultar' : 'Ver'} comparación detallada
+          </button>
+        </motion.div>
+
+        {/* Testimonials */}
+        <motion.div 
+          className="testimonials-section"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <h3 className="testimonials-title">Lo que dicen nuestras clínicas</h3>
+          <div className="testimonials-grid">
+            {testimonials.map((testimonial, i) => (
+              <div key={i} className="testimonial-card">
+                <div className="testimonial-header">
+                  <div className="testimonial-info">
+                    <h4>{testimonial.name}</h4>
+                    <p>{testimonial.clinic}</p>
+                  </div>
+                  <span className="testimonial-plan">{testimonial.plan}</span>
+                </div>
+                <p className="testimonial-text">"{testimonial.text}"</p>
+                <div className="testimonial-rating">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} size={16} fill="currentColor" />
                   ))}
                 </div>
               </div>
-
-              {/* CTA Button */}
-              <motion.button
-                className={`cta-button ${plan.highlight ? 'cta-primary' : 'cta-secondary'}`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setSelectedPlan(plan.name)}
-              >
-                <span className="cta-text">
-                  {selectedPlan === plan.name ? '✓ Plan seleccionado' : 'Solicitar demo gratuita'}
-                </span>
-                <motion.span 
-                  className="cta-arrow"
-                  whileHover={{ x: 4 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  →
-                </motion.span>
-              </motion.button>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </motion.div>
 
-        {/* Trust Section */}
+        {/* Guarantees */}
         <motion.div 
-          className="trust-section"
+          className="guarantees-section"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
+          transition={{ delay: 0.9 }}
         >
-          <h3 className="trust-title">Tu inversión está protegida</h3>
-          <div className="trust-items">
-            <div className="trust-item">
-              <div className="trust-icon">🛡️</div>
-              <div className="trust-content">
-                <h4>Sin permanencia</h4>
-                <p>Cancela cuando necesites, sin penalizaciones</p>
-              </div>
-            </div>
-            <div className="trust-item">
-              <div className="trust-icon">✅</div>
-              <div className="trust-content">
-                <h4>Garantía de implementación</h4>
-                <p>O reembolso completo del setup</p>
-              </div>
-            </div>
-            <div className="trust-item">
-              <div className="trust-icon">🤝</div>
-              <div className="trust-content">
-                <h4>Soporte especializado</h4>
-                <p>Equipo dedicado al sector estético</p>
-              </div>
-            </div>
-            <div className="trust-item">
-              <div className="trust-icon">🎯</div>
-              <div className="trust-content">
-                <h4>Demo personalizada</h4>
-                <p>30 días de prueba con tu clínica</p>
-              </div>
-            </div>
+          <div className="guarantee-card">
+            <Shield className="guarantee-icon" />
+            <h4>Sin permanencia</h4>
+            <p>Cancela cuando quieras</p>
+          </div>
+          <div className="guarantee-card">
+            <Clock className="guarantee-icon" />
+            <h4>30 días de prueba</h4>
+            <p>Garantía de devolución</p>
+          </div>
+          <div className="guarantee-card">
+            <HeartHandshake className="guarantee-icon" />
+            <h4>Soporte dedicado</h4>
+            <p>Equipo especializado</p>
+          </div>
+          <div className="guarantee-card">
+            <MessageCircle className="guarantee-icon" />
+            <h4>Onboarding premium</h4>
+            <p>Te acompañamos siempre</p>
+          </div>
+        </motion.div>
+
+        {/* CTA Section */}
+        <motion.div 
+          className="final-cta"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1 }}
+        >
+          <h3>¿Listo para transformar tu clínica?</h3>
+          <p>Únete a las +500 clínicas que ya confían en nosotros</p>
+          <div className="cta-buttons">
+            <button className="cta-primary">
+              Empezar demo gratuita
+              <ChevronRight />
+            </button>
+            <button className="cta-secondary">
+              <Phone size={18} />
+              Llamar ahora: 900 123 456
+            </button>
           </div>
         </motion.div>
       </div>
       
       <style jsx>{`
         .pricing-section {
-          padding: 100px 0 80px;
-          background: linear-gradient(135deg, #FDFCFA 0%, #F8F6F3 100%);
+          min-height: 100vh;
+          padding: 80px 0;
+          background: #FAFAFA;
           position: relative;
           overflow: hidden;
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
-        .gradient-background {
+        .animated-bg {
           position: absolute;
           inset: 0;
           pointer-events: none;
-          opacity: 0.3;
         }
         
-        .gradient-orb {
+        .gradient-sphere {
           position: absolute;
           border-radius: 50%;
-          filter: blur(60px);
-          mix-blend-mode: multiply;
+          filter: blur(80px);
+          opacity: 0.15;
+          animation: float 20s ease-in-out infinite;
         }
         
-        .gradient-orb-1 {
-          width: 300px;
-          height: 300px;
-          background: radial-gradient(circle, rgba(232, 180, 184, 0.4) 0%, transparent 70%);
-          top: 10%;
-          left: -50px;
+        .gradient-1 {
+          width: 600px;
+          height: 600px;
+          background: radial-gradient(circle, #E8B4B8 0%, transparent 70%);
+          top: -200px;
+          left: -200px;
         }
         
-        .gradient-orb-2 {
+        .gradient-2 {
+          width: 500px;
+          height: 500px;
+          background: radial-gradient(circle, #D4A574 0%, transparent 70%);
+          bottom: -100px;
+          right: -100px;
+          animation-delay: -5s;
+        }
+        
+        .gradient-3 {
           width: 400px;
           height: 400px;
-          background: radial-gradient(circle, rgba(255, 237, 213, 0.4) 0%, transparent 70%);
-          bottom: 20%;
-          right: -100px;
+          background: radial-gradient(circle, #94A3B8 0%, transparent 70%);
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          animation-delay: -10s;
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          25% { transform: translate(30px, -30px) scale(1.05); }
+          50% { transform: translate(-20px, 20px) scale(0.95); }
+          75% { transform: translate(-30px, -10px) scale(1.02); }
         }
         
         .container {
@@ -337,161 +501,181 @@ export default function ClinicPricingSection() {
         .pricing-header {
           text-align: center;
           margin-bottom: 60px;
-          max-width: 800px;
-          margin-left: auto;
-          margin-right: auto;
         }
         
-        .trust-badge {
+        .header-badge {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          background: rgba(255, 255, 255, 0.9);
-          border: 1px solid rgba(232, 180, 184, 0.2);
-          padding: 12px 20px;
-          border-radius: 25px;
+          background: white;
+          padding: 8px 16px;
+          border-radius: 20px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #64748B;
           margin-bottom: 24px;
-          backdrop-filter: blur(10px);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
         .badge-icon {
-          font-size: 16px;
-        }
-        
-        .badge-text {
-          font-size: 14px;
-          font-weight: 600;
-          color: #8B6B6B;
-          letter-spacing: 0.3px;
+          width: 16px;
+          height: 16px;
+          color: #E8B4B8;
         }
         
         .main-title {
-          font-size: clamp(2.2rem, 5vw, 3.2rem);
+          font-size: clamp(2.5rem, 5vw, 3.5rem);
           font-weight: 700;
           line-height: 1.1;
+          color: #1E293B;
           margin-bottom: 20px;
-          color: #2D2D2D;
-          letter-spacing: -0.5px;
+          letter-spacing: -0.02em;
         }
         
-        .title-highlight {
+        .title-gradient {
           background: linear-gradient(135deg, #E8B4B8 0%, #D4A574 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
-          font-weight: 800;
         }
         
         .subtitle {
-          font-size: clamp(1.1rem, 2.5vw, 1.25rem);
-          line-height: 1.6;
-          color: #5A5A5A;
-          margin-bottom: 40px;
+          font-size: 1.25rem;
+          color: #64748B;
           max-width: 600px;
+          margin: 0 auto 40px;
+          line-height: 1.6;
+        }
+        
+        .billing-toggle {
+          display: inline-flex;
+          background: white;
+          padding: 4px;
+          border-radius: 12px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+          gap: 4px;
+        }
+        
+        .toggle-option {
+          padding: 10px 24px;
+          border: none;
+          background: transparent;
+          border-radius: 8px;
+          font-size: 15px;
+          font-weight: 500;
+          color: #64748B;
+          cursor: pointer;
+          transition: all 0.2s;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        
+        .toggle-option.active {
+          background: #E8B4B8;
+          color: white;
+        }
+        
+        .discount-badge {
+          background: #10B981;
+          color: white;
+          padding: 2px 8px;
+          border-radius: 12px;
+          font-size: 12px;
+          font-weight: 600;
+        }
+        
+        .trust-indicators {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 20px;
+          margin-bottom: 60px;
+          max-width: 900px;
           margin-left: auto;
           margin-right: auto;
         }
         
-        .pricing-model {
-          background: rgba(255, 255, 255, 0.8);
-          border: 1px solid rgba(232, 180, 184, 0.15);
-          border-radius: 16px;
-          padding: 32px;
-          backdrop-filter: blur(20px);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
-        }
-        
-        .model-title {
-          font-size: 1.1rem;
-          font-weight: 600;
-          color: #E8B4B8;
-          margin-bottom: 20px;
-          text-align: center;
-        }
-        
-        .model-steps {
-          display: flex;
-          gap: 24px;
-          justify-content: center;
-          align-items: center;
-          flex-wrap: wrap;
-        }
-        
-        .step {
+        .indicator {
           display: flex;
           align-items: center;
           gap: 12px;
-          flex: 1;
-          min-width: 250px;
+          padding: 20px;
+          background: white;
+          border-radius: 12px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
         
-        .step-number {
-          background: linear-gradient(135deg, #E8B4B8 0%, #D9A5A9 100%);
-          color: white;
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 600;
+        .indicator-icon {
+          width: 40px;
+          height: 40px;
+          color: #E8B4B8;
           flex-shrink: 0;
         }
         
-        .step-content h4 {
-          font-size: 15px;
-          font-weight: 600;
-          color: #2D2D2D;
-          margin-bottom: 4px;
+        .indicator-content {
+          display: flex;
+          flex-direction: column;
         }
         
-        .step-content p {
+        .indicator-content strong {
+          font-size: 1.25rem;
+          color: #1E293B;
+          font-weight: 700;
+        }
+        
+        .indicator-content span {
           font-size: 14px;
-          color: #666;
-          line-height: 1.4;
+          color: #64748B;
         }
         
-        .plans-container {
+        .plans-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
           gap: 24px;
-          margin-bottom: 60px;
+          margin-bottom: 40px;
         }
         
         .plan-card {
-          background: rgba(255, 255, 255, 0.95);
-          border: 1px solid rgba(232, 180, 184, 0.1);
+          background: white;
           border-radius: 20px;
-          padding: 32px 24px;
+          padding: 32px;
           position: relative;
           transition: all 0.3s ease;
-          backdrop-filter: blur(20px);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+          cursor: pointer;
+          border: 2px solid transparent;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.08);
         }
         
         .plan-card:hover {
-          box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
-          border-color: rgba(232, 180, 184, 0.2);
+          transform: translateY(-4px);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+          border-color: var(--plan-color, #E5E7EB);
         }
         
-        .plan-featured {
-          border-color: rgba(232, 180, 184, 0.3);
-          box-shadow: 0 16px 48px rgba(232, 180, 184, 0.12);
-          transform: scale(1.02);
+        .plan-card.featured {
+          border-color: #E8B4B8;
+          box-shadow: 0 8px 32px rgba(232, 180, 184, 0.2);
         }
         
-        .featured-badge {
+        .plan-card.selected {
+          border-color: var(--plan-color);
+          background: linear-gradient(to bottom, white 0%, rgba(232, 180, 184, 0.02) 100%);
+        }
+        
+        .popular-badge {
           position: absolute;
-          top: -10px;
+          top: -12px;
           left: 50%;
           transform: translateX(-50%);
           background: linear-gradient(135deg, #E8B4B8 0%, #D9A5A9 100%);
           color: white;
           padding: 6px 16px;
-          border-radius: 16px;
-          font-size: 12px;
+          border-radius: 20px;
+          font-size: 13px;
           font-weight: 600;
+          display: flex;
+          align-items: center;
+          gap: 4px;
           box-shadow: 0 4px 12px rgba(232, 180, 184, 0.4);
         }
         
@@ -501,362 +685,706 @@ export default function ClinicPricingSection() {
         }
         
         .plan-icon {
-          font-size: 40px;
+          font-size: 48px;
           margin-bottom: 16px;
         }
         
         .plan-name {
           font-size: 1.75rem;
           font-weight: 700;
-          color: #2D2D2D;
-          margin-bottom: 8px;
+          color: #1E293B;
+          margin-bottom: 4px;
         }
         
-        .plan-type {
-          font-size: 1rem;
-          color: #E8B4B8;
+        .plan-tagline {
+          font-size: 15px;
+          color: var(--plan-color);
           font-weight: 600;
           margin-bottom: 4px;
         }
         
-        .plan-best-for {
+        .plan-target {
           font-size: 13px;
-          color: #888;
-          font-style: italic;
+          color: #94A3B8;
         }
         
-        .plan-description {
-          text-align: center;
+        .plan-pricing {
           margin-bottom: 24px;
-        }
-        
-        .plan-description p {
-          font-size: 14px;
-          color: #666;
-          line-height: 1.5;
-        }
-        
-        .pricing-display {
-          background: linear-gradient(135deg, rgba(232, 180, 184, 0.06) 0%, rgba(255, 237, 213, 0.06) 100%);
-          border: 1px solid rgba(232, 180, 184, 0.1);
-          border-radius: 12px;
           padding: 20px;
-          margin-bottom: 24px;
+          background: #F8FAFC;
+          border-radius: 12px;
+          border: 1px solid #E5E7EB;
         }
         
-        .price-row {
+        .setup-fee {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 12px;
+          margin-bottom: 16px;
+          padding-bottom: 16px;
+          border-bottom: 1px solid #E5E7EB;
         }
         
-        .price-row.price-main {
-          margin-bottom: 0;
-          padding-top: 12px;
-          border-top: 1px solid rgba(232, 180, 184, 0.1);
-        }
-        
-        .price-label {
+        .fee-label {
           font-size: 14px;
-          color: #666;
-          font-weight: 500;
+          color: #64748B;
         }
         
-        .price-info {
+        .fee-amount {
           display: flex;
           align-items: baseline;
-          gap: 4px;
+          gap: 6px;
         }
         
-        .price-amount {
+        .fee-amount .amount {
           font-size: 1.1rem;
-          font-weight: 700;
-          color: #2D2D2D;
+          font-weight: 600;
+          color: #1E293B;
         }
         
-        .price-amount-main {
-          font-size: 1.6rem;
-          font-weight: 700;
-          color: #E8B4B8;
-        }
-        
-        .price-note {
-          font-size: 12px;
-          color: #888;
-        }
-        
-        .price-period {
+        .fee-amount .time {
           font-size: 13px;
-          color: #666;
-          font-weight: 400;
+          color: #94A3B8;
         }
         
-        .features-section {
-          margin-bottom: 28px;
+        .monthly-fee {
+          text-align: center;
+        }
+        
+        .fee-amount-main {
+          display: flex;
+          align-items: baseline;
+          justify-content: center;
+          gap: 2px;
+          margin-top: 8px;
+        }
+        
+        .currency {
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: var(--plan-color);
+          margin-top: 6px;
+        }
+        
+        .fee-amount-main .amount {
+          font-size: 2.5rem;
+          font-weight: 700;
+          color: var(--plan-color);
+          line-height: 1;
+        }
+        
+        .period {
+          font-size: 15px;
+          color: #64748B;
+          margin-left: 4px;
+        }
+        
+        .savings {
+          display: inline-block;
+          margin-top: 8px;
+          font-size: 13px;
+          color: #10B981;
+          font-weight: 600;
+        }
+        
+        .plan-metrics {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 12px;
+          margin-bottom: 24px;
+          padding: 16px;
+          background: linear-gradient(135deg, rgba(232, 180, 184, 0.05) 0%, rgba(212, 165, 116, 0.05) 100%);
+          border-radius: 12px;
+        }
+        
+        .metric {
+          text-align: center;
+        }
+        
+        .metric-value {
+          display: block;
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: var(--plan-color);
+          margin-bottom: 4px;
+        }
+        
+        .metric-label {
+          font-size: 12px;
+          color: #64748B;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        
+        .plan-features {
+          margin-bottom: 24px;
         }
         
         .features-title {
           font-size: 14px;
           font-weight: 600;
-          color: #2D2D2D;
-          margin-bottom: 16px;
+          color: #64748B;
+          margin-bottom: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
         
         .features-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
           display: flex;
           flex-direction: column;
           gap: 10px;
         }
         
-        .feature-item {
+        .feature {
           display: flex;
           align-items: flex-start;
           gap: 10px;
           font-size: 14px;
-          color: #555;
-          line-height: 1.4;
+          color: #475569;
+          line-height: 1.5;
         }
         
-        .feature-check {
-          color: #E8B4B8;
-          font-weight: 600;
-          font-size: 14px;
+        .feature.highlight {
+          color: #1E293B;
+          font-weight: 500;
+        }
+        
+        .feature-icon {
+          width: 16px;
+          height: 16px;
+          color: #10B981;
           flex-shrink: 0;
-          margin-top: 1px;
+          margin-top: 2px;
+        }
+        
+        .show-more {
+          margin-top: 12px;
+          font-size: 13px;
+          color: var(--plan-color);
+          font-weight: 500;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 4px 0;
+          transition: all 0.2s;
+        }
+        
+        .show-more:hover {
+          text-decoration: underline;
+        }
+        
+        .plan-actions {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
         }
         
         .cta-button {
           width: 100%;
-          padding: 16px 20px;
-          border: none;
+          padding: 14px 24px;
           border-radius: 10px;
           font-size: 15px;
           font-weight: 600;
           cursor: pointer;
+          transition: all 0.2s ease;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 8px;
-          transition: all 0.3s ease;
-          letter-spacing: 0.2px;
+          border: none;
+        }
+        
+        .cta-button.primary {
+          background: linear-gradient(135deg, #E8B4B8 0%, #D9A5A9 100%);
+          color: white;
+          box-shadow: 0 4px 16px rgba(232, 180, 184, 0.3);
+        }
+        
+        .cta-button.primary:hover {
+          box-shadow: 0 6px 20px rgba(232, 180, 184, 0.4);
+          transform: translateY(-1px);
+        }
+        
+        .cta-button.secondary {
+          background: white;
+          color: var(--plan-color);
+          border: 2px solid var(--plan-color);
+        }
+        
+        .cta-button.secondary:hover {
+          background: var(--plan-color);
+          color: white;
+        }
+        
+        .button-icon {
+          width: 18px;
+          height: 18px;
+        }
+        
+        .contact-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          padding: 10px 20px;
+          background: transparent;
+          border: 1px solid #E5E7EB;
+          border-radius: 8px;
+          font-size: 14px;
+          color: #64748B;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        
+        .contact-button:hover {
+          border-color: var(--plan-color);
+          color: var(--plan-color);
+        }
+        
+        .comparison-toggle {
+          text-align: center;
+          margin: 40px 0;
+        }
+        
+        .comparison-button {
+          padding: 12px 24px;
+          background: white;
+          border: 2px solid #E8B4B8;
+          border-radius: 10px;
+          color: #E8B4B8;
+          font-size: 15px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        
+        .comparison-button:hover {
+          background: #E8B4B8;
+          color: white;
+        }
+        
+        .testimonials-section {
+          margin: 80px 0;
+          text-align: center;
+        }
+        
+        .testimonials-title {
+          font-size: 2rem;
+          font-weight: 700;
+          color: #1E293B;
+          margin-bottom: 40px;
+        }
+        
+        .testimonials-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 24px;
+          max-width: 800px;
+          margin: 0 auto;
+        }
+        
+        .testimonial-card {
+          background: white;
+          padding: 24px;
+          border-radius: 16px;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+          text-align: left;
+        }
+        
+        .testimonial-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 16px;
+        }
+        
+        .testimonial-info h4 {
+          font-size: 16px;
+          font-weight: 600;
+          color: #1E293B;
+          margin-bottom: 4px;
+        }
+        
+        .testimonial-info p {
+          font-size: 14px;
+          color: #64748B;
+        }
+        
+        .testimonial-plan {
+          font-size: 12px;
+          background: #F1F5F9;
+          color: #64748B;
+          padding: 4px 10px;
+          border-radius: 12px;
+          font-weight: 500;
+        }
+        
+        .testimonial-text {
+          font-size: 15px;
+          color: #475569;
+          line-height: 1.6;
+          margin-bottom: 16px;
+          font-style: italic;
+        }
+        
+        .testimonial-rating {
+          display: flex;
+          gap: 4px;
+          color: #FCD34D;
+        }
+        
+        .guarantees-section {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 24px;
+          margin-bottom: 60px;
+        }
+        
+        .guarantee-card {
+          background: white;
+          padding: 24px;
+          border-radius: 16px;
+          text-align: center;
+          border: 1px solid #E5E7EB;
+          transition: all 0.3s;
+        }
+        
+        .guarantee-card:hover {
+          border-color: #E8B4B8;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        
+        .guarantee-icon {
+          width: 40px;
+          height: 40px;
+          color: #E8B4B8;
+          margin: 0 auto 16px;
+        }
+        
+        .guarantee-card h4 {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #1E293B;
+          margin-bottom: 8px;
+        }
+        
+        .guarantee-card p {
+          font-size: 14px;
+          color: #64748B;
+          line-height: 1.4;
+        }
+        
+        .final-cta {
+          background: linear-gradient(135deg, rgba(232, 180, 184, 0.1) 0%, rgba(212, 165, 116, 0.1) 100%);
+          border-radius: 24px;
+          padding: 60px 40px;
+          text-align: center;
+          border: 1px solid rgba(232, 180, 184, 0.2);
+        }
+        
+        .final-cta h3 {
+          font-size: 2.25rem;
+          font-weight: 700;
+          color: #1E293B;
+          margin-bottom: 16px;
+        }
+        
+        .final-cta p {
+          font-size: 1.125rem;
+          color: #64748B;
+          margin-bottom: 32px;
+        }
+        
+        .cta-buttons {
+          display: flex;
+          gap: 16px;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+        
+        .cta-primary,
+        .cta-secondary {
+          padding: 16px 32px;
+          border-radius: 12px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          border: none;
         }
         
         .cta-primary {
           background: linear-gradient(135deg, #E8B4B8 0%, #D9A5A9 100%);
           color: white;
-          box-shadow: 0 8px 24px rgba(232, 180, 184, 0.3);
+          box-shadow: 0 6px 20px rgba(232, 180, 184, 0.3);
         }
         
         .cta-primary:hover {
-          box-shadow: 0 12px 32px rgba(232, 180, 184, 0.4);
+          box-shadow: 0 8px 28px rgba(232, 180, 184, 0.4);
+          transform: translateY(-2px);
         }
         
         .cta-secondary {
-          background: rgba(232, 180, 184, 0.08);
+          background: white;
           color: #E8B4B8;
-          border: 1px solid rgba(232, 180, 184, 0.2);
+          border: 2px solid #E8B4B8;
         }
         
         .cta-secondary:hover {
-          background: rgba(232, 180, 184, 0.12);
-          border-color: rgba(232, 180, 184, 0.3);
+          background: #FFF5F7;
         }
         
-        .trust-section {
-          background: rgba(255, 255, 255, 0.9);
-          border: 1px solid rgba(232, 180, 184, 0.1);
-          border-radius: 16px;
-          padding: 40px 32px;
-          text-align: center;
-          backdrop-filter: blur(20px);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+          .plans-grid {
+            grid-template-columns: 1fr;
+            max-width: 600px;
+            margin: 0 auto 40px;
+          }
+          
+          .trust-indicators {
+            grid-template-columns: repeat(2, 1fr);
+          }
         }
         
-        .trust-title {
-          font-size: 1.4rem;
-          font-weight: 600;
-          color: #2D2D2D;
-          margin-bottom: 28px;
-        }
-        
-        .trust-items {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          gap: 24px;
-        }
-        
-        .trust-item {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-          gap: 12px;
-        }
-        
-        .trust-icon {
-          font-size: 32px;
-          margin-bottom: 8px;
-        }
-        
-        .trust-content h4 {
-          font-size: 15px;
-          font-weight: 600;
-          color: #2D2D2D;
-          margin-bottom: 4px;
-        }
-        
-        .trust-content p {
-          font-size: 13px;
-          color: #666;
-          line-height: 1.4;
-        }
-        
-        /* Mobile Optimizations */
         @media (max-width: 768px) {
           .pricing-section {
-            padding: 60px 0 50px;
-          }
-          
-          .container {
-            padding: 0 16px;
-          }
-          
-          .pricing-header {
-            margin-bottom: 40px;
+            padding: 60px 0;
           }
           
           .main-title {
-            font-size: clamp(1.8rem, 6vw, 2.5rem);
-            line-height: 1.2;
+            font-size: 2rem;
           }
           
           .subtitle {
             font-size: 1.1rem;
           }
           
-          .pricing-model {
-            padding: 24px 20px;
-          }
-          
-          .model-steps {
-            flex-direction: column;
+          .plans-grid {
             gap: 20px;
-          }
-          
-          .step {
-            min-width: 100%;
-            justify-content: flex-start;
-          }
-          
-          .plans-container {
-            grid-template-columns: 1fr;
-            gap: 20px;
-            margin-bottom: 40px;
           }
           
           .plan-card {
-            padding: 24px 20px;
+            padding: 24px;
           }
           
-          .plan-featured {
-            transform: scale(1);
+          .plan-metrics {
+            padding: 12px;
           }
           
-          .plan-name {
-            font-size: 1.5rem;
+          .metric-value {
+            font-size: 1.1rem;
           }
           
-          .pricing-display {
-            padding: 16px;
+          .fee-amount-main .amount {
+            font-size: 2rem;
           }
           
-          .trust-section {
-            padding: 32px 24px;
+          .final-cta {
+            padding: 40px 24px;
           }
           
-          .trust-items {
+          .final-cta h3 {
+            font-size: 1.75rem;
+          }
+          
+          .cta-buttons {
+            flex-direction: column;
+            width: 100%;
+          }
+          
+          .cta-primary,
+          .cta-secondary {
+            width: 100%;
+            justify-content: center;
+          }
+          
+          .testimonials-grid {
             grid-template-columns: 1fr;
-            gap: 20px;
+          }
+          
+          .guarantees-section {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
           }
         }
         
         @media (max-width: 480px) {
-          .pricing-section {
-            padding: 50px 0 40px;
-          }
-          
           .container {
-            padding: 0 12px;
+            padding: 0 16px;
           }
           
-          .trust-badge {
-            padding: 10px 16px;
-          }
-          
-          .badge-text {
-            font-size: 13px;
+          .pricing-section {
+            padding: 40px 0;
           }
           
           .main-title {
-            font-size: 1.8rem;
+            font-size: 1.75rem;
+            line-height: 1.2;
           }
           
           .subtitle {
             font-size: 1rem;
           }
           
-          .pricing-model {
-            padding: 20px 16px;
+          .billing-toggle {
+            flex-direction: column;
+            width: 100%;
+            max-width: 280px;
+          }
+          
+          .toggle-option {
+            width: 100%;
+            justify-content: center;
+          }
+          
+          .trust-indicators {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          
+          .indicator {
+            padding: 16px;
           }
           
           .plan-card {
-            padding: 20px 16px;
+            padding: 20px;
+          }
+          
+          .plan-icon {
+            font-size: 36px;
           }
           
           .plan-name {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
           }
           
-          .pricing-display {
-            padding: 14px;
+          .plan-pricing {
+            padding: 16px;
           }
           
-          .price-amount-main {
-            font-size: 1.4rem;
+          .fee-amount-main .amount {
+            font-size: 1.75rem;
           }
           
-          .cta-button {
-            padding: 14px 16px;
-            font-size: 14px;
+          .plan-metrics {
+            grid-template-columns: 1fr;
+            gap: 8px;
           }
           
-          .trust-section {
-            padding: 24px 16px;
+          .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
           }
           
-          .trust-title {
-            font-size: 1.2rem;
+          .metric-label {
+            font-size: 11px;
+          }
+          
+          .guarantees-section {
+            grid-template-columns: 1fr;
+          }
+          
+          .guarantee-card {
+            padding: 20px;
+          }
+          
+          .final-cta {
+            padding: 32px 20px;
+            border-radius: 16px;
+          }
+          
+          .final-cta h3 {
+            font-size: 1.5rem;
+          }
+          
+          .final-cta p {
+            font-size: 1rem;
+          }
+          
+          .cta-primary,
+          .cta-secondary {
+            padding: 14px 24px;
+            font-size: 15px;
           }
         }
         
-        /* Accessibility */
+        /* Animations for reduced motion */
         @media (prefers-reduced-motion: reduce) {
           * {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
+            animation: none !important;
+            transition: none !important;
           }
         }
         
-        /* High contrast mode */
-        @media (prefers-contrast: high) {
-          .plan-card {
-            border: 2px solid #000;
+        /* Print styles */
+        @media print {
+          .animated-bg,
+          .comparison-toggle,
+          .contact-button {
+            display: none;
           }
           
-          .trust-badge {
-            border: 2px solid #000;
+          .plan-card {
+            page-break-inside: avoid;
+          }
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+          .pricing-section {
+            background: #0F172A;
+          }
+          
+          .plan-card,
+          .indicator,
+          .testimonial-card,
+          .guarantee-card {
+            background: #1E293B;
+            border-color: #334155;
+          }
+          
+          .main-title,
+          .plan-name,
+          .testimonial-info h4,
+          .guarantee-card h4,
+          .final-cta h3 {
+            color: #F1F5F9;
+          }
+          
+          .subtitle,
+          .badge-text,
+          .fee-label,
+          .plan-target,
+          .indicator-content span,
+          .testimonial-info p,
+          .testimonial-text,
+          .guarantee-card p,
+          .final-cta p {
+            color: #94A3B8;
+          }
+          
+          .plan-pricing {
+            background: #0F172A;
+            border-color: #334155;
+          }
+          
+          .header-badge {
+            background: #1E293B;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+          }
+          
+          .final-cta {
+            background: linear-gradient(135deg, rgba(232, 180, 184, 0.05) 0%, rgba(212, 165, 116, 0.05) 100%);
+            border-color: #334155;
           }
         }
       `}</style>
