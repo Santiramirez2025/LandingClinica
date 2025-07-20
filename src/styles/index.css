@@ -356,7 +356,7 @@ a:active {
   font-weight: var(--peso-extrabold);
 }
 
-/* Efectos visuales de fondo */
+/* Efectos visuales de fondo - CORREGIDO PARA ASPECTO CLARO */
 .gradient-orbs {
   position: absolute;
   width: 100%;
@@ -365,20 +365,20 @@ a:active {
   left: 0;
   pointer-events: none;
   filter: blur(80px);
-  opacity: 0.6;
+  opacity: 0.4;
   z-index: -1;
 }
 
 .orb {
   position: absolute;
   border-radius: 50%;
-  mix-blend-mode: multiply;
+  mix-blend-mode: normal;
 }
 
 .orb-1 {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(255, 218, 225, 0.7) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 218, 225, 0.5) 0%, transparent 70%);
   top: -150px;
   right: -150px;
 }
@@ -386,7 +386,7 @@ a:active {
 .orb-2 {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(255, 237, 213, 0.7) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 237, 213, 0.5) 0%, transparent 70%);
   bottom: -100px;
   left: -100px;
 }
