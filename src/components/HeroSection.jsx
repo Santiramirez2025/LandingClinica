@@ -1,1448 +1,705 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
-import { Play, Pause, Volume2, VolumeX, Download } from 'lucide-react'
-
-const DownloadButtons = () => {
-  return (
-    <div className="download-buttons">
-      <motion.a
-        href="https://play.google.com/store/apps"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="download-btn android"
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      >
-        <svg className="store-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
-        </svg>
-        <div className="store-text">
-          <span className="store-label">Descárgalo en</span>
-          <span className="store-name">Google Play</span>
-        </div>
-      </motion.a>
-
-      <motion.a
-        href="https://apps.apple.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="download-btn ios"
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      >
-        <svg className="store-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.71,19.5C17.88,20.74 17,21.95 15.66,21.97C14.32,22 13.89,21.18 12.37,21.18C10.84,21.18 10.37,21.95 9.1,22C7.79,22.05 6.8,20.68 5.96,19.47C4.25,17 2.94,12.45 4.7,9.39C5.57,7.87 7.13,6.91 8.82,6.88C10.1,6.86 11.32,7.75 12.11,7.75C12.89,7.75 14.37,6.68 15.92,6.84C16.57,6.87 18.39,7.1 19.56,8.82C19.47,8.88 17.39,10.1 17.41,12.63C17.44,15.65 20.06,16.66 20.09,16.67C20.06,16.74 19.67,18.11 18.71,19.5M13,3.5C13.73,2.67 14.94,2.04 15.94,2C16.07,3.17 15.6,4.35 14.9,5.19C14.21,6.04 13.07,6.7 11.95,6.61C11.8,5.46 12.36,4.26 13,3.5Z" />
-        </svg>
-        <div className="store-text">
-          <span className="store-label">Descárgalo en</span>
-          <span className="store-name">App Store</span>
-        </div>
-      </motion.a>
-    </div>
-  )
-}
+import { Play, Pause, Volume2, VolumeX } from 'lucide-react'
 
 const HeroSection = () => {
-  const [isMobile, setIsMobile] = useState(false)
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
-  const [videoError, setVideoError] = useState(false)
+  const [hasError, setHasError] = useState(false)
   const videoRef = useRef(null)
   
-  // Spring animations for smooth mouse tracking
-  const springConfig = { damping: 25, stiffness: 150 }
+  // Mouse tracking
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
-  const rotateX = useSpring(useTransform(mouseY, [-300, 300], [4, -4]), springConfig)
-  const rotateY = useSpring(useTransform(mouseX, [-300, 300], [-4, 4]), springConfig)
-  
-  // Video configuration
-  const videoSrc = "/videos/presentacion.mov"
-  const videoPoster = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23E8B4B8'/%3E%3C/svg%3E"
+  const rotateX = useSpring(useTransform(mouseY, [-300, 300], [3, -3]), { damping: 25, stiffness: 150 })
+  const rotateY = useSpring(useTransform(mouseX, [-300, 300], [-3, 3]), { damping: 25, stiffness: 150 })
   
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    
     const handleMouseMove = (e) => {
-      if (isMobile) return
-      
-      const rect = document.querySelector('.hero-visual')?.getBoundingClientRect()
+      if (window.innerWidth < 768) return
+      const rect = document.querySelector('.phone-wrapper')?.getBoundingClientRect()
       if (rect) {
-        const x = e.clientX - rect.left - rect.width / 2
-        const y = e.clientY - rect.top - rect.height / 2
-        mouseX.set(x)
-        mouseY.set(y)
+        mouseX.set((e.clientX - rect.left - rect.width / 2) * 0.5)
+        mouseY.set((e.clientY - rect.top - rect.height / 2) * 0.5)
       }
     }
     
     window.addEventListener('mousemove', handleMouseMove)
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('resize', checkMobile)
-    }
-  }, [mouseX, mouseY, isMobile])
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [mouseX, mouseY])
 
-  // Auto-play video when loaded
-  useEffect(() => {
-    if (isVideoLoaded && videoRef.current) {
-      videoRef.current.play().then(() => {
-        setIsVideoPlaying(true)
-      }).catch(() => {
-        setIsVideoPlaying(false)
-      })
-    }
-  }, [isVideoLoaded])
-
-  const handleVideoLoad = () => {
-    setIsVideoLoaded(true)
-  }
-
-  const handleVideoError = () => {
-    setVideoError(true)
-    setIsVideoLoaded(false)
-  }
-
-  const toggleVideoPlayback = (e) => {
-    e.stopPropagation()
-    if (!videoRef.current || videoError) return
-
-    if (isVideoPlaying) {
+  const togglePlay = () => {
+    if (!videoRef.current || hasError) return
+    if (isPlaying) {
       videoRef.current.pause()
-      setIsVideoPlaying(false)
     } else {
-      videoRef.current.play().then(() => {
-        setIsVideoPlaying(true)
-      }).catch(console.error)
+      videoRef.current.play().catch(() => setIsPlaying(false))
     }
+    setIsPlaying(!isPlaying)
   }
 
-  const toggleMute = (e) => {
-    e.stopPropagation()
+  const toggleMute = () => {
     setIsMuted(!isMuted)
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted
-    }
-  }
-
-  const scrollToPricing = () => {
-    const pricingElement = document.querySelector('.pricing-section')
-    if (pricingElement) {
-      pricingElement.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      })
-    }
+    if (videoRef.current) videoRef.current.muted = !isMuted
   }
 
   return (
-    <section className="hero">
-      {/* Gradient Background */}
-      <div className="gradient-orbs">
+    <section className="hero" aria-label="Sección principal">
+      <div className="orbs">
         <motion.div 
           className="orb orb-1"
-          animate={{ 
-            x: [0, 60, 0],
-            y: [0, -40, 0],
-          }}
-          transition={{ 
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
+          animate={{ x: [0, 60, 0], y: [0, -40, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div 
           className="orb orb-2"
-          animate={{ 
-            x: [0, -80, 0],
-            y: [0, 60, 0],
-          }}
-          transition={{ 
-            duration: 25,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
+          animate={{ x: [0, -80, 0], y: [0, 60, 0] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
 
       <div className="container">
-        <div className="hero-content">
-          <motion.div 
-            className="hero-text"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.div 
-              className="premium-badge"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <span className="badge-text">✨ Experiencia Premium</span>
-            </motion.div>
-            
-            <h1 className="hero-title">
-              Tu clínica<br/>
-              estética,<br/>
-              <span className="title-accent">más simple, más rentable.</span>
-            </h1>
-            
-            <p className="hero-subtitle">
-              Gestioná tu clínica estética desde una app simple, profesional y fácil de usar.
-            </p>
-            
-            <div className="cta-container">
-              <DownloadButtons />
-              
-              <motion.div 
-                className="cta-secondary"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-              >
-                <button className="cta-link" onClick={scrollToPricing}>
-                  Ver precios y planes
-                </button>
-              </motion.div>
-              
-              <motion.div 
-                className="cta-note"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
-              >
-                <div className="note-content">
-                  <span className="note-item">
-                    <span className="note-icon">✓</span>
-                    Configuración gratuita
-                  </span>
-                  <span className="note-divider">•</span>
-                  <span className="note-item">
-                    <span className="note-icon">🔒</span>
-                    Datos seguros
-                  </span>
-                  <span className="note-divider">•</span>
-                  <span className="note-item">
-                    <span className="note-icon">📞</span>
-                    Soporte 24/7
-                  </span>
-                </div>
-              </motion.div>
+        <motion.div 
+          className="badge"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          ✨ Experiencia Premium
+        </motion.div>
+        
+        <motion.h1 
+          className="title"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          Tu clínica estética,<br/>
+          <span className="accent">más simple, más rentable.</span>
+        </motion.h1>
+        
+        <motion.p 
+          className="subtitle"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          Gestioná tu clínica estética desde una app simple, profesional y fácil de usar.
+        </motion.p>
+        
+        <motion.div 
+          className="cta-group"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <a href="https://play.google.com/store/apps" className="btn btn-dark" aria-label="Descargar en Google Play">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
+            </svg>
+            <div>
+              <span>Descárgalo en</span>
+              <strong>Google Play</strong>
             </div>
-            
-            <motion.div 
-              className="trust-indicators"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              <div className="indicator">
-                <span className="indicator-number">200+</span>
-                <span className="indicator-text">Clínicas</span>
-              </div>
-              <div className="indicator">
-                <span className="indicator-number">4.9</span>
-                <span className="indicator-text">Rating</span>
-              </div>
-              <div className="indicator">
-                <span className="indicator-number">24/7</span>
-                <span className="indicator-text">Soporte</span>
-              </div>
-            </motion.div>
-          </motion.div>
+          </a>
           
-          <motion.div 
-            className="hero-visual"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            style={{
-              rotateX: isMobile ? 0 : rotateX,
-              rotateY: isMobile ? 0 : rotateY,
-              transformPerspective: 1200
-            }}
-          >
-            <div className="app-showcase">
-              <motion.div className="phone-mockup">
-                <div className="phone-frame">
-                  <div className="phone-screen">
-                    {!videoError ? (
-                      <div className="video-wrapper">
-                        <video
-                          ref={videoRef}
-                          className="phone-video"
-                          src={videoSrc}
-                          muted={isMuted}
-                          loop
-                          playsInline
-                          preload="metadata"
-                          onLoadedData={handleVideoLoad}
-                          onError={handleVideoError}
-                          poster={videoPoster}
-                        />
-                        
-                        <div className="video-controls">
-                          <motion.button
-                            className="control-button play-button"
-                            onClick={toggleVideoPlayback}
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            animate={{
-                              opacity: isVideoPlaying ? 0 : 1,
-                              scale: isVideoPlaying ? 0.8 : 1
-                            }}
-                            transition={{ duration: 0.3 }}
-                            aria-label={isVideoPlaying ? "Pausar video" : "Reproducir video"}
-                          >
-                            {isVideoPlaying ? <Pause size={24} /> : <Play size={24} />}
-                          </motion.button>
-
-                          <motion.button
-                            className="control-button mute-button"
-                            onClick={toggleMute}
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            aria-label={isMuted ? "Activar sonido" : "Silenciar"}
-                          >
-                            {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-                          </motion.button>
-                        </div>
-
-                        {!isVideoLoaded && (
-                          <motion.div 
-                            className="video-loading"
-                            initial={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <div className="loading-spinner"></div>
-                            <span className="loading-text">Cargando demo...</span>
-                          </motion.div>
-                        )}
-                      </div>
-                    ) : (
-                      <motion.div 
-                        className="video-fallback"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        <div className="status-bar">
-                          <span className="time">9:41</span>
-                          <div className="status-icons">
-                            <span>📶</span>
-                            <span>🔋</span>
-                          </div>
-                        </div>
-                        
-                        <div className="app-header">
-                          <h3>Hola, Dra. García ✨</h3>
-                          <p>Tu clínica hoy</p>
-                        </div>
-                        
-                        <div className="metric-cards">
-                          <motion.div 
-                            className="metric-card"
-                            whileHover={{ scale: 1.02 }}
-                            transition={{ type: "spring", stiffness: 400 }}
-                          >
-                            <span className="metric-icon">💉</span>
-                            <span className="metric-value">8</span>
-                            <span className="metric-label">Citas hoy</span>
-                          </motion.div>
-                          
-                          <motion.div 
-                            className="metric-card accent"
-                            whileHover={{ scale: 1.02 }}
-                            transition={{ type: "spring", stiffness: 400 }}
-                          >
-                            <span className="metric-icon">💎</span>
-                            <span className="metric-value">€4.2k</span>
-                            <span className="metric-label">Ingresos</span>
-                          </motion.div>
-                        </div>
-                        
-                        <div className="schedule-preview">
-                          <motion.div 
-                            className="schedule-item"
-                            initial={{ x: -10, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ delay: 0.8 }}
-                          >
-                            <div className="schedule-time">10:00</div>
-                            <div className="schedule-detail">
-                              <p className="client-name">Ana García</p>
-                              <p className="treatment">Botox + Rellenos</p>
-                            </div>
-                          </motion.div>
-                        </div>
-                      </motion.div>
-                    )}
+          <a href="https://apps.apple.com" className="btn btn-light" aria-label="Descargar en App Store">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M18.71,19.5C17.88,20.74 17,21.95 15.66,21.97C14.32,22 13.89,21.18 12.37,21.18C10.84,21.18 10.37,21.95 9.1,22C7.79,22.05 6.8,20.68 5.96,19.47C4.25,17 2.94,12.45 4.7,9.39C5.57,7.87 7.13,6.91 8.82,6.88C10.1,6.86 11.32,7.75 12.11,7.75C12.89,7.75 14.37,6.68 15.92,6.84C16.57,6.87 18.39,7.1 19.56,8.82C19.47,8.88 17.39,10.1 17.41,12.63C17.44,15.65 20.06,16.66 20.09,16.67C20.06,16.74 19.67,18.11 18.71,19.5M13,3.5C13.73,2.67 14.94,2.04 15.94,2C16.07,3.17 15.6,4.35 14.9,5.19C14.21,6.04 13.07,6.7 11.95,6.61C11.8,5.46 12.36,4.26 13,3.5Z" />
+            </svg>
+            <div>
+              <span>Descárgalo en</span>
+              <strong>App Store</strong>
+            </div>
+          </a>
+          
+          <button className="link-btn" onClick={() => document.querySelector('.pricing-section')?.scrollIntoView({ behavior: 'smooth' })}>
+            Ver precios y planes
+          </button>
+          
+          <div className="features">
+            <span>✓ Configuración gratuita</span>
+            <span>🔒 Datos seguros</span>
+            <span>📞 Soporte 24/7</span>
+          </div>
+        </motion.div>
+        
+        <motion.div 
+          className="stats"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <div>
+            <strong>200+</strong>
+            <span>Clínicas premium</span>
+          </div>
+          <div>
+            <strong>4.9</strong>
+            <span>Rating usuarios</span>
+          </div>
+          <div>
+            <strong>24/7</strong>
+            <span>Soporte dedicado</span>
+          </div>
+        </motion.div>
+        
+        <motion.div 
+          className="phone-wrapper"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          style={{ rotateX, rotateY }}
+        >
+          <div className="phone">
+            <div className="screen">
+              {!hasError ? (
+                <div className="video-container">
+                  <video
+                    ref={videoRef}
+                    src="/videos/presentacion.mov"
+                    muted={isMuted}
+                    loop
+                    playsInline
+                    onLoadedData={() => videoRef.current?.play().then(() => setIsPlaying(true))}
+                    onError={() => setHasError(true)}
+                  />
+                  
+                  <motion.button
+                    className="play-btn"
+                    onClick={togglePlay}
+                    animate={{ opacity: isPlaying ? 0 : 1 }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    aria-label={isPlaying ? "Pausar" : "Reproducir"}
+                  >
+                    {isPlaying ? <Pause /> : <Play />}
+                  </motion.button>
+                  
+                  <button className="mute-btn" onClick={toggleMute} aria-label={isMuted ? "Activar sonido" : "Silenciar"}>
+                    {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                  </button>
+                </div>
+              ) : (
+                <div className="fallback">
+                  <div className="status-bar">
+                    <span>9:41</span>
+                    <span>📶 🔋</span>
+                  </div>
+                  
+                  <div className="app-content">
+                    <h2>Hola, Dra. García ✨</h2>
+                    <p>Tu clínica está funcionando perfectamente</p>
                     
-                    <div className="phone-notch"></div>
+                    <div className="cards">
+                      <motion.div className="card" whileHover={{ scale: 1.02 }}>
+                        <span>💉</span>
+                        <strong>8</strong>
+                        <span>Tratamientos hoy</span>
+                      </motion.div>
+                      <motion.div className="card accent" whileHover={{ scale: 1.02 }}>
+                        <span>💎</span>
+                        <strong>€4.2k</strong>
+                        <span>Ingresos del día</span>
+                      </motion.div>
+                    </div>
+                    
+                    <div className="appointment">
+                      <span className="time">10:00</span>
+                      <div>
+                        <strong>Ana García</strong>
+                        <span>Botox + Ácido Hialurónico</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
+              )}
+              <div className="notch" />
             </div>
-            
-            {!isMobile && (
-              <motion.div 
-                className="floating-badge badge-ai"
-                animate={{ 
-                  y: [0, -15, 0],
-                  rotate: [0, 3, 0]
-                }}
-                transition={{ 
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                AI
-              </motion.div>
-            )}
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
-      
+
       <style jsx>{`
         .hero {
           min-height: 100vh;
           display: flex;
           align-items: center;
-          padding: 120px 0 80px;
+          justify-content: center;
+          padding: clamp(4rem, 8vw, 7rem) clamp(1rem, 4vw, 2rem);
           position: relative;
           overflow: hidden;
           background: linear-gradient(180deg, #FDFBF7 0%, #FFF8F3 100%);
         }
         
-        .gradient-orbs {
+        .orbs {
           position: absolute;
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
+          inset: 0;
           pointer-events: none;
-          filter: blur(80px);
-          opacity: 0.6;
         }
         
         .orb {
           position: absolute;
           border-radius: 50%;
-          mix-blend-mode: multiply;
+          filter: blur(80px);
+          opacity: 0.6;
         }
         
         .orb-1 {
-          width: 500px;
-          height: 500px;
+          width: clamp(250px, 40vw, 500px);
+          height: clamp(250px, 40vw, 500px);
           background: radial-gradient(circle, rgba(255, 218, 225, 0.7) 0%, transparent 70%);
-          top: -150px;
-          right: -150px;
+          top: -10%;
+          right: -10%;
         }
         
         .orb-2 {
-          width: 400px;
-          height: 400px;
+          width: clamp(200px, 35vw, 400px);
+          height: clamp(200px, 35vw, 400px);
           background: radial-gradient(circle, rgba(255, 237, 213, 0.7) 0%, transparent 70%);
-          bottom: -100px;
-          left: -100px;
+          bottom: -10%;
+          left: -10%;
         }
         
         .container {
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: 0 32px;
+          width: 100%;
+          max-width: 1200px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          gap: clamp(1.5rem, 3vw, 2rem);
           position: relative;
           z-index: 1;
         }
         
-        .hero-content {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 80px;
-          align-items: center;
-        }
-        
-        .hero-text {
-          max-width: 580px;
-        }
-        
-        .premium-badge {
-          display: inline-flex;
-          align-items: center;
-          margin-bottom: 32px;
-        }
-        
-        .badge-text {
+        .badge {
           background: linear-gradient(135deg, #FFE5E5 0%, #FFF0E5 100%);
           border: 1px solid rgba(255, 200, 200, 0.4);
-          padding: 10px 24px;
+          padding: 0.625rem 1.5rem;
           border-radius: 50px;
-          font-size: 14px;
+          font-size: clamp(0.875rem, 2vw, 1rem);
           font-weight: 600;
           color: #B86B6B;
-          letter-spacing: 0.3px;
           backdrop-filter: blur(10px);
         }
         
-        .hero-title {
-          font-size: clamp(2.5rem, 6vw, 4.5rem);
+        .title {
+          font-size: clamp(2rem, 8vw, 4.5rem);
           font-weight: 700;
           line-height: 1.1;
-          margin-bottom: 32px;
-          letter-spacing: -1.5px;
+          letter-spacing: -0.02em;
           color: #1a1a1a;
+          margin: 0;
         }
         
-        .title-accent {
+        .accent {
           background: linear-gradient(135deg, #E8B4B8 0%, #D4AF37 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          font-weight: 800;
+          background-clip: text;
         }
         
-        .hero-subtitle {
-          font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+        .subtitle {
+          font-size: clamp(1rem, 2.5vw, 1.25rem);
           line-height: 1.6;
           color: #4a4a4a;
-          margin-bottom: 48px;
-          font-weight: 400;
           max-width: 520px;
+          margin: 0;
         }
         
-        .cta-container {
+        .cta-group {
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
-          gap: 16px;
-          margin-bottom: 56px;
-        }
-        
-        .download-buttons {
-          display: flex;
-          gap: 12px;
-          flex-wrap: wrap;
-        }
-        
-        .download-btn {
-          display: inline-flex;
           align-items: center;
-          gap: 10px;
-          padding: 12px 20px;
+          gap: 1rem;
+          width: 100%;
+          max-width: 400px;
+        }
+        
+        .btn {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.875rem 1.5rem;
           border-radius: 50px;
           text-decoration: none;
           font-weight: 600;
-          transition: all 0.3s ease;
+          width: 100%;
+          justify-content: center;
+          transition: all 0.2s ease;
           border: 2px solid transparent;
         }
         
-        .download-btn.android {
+        .btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:focus-visible {
+          outline: 2px solid #E8B4B8;
+          outline-offset: 2px;
+        }
+        
+        .btn-dark {
           background: #1a1a1a;
           color: white;
-          border-color: #1a1a1a;
         }
         
-        .download-btn.android:hover {
-          background: #2d2d2d;
-          border-color: #2d2d2d;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        }
-        
-        .download-btn.ios {
+        .btn-light {
           background: white;
           color: #1a1a1a;
           border-color: #e0e0e0;
         }
         
-        .download-btn.ios:hover {
-          background: #f8f8f8;
-          border-color: #d0d0d0;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-        }
-        
-        .store-icon {
+        .btn svg {
           width: 24px;
           height: 24px;
           flex-shrink: 0;
         }
         
-        .store-text {
+        .btn div {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
           line-height: 1.2;
         }
         
-        .store-label {
-          font-size: 11px;
+        .btn span {
+          font-size: 0.75rem;
           opacity: 0.8;
-          font-weight: 500;
         }
         
-        .store-name {
-          font-size: 16px;
-          font-weight: 700;
+        .btn strong {
+          font-size: 1rem;
         }
         
-        .cta-secondary {
-          margin-top: 4px;
-        }
-        
-        .cta-link {
+        .link-btn {
           background: none;
           border: none;
           color: #1e40af;
-          font-size: 16px;
+          font-size: 1rem;
           font-weight: 600;
           cursor: pointer;
-          padding: 8px 0;
-          text-decoration: none;
+          padding: 0.5rem;
           border-bottom: 1px solid transparent;
           transition: all 0.2s ease;
         }
         
-        .cta-link:hover {
+        .link-btn:hover {
           color: #1e3a8a;
           border-bottom-color: #1e3a8a;
         }
         
-        .cta-note {
-          margin-top: 8px;
+        .link-btn:focus-visible {
+          outline: 2px solid #E8B4B8;
+          outline-offset: 2px;
         }
         
-        .note-content {
+        .features {
           display: flex;
-          align-items: center;
-          gap: 12px;
           flex-wrap: wrap;
-        }
-        
-        .note-item {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 14px;
+          gap: 1rem;
+          justify-content: center;
+          font-size: 0.875rem;
           color: #6b7280;
           font-weight: 500;
         }
         
-        .note-icon {
-          color: #059669;
-          font-size: 12px;
-          font-weight: 600;
+        .stats {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
+          text-align: center;
+          margin: 1rem 0;
         }
         
-        .note-divider {
-          color: #d1d5db;
-          font-size: 12px;
-        }
-        
-        .trust-indicators {
-          display: flex;
-          gap: 48px;
-        }
-        
-        .indicator {
+        .stats div {
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: 0.25rem;
         }
         
-        .indicator-number {
-          font-size: 28px;
-          font-weight: 700;
+        .stats strong {
+          font-size: clamp(1.5rem, 3vw, 2rem);
           color: #2d2d2d;
-          line-height: 1;
         }
         
-        .indicator-text {
-          font-size: 14px;
+        .stats span {
+          font-size: 0.875rem;
           color: #6a6a6a;
-          font-weight: 500;
         }
         
-        .hero-visual {
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+        .phone-wrapper {
+          margin-top: 2rem;
           perspective: 1200px;
         }
         
-        .app-showcase {
-          position: relative;
-          width: 320px;
-          height: 650px;
-        }
-        
-        .phone-mockup {
-          position: relative;
-          z-index: 10;
-        }
-        
-        .phone-frame {
-          width: 320px;
-          height: 650px;
+        .phone {
+          width: clamp(200px, 60vw, 320px);
+          height: clamp(400px, 60vh, 650px);
           background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
-          border-radius: 48px;
-          padding: 8px;
+          border-radius: clamp(28px, 5vw, 48px);
+          padding: clamp(4px, 1vw, 8px);
           box-shadow: 
             0 30px 60px rgba(0, 0, 0, 0.2),
-            0 15px 30px rgba(0, 0, 0, 0.1),
-            inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            0 15px 30px rgba(0, 0, 0, 0.1);
         }
         
-        .phone-screen {
+        .screen {
           width: 100%;
           height: 100%;
           background: #000;
-          border-radius: 40px;
+          border-radius: clamp(24px, 4.5vw, 40px);
           overflow: hidden;
           position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
         }
         
-        .video-wrapper {
+        .video-container {
           width: 100%;
           height: 100%;
           position: relative;
-          background: #000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
-          border-radius: 40px;
         }
         
-        .phone-video {
+        .video-container video {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          display: block;
-          position: relative;
         }
         
-        .video-controls {
+        .play-btn {
           position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          pointer-events: none;
-          z-index: 10;
-        }
-        
-        .control-button {
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: clamp(45px, 10vw, 60px);
+          height: clamp(45px, 10vw, 60px);
           background: rgba(255, 255, 255, 0.9);
           border: none;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #E8B4B8;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-          backdrop-filter: blur(10px);
           cursor: pointer;
-          pointer-events: auto;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+          color: #E8B4B8;
           transition: all 0.3s ease;
         }
         
-        .play-button {
-          width: 60px;
-          height: 60px;
-        }
-        
-        .mute-button {
+        .mute-btn {
           position: absolute;
-          bottom: 30px;
-          right: 20px;
+          bottom: 1rem;
+          right: 1rem;
           width: 36px;
           height: 36px;
+          background: rgba(0, 0, 0, 0.6);
+          border: none;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          color: white;
           opacity: 0;
           transition: opacity 0.3s ease;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(10px);
-          z-index: 15;
         }
         
-        .video-wrapper:hover .mute-button,
-        .mute-button:focus {
+        .video-container:hover .mute-btn,
+        .mute-btn:focus {
           opacity: 0.9;
         }
         
-        .mute-button:hover {
-          opacity: 1 !important;
-          transform: scale(1.05);
-        }
-        
-        .control-button:focus {
-          outline: 2px solid #E8B4B8;
-          outline-offset: 2px;
-        }
-        
-        .video-loading {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          background: rgba(232, 180, 184, 0.95);
-          backdrop-filter: blur(10px);
-          gap: 16px;
-        }
-        
-        .loading-spinner {
-          width: 40px;
-          height: 40px;
-          border: 3px solid rgba(255, 255, 255, 0.3);
-          border-top: 3px solid white;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        
-        .loading-text {
-          color: white;
-          font-size: 14px;
-          font-weight: 500;
-        }
-        
-        .video-fallback {
+        .fallback {
           width: 100%;
           height: 100%;
           background: #FDFBF7;
-          overflow: hidden;
-        }
-        
-        .phone-notch {
-          position: absolute;
-          top: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 128px;
-          height: 24px;
-          background: #1a1a1a;
-          border-radius: 0 0 16px 16px;
-          z-index: 10;
+          display: flex;
+          flex-direction: column;
         }
         
         .status-bar {
           display: flex;
           justify-content: space-between;
-          align-items: center;
-          padding: 14px 24px;
+          padding: 0.875rem 1.5rem;
           background: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(10px);
-          font-size: 14px;
+          font-size: 0.875rem;
           font-weight: 600;
-          color: #1a1a1a;
         }
         
-        .status-icons {
+        .app-content {
+          flex: 1;
+          padding: 2rem 1.5rem;
           display: flex;
-          gap: 8px;
-          font-size: 16px;
+          flex-direction: column;
+          gap: 1.5rem;
         }
         
-        .app-header {
-          padding: 32px 24px 24px;
-          background: linear-gradient(180deg, #FDFBF7 0%, transparent 100%);
+        .app-content h2 {
+          font-size: clamp(1.5rem, 4vw, 1.75rem);
+          margin: 0;
         }
         
-        .app-header h3 {
-          font-size: 28px;
-          font-weight: 700;
-          color: #1a1a1a;
-          margin-bottom: 6px;
-          line-height: 1.2;
-        }
-        
-        .app-header p {
-          font-size: 16px;
+        .app-content p {
+          font-size: 1rem;
           color: #6a6a6a;
-          font-weight: 500;
+          margin: 0;
         }
         
-        .metric-cards {
+        .cards {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 16px;
-          padding: 0 24px;
-          margin-bottom: 32px;
+          gap: 1rem;
         }
         
-        .metric-card {
-          background: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(20px);
+        .card {
+          background: white;
           border: 1px solid rgba(232, 180, 184, 0.2);
-          border-radius: 20px;
-          padding: 24px 16px;
+          border-radius: 1rem;
+          padding: 1.5rem 1rem;
           text-align: center;
-          transition: all 0.3s ease;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          transition: all 0.2s ease;
           cursor: pointer;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         }
         
-        .metric-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-        }
-        
-        .metric-card.accent {
+        .card.accent {
           background: linear-gradient(135deg, rgba(232, 180, 184, 0.15), rgba(255, 237, 213, 0.15));
-          border-color: rgba(232, 180, 184, 0.3);
         }
         
-        .metric-icon {
-          font-size: 24px;
-          display: block;
-          margin-bottom: 12px;
+        .card span:first-child {
+          font-size: 1.5rem;
         }
         
-        .metric-value {
-          font-size: 36px;
-          font-weight: 700;
-          color: #1a1a1a;
-          display: block;
-          margin-bottom: 8px;
+        .card strong {
+          font-size: clamp(1.5rem, 4vw, 2.25rem);
           line-height: 1;
         }
         
-        .metric-label {
-          font-size: 13px;
+        .card span:last-child {
+          font-size: 0.75rem;
           color: #6a6a6a;
-          font-weight: 500;
-          line-height: 1.3;
         }
         
-        .schedule-preview {
-          padding: 0 24px;
-        }
-        
-        .schedule-item {
+        .appointment {
           display: flex;
-          gap: 16px;
+          gap: 1rem;
           background: white;
-          padding: 20px;
-          border-radius: 16px;
+          padding: 1.25rem;
+          border-radius: 1rem;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-          border: 1px solid rgba(0, 0, 0, 0.02);
+          margin-top: auto;
         }
         
-        .schedule-time {
-          font-size: 14px;
+        .time {
           font-weight: 700;
           color: #E8B4B8;
-          min-width: 50px;
+          min-width: 3rem;
         }
         
-        .client-name {
-          font-weight: 600;
-          color: #1a1a1a;
-          margin-bottom: 4px;
-          font-size: 15px;
+        .appointment div {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+          text-align: left;
         }
         
-        .treatment {
-          font-size: 14px;
+        .appointment strong {
+          font-size: 0.875rem;
+        }
+        
+        .appointment span {
+          font-size: 0.8125rem;
           color: #6a6a6a;
-          font-weight: 500;
         }
         
-        .floating-badge {
+        .notch {
           position: absolute;
-          background: linear-gradient(135deg, #FFE5E5, #FFF0E5);
-          color: #B86B6B;
-          padding: 12px 20px;
-          border-radius: 50px;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-          font-size: 16px;
-          font-weight: 700;
-          z-index: 15;
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 200, 200, 0.3);
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: clamp(70px, 20vw, 128px);
+          height: clamp(14px, 3vw, 24px);
+          background: #1a1a1a;
+          border-radius: 0 0 1rem 1rem;
         }
         
-        .badge-ai {
-          top: 40px;
-          right: -20px;
-        }
-        
-        /* ===== OPTIMIZACIÓN MOBILE RESPONSIVE ===== */
-        
-        /* Tablet (768px - 1024px) */
-        @media (max-width: 1024px) {
-          .hero-content {
-            grid-template-columns: 1fr;
-            text-align: center;
-            gap: 48px;
+        @media (min-width: 768px) {
+          .container {
+            gap: 2.5rem;
           }
           
-          .hero-text {
-            max-width: 100%;
-            display: flex;
-            flex-direction: column;
+          .cta-group {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 600px;
+          }
+          
+          .btn {
+            width: auto;
+            min-width: 200px;
+          }
+          
+          .features {
+            width: 100%;
+          }
+          
+          .stats {
+            gap: 3rem;
+          }
+        }
+        
+        @media (min-width: 1024px) {
+          .hero {
+            padding: 2rem;
+          }
+          
+          .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            text-align: left;
             align-items: center;
+            grid-template-areas:
+              "badge phone"
+              "title phone"
+              "subtitle phone"
+              "cta phone"
+              "stats phone";
           }
           
-          .hero-title {
-            text-align: left;
-            width: 100%;
+          .badge {
+            grid-area: badge;
+            justify-self: start;
           }
           
-          .hero-subtitle {
-            text-align: left;
-            width: 100%;
+          .title {
+            grid-area: title;
           }
           
-          .cta-container {
+          .subtitle {
+            grid-area: subtitle;
+          }
+          
+          .cta-group {
+            grid-area: cta;
             align-items: flex-start;
-            width: 100%;
-          }
-          
-          .trust-indicators {
-            width: 100%;
             justify-content: flex-start;
           }
-        }
-        
-        /* Mobile (max-width: 768px) */
-        @media (max-width: 768px) {
-          .hero {
-            padding: 100px 0 40px;
-            min-height: calc(100vh - 56px);
+          
+          .stats {
+            grid-area: stats;
+            justify-self: start;
           }
           
-          .container {
-            padding: 0 20px;
-          }
-          
-          .hero-content {
-            gap: 32px;
-          }
-          
-          .premium-badge {
-            margin-bottom: 20px;
-          }
-          
-          .badge-text {
-            padding: 8px 18px;
-            font-size: 12px;
-          }
-          
-          .hero-title {
-            font-size: 2.25rem;
-            margin-bottom: 20px;
-            letter-spacing: -0.5px;
-          }
-          
-          .hero-subtitle {
-            font-size: 1rem;
-            margin-bottom: 32px;
-            line-height: 1.5;
-          }
-          
-          .cta-container {
-            margin-bottom: 32px;
-            gap: 12px;
-          }
-          
-          .download-buttons {
-            width: 100%;
-            gap: 10px;
-          }
-          
-          .download-btn {
-            flex: 1;
-            padding: 14px 16px;
-            justify-content: center;
-            min-height: 52px;
-            -webkit-tap-highlight-color: transparent;
-          }
-          
-          .store-icon {
-            width: 20px;
-            height: 20px;
-          }
-          
-          .store-label {
-            font-size: 10px;
-          }
-          
-          .store-name {
-            font-size: 14px;
-          }
-          
-          .cta-secondary {
-            margin-top: 8px;
-            width: 100%;
-          }
-          
-          .cta-link {
-            font-size: 14px;
-            padding: 10px 16px;
-            display: block;
-            text-align: center;
-          }
-          
-          .cta-note {
-            margin-top: 12px;
-            width: 100%;
-          }
-          
-          .note-content {
-            justify-content: space-around;
-            width: 100%;
-            gap: 8px;
-          }
-          
-          .note-item {
-            font-size: 12px;
-            flex: 1;
-            justify-content: center;
-            text-align: center;
-          }
-          
-          .note-divider {
-            display: none;
-          }
-          
-          .trust-indicators {
-            gap: 24px;
-            width: 100%;
-            justify-content: space-between;
-            margin-top: 24px;
-          }
-          
-          .indicator {
-            text-align: center;
-            flex: 1;
-          }
-          
-          .indicator-number {
-            font-size: 22px;
-          }
-          
-          .indicator-text {
-            font-size: 12px;
-          }
-          
-          /* Optimización del mockup móvil */
-          .hero-visual {
-            margin-top: 16px;
-          }
-          
-          .app-showcase {
-            width: 260px;
-            height: 530px;
-          }
-          
-          .phone-frame {
-            width: 260px;
-            height: 530px;
-            border-radius: 36px;
-            padding: 6px;
-            box-shadow: 
-              0 20px 40px rgba(0, 0, 0, 0.15),
-              0 10px 20px rgba(0, 0, 0, 0.08);
-          }
-          
-          .phone-screen {
-            border-radius: 30px;
-          }
-          
-          .phone-notch {
-            width: 100px;
-            height: 18px;
-            border-radius: 0 0 12px 12px;
-          }
-          
-          .video-wrapper {
-            border-radius: 30px;
-          }
-          
-          .play-button {
-            width: 50px;
-            height: 50px;
-          }
-          
-          .mute-button {
-            width: 32px;
-            height: 32px;
-            bottom: 16px;
-            right: 12px;
-            opacity: 0.8;
-          }
-          
-          .control-button svg {
-            width: 20px;
-            height: 20px;
-          }
-          
-          /* Ajustes para el fallback */
-          .status-bar {
-            padding: 10px 16px;
-            font-size: 12px;
-          }
-          
-          .status-icons {
-            font-size: 14px;
-            gap: 6px;
-          }
-          
-          .app-header {
-            padding: 20px 16px 16px;
-          }
-          
-          .app-header h3 {
-            font-size: 22px;
-          }
-          
-          .app-header p {
-            font-size: 14px;
-          }
-          
-          .metric-cards {
-            padding: 0 16px;
-            gap: 12px;
-            margin-bottom: 20px;
-          }
-          
-          .metric-card {
-            padding: 18px 12px;
-            border-radius: 16px;
-          }
-          
-          .metric-icon {
-            font-size: 20px;
-            margin-bottom: 8px;
-          }
-          
-          .metric-value {
-            font-size: 28px;
-            margin-bottom: 4px;
-          }
-          
-          .metric-label {
-            font-size: 11px;
-          }
-          
-          .schedule-preview {
-            padding: 0 16px;
-          }
-          
-          .schedule-item {
-            padding: 14px;
-            gap: 12px;
-            border-radius: 12px;
-          }
-          
-          .schedule-time {
-            font-size: 12px;
-            min-width: 40px;
-          }
-          
-          .client-name {
-            font-size: 13px;
-          }
-          
-          .treatment {
-            font-size: 12px;
-          }
-          
-          /* Gradient orbs móvil */
-          .orb-1 {
-            width: 300px;
-            height: 300px;
-            top: -100px;
-            right: -100px;
-            filter: blur(60px);
-          }
-          
-          .orb-2 {
-            width: 250px;
-            height: 250px;
-            bottom: -80px;
-            left: -80px;
-            filter: blur(60px);
+          .phone-wrapper {
+            grid-area: phone;
+            margin-top: 0;
           }
         }
         
-        /* Small Mobile (max-width: 400px) */
-        @media (max-width: 400px) {
-          .hero {
-            padding: 80px 0 32px;
-          }
-          
-          .container {
-            padding: 0 16px;
-          }
-          
-          .hero-title {
-            font-size: 1.875rem;
-            line-height: 1.2;
-          }
-          
-          .hero-subtitle {
-            font-size: 0.938rem;
-          }
-          
-          .download-buttons {
-            flex-direction: column;
-          }
-          
-          .download-btn {
-            width: 100%;
-            min-height: 48px;
-          }
-          
-          .note-content {
-            flex-direction: column;
-            gap: 4px;
-          }
-          
-          .note-item {
-            font-size: 11px;
-          }
-          
-          .app-showcase {
-            width: 220px;
-            height: 450px;
-          }
-          
-          .phone-frame {
-            width: 220px;
-            height: 450px;
-            border-radius: 32px;
-            padding: 5px;
-          }
-          
-          .phone-screen {
-            border-radius: 27px;
-          }
-          
-          .phone-notch {
-            width: 80px;
-            height: 16px;
-          }
-          
-          .play-button {
-            width: 45px;
-            height: 45px;
-          }
-          
-          .mute-button {
-            width: 28px;
-            height: 28px;
-          }
-          
-          .control-button svg {
-            width: 18px;
-            height: 18px;
-          }
-          
-          .app-header h3 {
-            font-size: 18px;
-          }
-          
-          .app-header p {
-            font-size: 13px;
-          }
-          
-          .metric-card {
-            padding: 14px 10px;
-          }
-          
-          .metric-icon {
-            font-size: 18px;
-          }
-          
-          .metric-value {
-            font-size: 24px;
-          }
-          
-          .metric-label {
-            font-size: 10px;
-          }
-        }
-        
-        /* Landscape orientation adjustments */
-        @media (max-height: 600px) and (orientation: landscape) {
-          .hero {
-            padding: 60px 0 40px;
-            min-height: 100vh;
-          }
-          
-          .hero-content {
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-          }
-          
-          .hero-text {
-            text-align: left;
-          }
-          
-          .cta-container {
-            align-items: flex-start;
-          }
-          
-          .app-showcase {
-            width: 200px;
-            height: 400px;
-          }
-          
-          .phone-frame {
-            width: 200px;
-            height: 400px;
-          }
-        }
-        
-        /* Touch-friendly hover states */
-        @media (hover: none) and (pointer: coarse) {
-          .download-btn:active {
-            transform: scale(0.98);
-          }
-          
-          .cta-link:active {
-            opacity: 0.8;
-          }
-          
-          .metric-card:active {
-            transform: scale(0.98);
-          }
-          
-          .mute-button {
-            opacity: 1;
-          }
-        }
-        
-        /* Improved accessibility */
         @media (prefers-reduced-motion: reduce) {
           * {
             animation-duration: 0.01ms !important;
@@ -1450,33 +707,8 @@ const HeroSection = () => {
             transition-duration: 0.01ms !important;
           }
           
-          .orb-1,
-          .orb-2,
-          .floating-badge {
+          .orb-1, .orb-2 {
             animation: none !important;
-          }
-        }
-        
-        /* High contrast mode */
-        @media (prefers-contrast: high) {
-          .phone-frame {
-            border: 2px solid #000;
-          }
-          
-          .download-btn {
-            border-width: 2px;
-          }
-          
-          .metric-card {
-            border-width: 2px;
-          }
-        }
-        
-        /* Safe area support for modern phones */
-        @supports (padding: max(0px)) {
-          .hero {
-            padding-left: max(20px, env(safe-area-inset-left));
-            padding-right: max(20px, env(safe-area-inset-right));
           }
         }
       `}</style>

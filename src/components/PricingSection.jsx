@@ -418,7 +418,7 @@ export default function ClinicPricingSection() {
           transition={{ delay: 1 }}
         >
           <h3>¿Listo para transformar tu clínica?</h3>
-          <p>Únete a las +500 clínicas que ya confían en nosotros</p>
+          <p>Únete a las +200 clínicas que ya confían en nosotros</p>
           <div className="cta-buttons">
             <button className="cta-primary">
               Empezar demo gratuita
