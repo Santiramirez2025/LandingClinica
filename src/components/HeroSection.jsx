@@ -8,9 +8,7 @@ const HeroSection = () => {
   const [isMuted, setIsMuted] = useState(true)
   const [hasError, setHasError] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
-  const [isIntersecting, setIsIntersecting] = useState(false)
   const videoRef = useRef(null)
-  const wrapperRef = useRef(null)
   
   // Mouse tracking optimizado
   const mouseX = useMotionValue(0)
@@ -24,27 +22,6 @@ const HeroSection = () => {
     stiffness: 100 
   })
   
-  // Intersection Observer para carga lazy del video
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !isIntersecting) {
-          setIsIntersecting(true)
-          // Cargar video solo cuando sea visible
-          if (videoRef.current && !isLoaded) {
-            videoRef.current.load()
-          }
-        }
-      },
-      { threshold: 0.3, rootMargin: '50px' }
-    )
-
-    if (wrapperRef.current) {
-      observer.observe(wrapperRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [isIntersecting, isLoaded])
   // Throttled mouse movement
   const handleMouseMove = useCallback((e) => {
     if (window.innerWidth < 1024) return
@@ -230,7 +207,6 @@ const HeroSection = () => {
         
         <motion.div 
           className={styles.phoneWrapper}
-          ref={wrapperRef}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -238,34 +214,39 @@ const HeroSection = () => {
         >
           <div className={styles.phone}>
             <div className={styles.screen}>
-              {!hasError && isIntersecting ? (
+              {!hasError ? (
                 <div className={styles.videoContainer}>
                   <video
                     ref={videoRef}
                     poster="/images/app-preview.jpg"
-                    preload="none"
+                    preload="metadata"
                     muted={isMuted}
                     loop
                     playsInline
-                    webkit-playsinline="true"
                     onCanPlay={() => {
                       setIsLoaded(true)
                     }}
                     onLoadedData={() => {
-                      // Auto-play solo en desktop y con user interaction
+                      // Auto-play solo en desktop
                       if (window.innerWidth >= 1024) {
                         videoRef.current?.play()
                           .then(() => setIsPlaying(true))
-                          .catch(() => setIsPlaying(false))
+                          .catch(() => {
+                            console.log('Auto-play failed, showing fallback')
+                            setHasError(true)
+                          })
                       }
                     }}
-                    onError={() => setHasError(true)}
+                    onError={(e) => {
+                      console.error('Video error:', e)
+                      setHasError(true)
+                    }}
                   >
                     <source src="/videos/presentacion.mov" type="video/quicktime" />
                     <source src="/videos/presentacion.mp4" type="video/mp4" />
                   </video>
                   
-                  {!isLoaded && (
+                  {!isLoaded && !hasError && (
                     <div className={styles.videoPlaceholder}>
                       <div className={styles.spinner} />
                       <span>Cargando demo...</span>
