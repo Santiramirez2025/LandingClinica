@@ -6,506 +6,557 @@ const LeadMagnet = () => {
 
   const handleClick = () => {
     setClicked(true)
-    
-    // Mostrar confirmación brevemente
     setTimeout(() => {
-      openGuide()
-    }, 500)
-    
-    // Reset del botón
-    setTimeout(() => {
+      setShowGuide(true)
       setClicked(false)
-    }, 2000)
+    }, 800)
   }
-
-  const openGuide = () => {
-    // Abrir la guía en una nueva pestaña
-    setShowGuide(true)
-  }
-
-  const GuideContent = () => (
-    <div className="guide-modal">
-      <div className="guide-content">
-        <button 
-          className="close-btn"
-          onClick={() => setShowGuide(false)}
-        >
-          ×
-        </button>
-        
-        <h2>🎉 ¡Guía Secreta de Fidelización VIP!</h2>
-        
-        <div className="guide-sections">
-          <div className="guide-section">
-            <h3>💎 Estrategia #1: El Toque Personal</h3>
-            <p>Personaliza cada interacción recordando detalles específicos de tus pacientes. Usa un CRM para guardar sus preferencias, fechas importantes y historial de tratamientos.</p>
-          </div>
-          
-          <div className="guide-section">
-            <h3>🌟 Estrategia #2: Programa de Lealtad Exclusivo</h3>
-            <p>Crea un sistema de puntos donde cada tratamiento suma beneficios. Ofrece descuentos exclusivos y acceso prioritario a nuevos servicios.</p>
-          </div>
-          
-          <div className="guide-section">
-            <h3>💖 Estrategia #3: Experiencia 360°</h3>
-            <p>Desde la recepción hasta el seguimiento post-tratamiento, cada punto de contacto debe ser memorable y profesional.</p>
-          </div>
-          
-          <div className="guide-section">
-            <h3>📱 Estrategia #4: Comunicación Constante</h3>
-            <p>Mantén contacto regular con newsletters, tips de cuidado personalizado y recordatorios de citas de seguimiento.</p>
-          </div>
-          
-          <div className="guide-section">
-            <h3>🎁 Estrategia #5: Sorpresas Inesperadas</h3>
-            <p>Pequeños detalles como un regalo en su cumpleaños o un descuento sorpresa pueden crear una conexión emocional duradera.</p>
-          </div>
-        </div>
-        
-        <div className="guide-footer">
-          <p>¿Quieres implementar estas estrategias en tu clínica?</p>
-          <button 
-            className="contact-btn"
-            onClick={() => window.open('mailto:info@tuclinica.com', '_blank')}
-          >
-            Contáctanos para más información
-          </button>
-        </div>
-      </div>
-    </div>
-  )
 
   return (
     <>
-      <section className="lead-magnet">
-        <div className="container">
-          <div className="content-wrapper">
-            <h2>🎁 Regalo Exclusivo</h2>
-            <p>Descargá GRATIS la Guía Secreta para Fidelizar Pacientes VIP en tu Clínica Estética</p>
-            
-            <div className="lead-form">
-              <button 
-                className="cta-submit"
-                onClick={handleClick}
-                disabled={clicked}
-              >
-                {clicked ? '¡Abriendo Guía! 💕' : 'Obtener Guía Gratis'}
-              </button>
-            </div>
-            
-            {clicked && (
-              <div className="success-message">
-                <p>✅ ¡Preparando tu guía exclusiva!</p>
-              </div>
-            )}
+      <section className="hero">
+        <div className="blob blob1"></div>
+        <div className="blob blob2"></div>
+        <div className="blob blob3"></div>
+        
+        <div className="content">
+          <div className="badge">🎁 Oferta Limitada - Solo Hoy</div>
+          
+          <h1>
+            <span className="gradient-text">Convierte Pacientes</span>
+            <br />
+            <span>en Fans VIP</span>
+          </h1>
+          
+          <p className="subtitle">
+            Descubre la guía secreta que las clínicas más exitosas usan para 
+            <strong> fidelizar pacientes premium</strong> y 
+            <strong> triplicar su facturación</strong>
+          </p>
+
+          <div className="benefits">
+            <div className="benefit">👥 +87% Retención</div>
+            <div className="benefit">⭐ 5★ Reseñas</div>
+            <div className="benefit">🛡️ 100% Probado</div>
           </div>
+
+          <button 
+            className={`cta ${clicked ? 'loading' : ''}`}
+            onClick={handleClick}
+            disabled={clicked}
+          >
+            {clicked ? '✨ ¡Preparando tu regalo!' : '🎁 Obtener Guía Gratis Ahora →'}
+          </button>
+          
+          <p className="urgency">🔥 137 profesionales ya la descargaron hoy</p>
         </div>
       </section>
       
-      {showGuide && <GuideContent />}
-      
+      {showGuide && (
+        <div className="modal" onClick={() => setShowGuide(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="close" onClick={() => setShowGuide(false)}>×</button>
+            
+            <div className="modal-header">
+              <h2>🎉 ¡Tu Guía VIP Está Lista!</h2>
+              <p>5 Estrategias Exclusivas para Fidelizar Pacientes Premium</p>
+            </div>
+
+            <div className="strategies">
+              <div className="strategy">
+                <div className="icon">💖</div>
+                <div>
+                  <h3>El Toque Personal que Enamora</h3>
+                  <p>Crea experiencias únicas recordando cada detalle. Usa un CRM inteligente para anticiparte a sus necesidades.</p>
+                </div>
+              </div>
+
+              <div className="strategy">
+                <div className="icon">⭐</div>
+                <div>
+                  <h3>Club VIP de Beneficios Exclusivos</h3>
+                  <p>Diseña un programa de lealtad irresistible con acceso anticipado a tratamientos innovadores.</p>
+                </div>
+              </div>
+
+              <div className="strategy">
+                <div className="icon">✨</div>
+                <div>
+                  <h3>Experiencia 360° Memorable</h3>
+                  <p>Cada punto de contacto debe brillar: desde la bienvenida hasta el seguimiento post-tratamiento.</p>
+                </div>
+              </div>
+
+              <div className="strategy">
+                <div className="icon">💬</div>
+                <div>
+                  <h3>Comunicación que Conecta</h3>
+                  <p>Mantén una relación continua con contenido de valor y newsletters exclusivas.</p>
+                </div>
+              </div>
+
+              <div className="strategy">
+                <div className="icon">🎁</div>
+                <div>
+                  <h3>Sorpresas que Crean Vínculos</h3>
+                  <p>Los detalles inesperados marcan la diferencia: regalos y upgrades sorpresa.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-cta">
+              <h3>¿Lista para transformar tu clínica?</h3>
+              <button onClick={() => window.open('mailto:info@tuclinica.com', '_blank')}>
+                💬 Solicitar Consultoría Gratuita
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <style jsx>{`
-        .lead-magnet {
-          padding: 80px 20px;
-          background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
-          color: white;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        .hero {
           min-height: 100vh;
           display: flex;
           align-items: center;
-        }
-        
-        .lead-magnet::before {
-          content: '';
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-          animation: float 20s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
-        }
-        
-        .container {
-          max-width: 1200px;
-          margin: 0 auto;
-          width: 100%;
-        }
-        
-        .content-wrapper {
+          justify-content: center;
+          background: linear-gradient(135deg, #ffeef8 0%, #fff 50%, #f8f0ff 100%);
           position: relative;
-          z-index: 2;
+          overflow: hidden;
+          padding: 20px;
         }
-        
-        .lead-magnet h2 {
-          font-size: 2.5rem;
+
+        .blob {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(60px);
+          opacity: 0.3;
+          animation: float 20s infinite ease-in-out;
+        }
+
+        .blob1 {
+          width: 300px;
+          height: 300px;
+          background: #ff6b9d;
+          top: -150px;
+          right: -150px;
+        }
+
+        .blob2 {
+          width: 400px;
+          height: 400px;
+          background: #c77dff;
+          bottom: -200px;
+          left: -200px;
+          animation-delay: 5s;
+        }
+
+        .blob3 {
+          width: 250px;
+          height: 250px;
+          background: #ffd93d;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          animation-delay: 10s;
+        }
+
+        @keyframes float {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          33% {
+            transform: translate(30px, -30px) scale(1.1);
+          }
+          66% {
+            transform: translate(-30px, 30px) scale(0.9);
+          }
+        }
+
+        .content {
+          position: relative;
+          z-index: 1;
+          text-align: center;
+          max-width: 800px;
+          animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .badge {
+          display: inline-block;
+          background: #ffe0ec;
+          color: #d63384;
+          padding: 8px 20px;
+          border-radius: 50px;
+          font-size: 14px;
+          font-weight: 600;
+          margin-bottom: 30px;
+          animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+
+        h1 {
+          font-size: clamp(2.5rem, 8vw, 5rem);
+          font-weight: 800;
+          line-height: 1.1;
           margin-bottom: 20px;
-          text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-          line-height: 1.2;
+          color: #2d3748;
         }
-        
-        .lead-magnet p {
-          font-size: 1.3rem;
+
+        .gradient-text {
+          background: linear-gradient(90deg, #ff6b9d 0%, #c77dff 50%, #ff6b9d 100%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: gradient 3s linear infinite;
+        }
+
+        @keyframes gradient {
+          to {
+            background-position: 200% center;
+          }
+        }
+
+        .subtitle {
+          font-size: clamp(1.1rem, 3vw, 1.5rem);
+          color: #4a5568;
           margin-bottom: 40px;
+          line-height: 1.6;
           max-width: 600px;
           margin-left: auto;
           margin-right: auto;
-          line-height: 1.6;
         }
-        
-        .lead-form {
-          max-width: 500px;
-          margin: 40px auto 0;
-          background: rgba(255,255,255,0.1);
-          padding: 30px;
-          border-radius: 20px;
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .cta-submit {
-          background: white;
+
+        .subtitle strong {
           color: #ff6b9d;
-          width: 100%;
-          padding: 20px 30px;
-          border: none;
-          border-radius: 30px;
           font-weight: 600;
+        }
+
+        .benefits {
+          display: flex;
+          gap: 20px;
+          justify-content: center;
+          margin-bottom: 40px;
+          flex-wrap: wrap;
+        }
+
+        .benefit {
+          background: white;
+          padding: 15px 25px;
+          border-radius: 50px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          font-weight: 600;
+          color: #2d3748;
+          transform: translateY(0);
+          transition: all 0.3s ease;
+        }
+
+        .benefit:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .cta {
+          background: linear-gradient(135deg, #ff6b9d 0%, #c77dff 100%);
+          color: white;
+          padding: 20px 40px;
+          border: none;
+          border-radius: 50px;
           font-size: 1.2rem;
+          font-weight: 700;
           cursor: pointer;
           transition: all 0.3s ease;
-          font-family: 'Poppins', sans-serif;
+          box-shadow: 0 10px 30px rgba(255,107,157,0.3);
+          position: relative;
+          overflow: hidden;
         }
-        
-        .cta-submit:hover:not(:disabled) {
+
+        .cta:hover:not(:disabled) {
           transform: translateY(-3px);
-          box-shadow: 0 10px 30px rgba(255,255,255,0.4);
-          background: #f8f8f8;
+          box-shadow: 0 15px 40px rgba(255,107,157,0.4);
         }
-        
-        .cta-submit:disabled {
-          opacity: 0.7;
+
+        .cta:disabled {
+          opacity: 0.8;
           cursor: not-allowed;
-          transform: none;
         }
-        
-        .success-message {
+
+        .cta.loading {
+          animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 0.8;
+          }
+          50% {
+            opacity: 1;
+          }
+        }
+
+        .urgency {
           margin-top: 20px;
-          padding: 15px;
-          background: rgba(255,255,255,0.2);
-          border-radius: 10px;
-          animation: fadeIn 0.5s ease-in;
+          color: #718096;
+          font-size: 14px;
+          animation: pulse 2s infinite;
         }
-        
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .guide-modal {
+
+        .modal {
           position: fixed;
           top: 0;
           left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0,0,0,0.8);
+          right: 0;
+          bottom: 0;
+          background: rgba(0,0,0,0.7);
           display: flex;
-          justify-content: center;
           align-items: center;
-          z-index: 1000;
-          animation: modalFadeIn 0.3s ease;
+          justify-content: center;
           padding: 20px;
-          box-sizing: border-box;
+          z-index: 1000;
+          animation: fadeIn 0.3s ease;
         }
-        
-        @keyframes modalFadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
-        
-        .guide-content {
+
+        .modal-content {
           background: white;
+          border-radius: 24px;
           max-width: 800px;
+          width: 100%;
           max-height: 90vh;
           overflow-y: auto;
-          padding: 40px;
-          border-radius: 20px;
           position: relative;
-          color: #333;
-          animation: modalSlideIn 0.3s ease;
-          width: 100%;
-          box-sizing: border-box;
+          animation: slideIn 0.4s ease;
         }
-        
-        @keyframes modalSlideIn {
-          from { transform: translateY(-50px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
+
+        @keyframes slideIn {
+          from {
+            transform: translateY(50px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
         }
-        
-        .close-btn {
+
+        .close {
           position: absolute;
           top: 20px;
-          right: 30px;
-          background: none;
+          right: 20px;
+          background: #f7fafc;
           border: none;
-          font-size: 2rem;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          font-size: 24px;
           cursor: pointer;
-          color: #999;
-          transition: color 0.3s ease;
+          transition: all 0.3s ease;
           z-index: 10;
         }
-        
-        .close-btn:hover {
-          color: #ff6b9d;
+
+        .close:hover {
+          background: #e2e8f0;
+          transform: rotate(90deg);
         }
-        
-        .guide-content h2 {
-          color: #ff6b9d;
+
+        .modal-header {
+          background: linear-gradient(135deg, #ff6b9d 0%, #c77dff 100%);
+          padding: 40px;
           text-align: center;
-          margin-bottom: 30px;
+          color: white;
+        }
+
+        .modal-header h2 {
           font-size: 2rem;
-          padding-right: 50px;
+          margin-bottom: 10px;
         }
-        
-        .guide-sections {
-          margin-bottom: 30px;
+
+        .modal-header p {
+          opacity: 0.9;
+          font-size: 1.1rem;
         }
-        
-        .guide-section {
-          margin-bottom: 25px;
-          padding: 20px;
-          background: #f8f9fa;
-          border-radius: 10px;
+
+        .strategies {
+          padding: 40px;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .strategy {
+          display: flex;
+          gap: 20px;
+          padding: 25px;
+          background: #f8fafc;
+          border-radius: 16px;
           border-left: 4px solid #ff6b9d;
+          transition: all 0.3s ease;
         }
-        
-        .guide-section h3 {
-          color: #ff6b9d;
-          margin-bottom: 15px;
-          font-size: 1.3rem;
+
+        .strategy:hover {
+          background: #fff;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          transform: translateX(5px);
         }
-        
-        .guide-section p {
+
+        .icon {
+          font-size: 2rem;
+          width: 50px;
+          height: 50px;
+          background: linear-gradient(135deg, #ff6b9d 0%, #c77dff 100%);
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .strategy h3 {
+          color: #2d3748;
+          margin-bottom: 8px;
+          font-size: 1.2rem;
+        }
+
+        .strategy p {
+          color: #4a5568;
           line-height: 1.6;
-          color: #555;
         }
-        
-        .guide-footer {
+
+        .modal-cta {
+          padding: 40px;
           text-align: center;
-          padding-top: 20px;
-          border-top: 1px solid #eee;
+          background: #f8fafc;
+          border-top: 1px solid #e2e8f0;
         }
-        
-        .contact-btn {
-          background: #ff6b9d;
+
+        .modal-cta h3 {
+          color: #2d3748;
+          margin-bottom: 20px;
+          font-size: 1.5rem;
+        }
+
+        .modal-cta button {
+          background: linear-gradient(135deg, #ff6b9d 0%, #c77dff 100%);
           color: white;
           padding: 15px 30px;
           border: none;
-          border-radius: 30px;
+          border-radius: 50px;
+          font-size: 1.1rem;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.3s ease;
-          margin-top: 15px;
         }
-        
-        .contact-btn:hover {
-          background: #ff5a8a;
-          transform: translateY(-2px);
+
+        .modal-cta button:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 30px rgba(255,107,157,0.3);
         }
-        
-        /* Responsive Design */
+
         @media (max-width: 768px) {
-          .lead-magnet {
-            padding: 60px 15px;
-            min-height: 100vh;
-          }
-          
-          .lead-magnet h2 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-          }
-          
-          .lead-magnet p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            padding: 0 10px;
-          }
-          
-          .lead-form {
-            padding: 25px 20px;
-            margin: 30px auto 0;
-            border-radius: 15px;
-          }
-          
-          .cta-submit {
-            padding: 18px 25px;
-            font-size: 1.1rem;
-          }
-          
-          .guide-modal {
-            padding: 10px;
-            align-items: flex-start;
-            padding-top: 20px;
-          }
-          
-          .guide-content {
-            padding: 25px 20px;
-            margin: 0;
-            max-height: 85vh;
-            border-radius: 15px;
-          }
-          
-          .guide-content h2 {
-            font-size: 1.6rem;
-            padding-right: 40px;
-            margin-bottom: 25px;
-          }
-          
-          .close-btn {
-            top: 15px;
-            right: 20px;
-            font-size: 1.8rem;
-          }
-          
-          .guide-section {
+          .hero {
             padding: 15px;
-            margin-bottom: 20px;
           }
-          
-          .guide-section h3 {
+
+          h1 {
+            font-size: 2.5rem;
+          }
+
+          .subtitle {
             font-size: 1.1rem;
-            margin-bottom: 10px;
           }
-          
-          .guide-section p {
+
+          .benefits {
+            flex-direction: column;
+            gap: 15px;
+          }
+
+          .benefit {
             font-size: 0.9rem;
-            line-height: 1.5;
+            padding: 12px 20px;
           }
-          
-          .contact-btn {
-            padding: 12px 25px;
-            font-size: 0.9rem;
-          }
-        }
-        
-        @media (max-width: 480px) {
-          .lead-magnet {
-            padding: 40px 10px;
-          }
-          
-          .lead-magnet h2 {
-            font-size: 1.7rem;
-            line-height: 1.3;
-          }
-          
-          .lead-magnet p {
+
+          .cta {
             font-size: 1rem;
-            padding: 0 5px;
+            padding: 18px 30px;
           }
-          
-          .lead-form {
-            padding: 20px 15px;
-            margin: 25px auto 0;
-          }
-          
-          .cta-submit {
-            padding: 16px 20px;
-            font-size: 1rem;
-          }
-          
-          .guide-content {
-            padding: 20px 15px;
-            max-height: 80vh;
-          }
-          
-          .guide-content h2 {
-            font-size: 1.4rem;
-            padding-right: 35px;
-          }
-          
-          .close-btn {
-            top: 12px;
-            right: 15px;
-            font-size: 1.6rem;
-          }
-          
-          .guide-section {
-            padding: 12px;
-          }
-          
-          .guide-section h3 {
-            font-size: 1rem;
-          }
-          
-          .guide-section p {
-            font-size: 0.85rem;
-          }
-          
-          .contact-btn {
-            padding: 10px 20px;
-            font-size: 0.85rem;
-          }
-        }
-        
-        @media (max-width: 360px) {
-          .lead-magnet h2 {
+
+          .modal-header h2 {
             font-size: 1.5rem;
           }
-          
-          .lead-magnet p {
-            font-size: 0.95rem;
+
+          .strategies {
+            padding: 20px;
           }
-          
-          .guide-content h2 {
-            font-size: 1.3rem;
+
+          .strategy {
+            flex-direction: column;
+            padding: 20px;
           }
-          
-          .guide-section h3 {
-            font-size: 0.95rem;
-          }
-          
-          .guide-section p {
-            font-size: 0.8rem;
+
+          .blob {
+            display: none;
           }
         }
-        
-        /* Landscape orientation for mobile */
-        @media (max-height: 500px) and (orientation: landscape) {
-          .lead-magnet {
-            padding: 30px 15px;
-            min-height: auto;
+
+        @media (max-width: 480px) {
+          h1 {
+            font-size: 2rem;
           }
-          
-          .lead-magnet h2 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-          }
-          
-          .lead-magnet p {
+
+          .subtitle {
             font-size: 1rem;
-            margin-bottom: 20px;
           }
-          
-          .lead-form {
-            margin: 20px auto 0;
-            padding: 20px;
+
+          .badge {
+            font-size: 12px;
+            padding: 6px 15px;
           }
-          
-          .guide-modal {
-            padding: 15px;
-            align-items: flex-start;
+
+          .modal-content {
+            border-radius: 16px;
           }
-          
-          .guide-content {
-            max-height: 85vh;
-            padding: 20px;
+
+          .modal-header {
+            padding: 30px 20px;
+          }
+
+          .close {
+            width: 35px;
+            height: 35px;
+            font-size: 20px;
           }
         }
       `}</style>

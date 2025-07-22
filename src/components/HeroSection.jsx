@@ -1,7 +1,6 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react'
-import styles from './HeroSection.module.css'
 
 const HeroSection = () => {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -26,7 +25,7 @@ const HeroSection = () => {
   const handleMouseMove = useCallback((e) => {
     if (window.innerWidth < 1024) return
     
-    const rect = document.querySelector(`.${styles.phoneWrapper}`)?.getBoundingClientRect()
+    const rect = document.querySelector('.phoneWrapper')?.getBoundingClientRect()
     if (rect) {
       const centerX = rect.left + rect.width / 2
       const centerY = rect.top + rect.height / 2
@@ -62,7 +61,10 @@ const HeroSection = () => {
     } else {
       videoRef.current.play()
         .then(() => setIsPlaying(true))
-        .catch(() => setIsPlaying(false))
+        .catch((err) => {
+          console.error('Error playing video:', err)
+          setIsPlaying(false)
+        })
     }
   }, [isPlaying, hasError])
 
@@ -82,17 +84,711 @@ const HeroSection = () => {
   }, [])
 
   return (
-    <section className={styles.hero} aria-label="Gestiona tu clínica estética de forma simple y rentable">
+    <section className="hero" aria-label="Gestiona tu clínica estética de forma simple y rentable">
+      <style jsx>{`
+        /* Variables CSS para mejor mantenibilidad */
+        :root {
+          --primary-gradient: linear-gradient(135deg, #E8B4B8 0%, #D4AF37 100%);
+          --bg-gradient: linear-gradient(180deg, #FDFBF7 0%, #FFF8F3 100%);
+          --text-dark: #1a1a1a;
+          --text-medium: #4a4a4a;
+          --text-light: #6a6a6a;
+          --accent-color: #E8B4B8;
+          --border-radius: clamp(16px, 2vw, 24px);
+          --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.06);
+          --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hero {
+          min-height: 100vh;
+          min-height: 100svh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: clamp(2rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem);
+          position: relative;
+          overflow: hidden;
+          background: var(--bg-gradient);
+        }
+        
+        .orbs {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          will-change: transform;
+        }
+        
+        .orb {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(60px);
+          opacity: 0.4;
+          will-change: transform;
+        }
+        
+        .orb1 {
+          width: min(40vw, 400px);
+          height: min(40vw, 400px);
+          background: radial-gradient(circle, rgba(255, 218, 225, 0.6) 0%, transparent 70%);
+          top: -15%;
+          right: -15%;
+          animation: float1 25s ease-in-out infinite;
+        }
+        
+        .orb2 {
+          width: min(35vw, 350px);
+          height: min(35vw, 350px);
+          background: radial-gradient(circle, rgba(255, 237, 213, 0.6) 0%, transparent 70%);
+          bottom: -15%;
+          left: -15%;
+          animation: float2 30s ease-in-out infinite;
+        }
+        
+        @keyframes float1 {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          33% { transform: translate(30px, -20px) rotate(120deg); }
+          66% { transform: translate(-20px, 10px) rotate(240deg); }
+        }
+        
+        @keyframes float2 {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          33% { transform: translate(-40px, 30px) rotate(-120deg); }
+          66% { transform: translate(20px, -15px) rotate(-240deg); }
+        }
+        
+        .container {
+          width: 100%;
+          max-width: 1280px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          position: relative;
+          z-index: 1;
+          gap: clamp(2rem, 5vw, 3rem);
+        }
+        
+        .content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          gap: clamp(1.5rem, 3vw, 2rem);
+          max-width: 600px;
+        }
+        
+        .badge {
+          background: linear-gradient(135deg, rgba(232, 180, 184, 0.15) 0%, rgba(255, 237, 213, 0.15) 100%);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(232, 180, 184, 0.2);
+          padding: 0.75rem 1.5rem;
+          border-radius: 50px;
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: #B86B6B;
+          box-shadow: var(--shadow-soft);
+        }
+        
+        .title {
+          font-size: clamp(2.5rem, 8vw, 4.5rem);
+          font-weight: 800;
+          line-height: 1.1;
+          letter-spacing: -0.03em;
+          color: var(--text-dark);
+          margin: 0;
+        }
+        
+        .accent {
+          background: var(--primary-gradient);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          position: relative;
+        }
+        
+        .subtitle {
+          font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+          line-height: 1.6;
+          color: var(--text-medium);
+          margin: 0;
+          max-width: 500px;
+        }
+        
+        .ctaGroup {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1.5rem;
+          width: 100%;
+        }
+        
+        .primaryActions {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          width: 100%;
+          max-width: 400px;
+        }
+        
+        .btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          padding: 1rem 2rem;
+          border-radius: 50px;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 1rem;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          cursor: pointer;
+          border: none;
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .btnPrimary {
+          background: linear-gradient(135deg, var(--text-dark) 0%, #333 100%);
+          color: white;
+          box-shadow: var(--shadow-strong);
+        }
+        
+        .btnPrimary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btnPrimary:active {
+          transform: translateY(0);
+        }
+        
+        .btnSecondary {
+          background: white;
+          color: var(--text-dark);
+          border: 2px solid #e5e7eb;
+          box-shadow: var(--shadow-soft);
+        }
+        
+        .btnSecondary:hover {
+          border-color: var(--accent-color);
+          background: rgba(232, 180, 184, 0.05);
+          transform: translateY(-1px);
+        }
+        
+        .appStores {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          width: 100%;
+          max-width: 400px;
+        }
+        
+        .storeBtn {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.75rem 1.25rem;
+          border-radius: var(--border-radius);
+          text-decoration: none;
+          background: white;
+          border: 1px solid #e5e7eb;
+          transition: all 0.2s ease;
+          font-size: 0.9rem;
+        }
+        
+        .storeBtn:hover {
+          border-color: var(--accent-color);
+          transform: translateY(-1px);
+          box-shadow: var(--shadow-soft);
+        }
+        
+        .storeBtn svg {
+          width: 20px;
+          height: 20px;
+          flex-shrink: 0;
+        }
+        
+        .storeBtn div {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          line-height: 1.2;
+        }
+        
+        .storeBtn span {
+          font-size: 0.75rem;
+          color: var(--text-light);
+        }
+        
+        .storeBtn strong {
+          color: var(--text-dark);
+          font-weight: 600;
+        }
+        
+        .trustSignals {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+          justify-content: center;
+          font-size: 0.875rem;
+          color: var(--text-light);
+          font-weight: 500;
+        }
+        
+        .stats {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: clamp(1.5rem, 4vw, 2.5rem);
+          text-align: center;
+          width: 100%;
+          max-width: 500px;
+        }
+        
+        .stats div {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+        }
+        
+        .stats strong {
+          font-size: clamp(1.75rem, 4vw, 2.5rem);
+          color: var(--text-dark);
+          font-weight: 800;
+          line-height: 1;
+        }
+        
+        .stats span {
+          font-size: 0.875rem;
+          color: var(--text-light);
+        }
+        
+        .phoneWrapper {
+          perspective: 1200px;
+          will-change: transform;
+        }
+        
+        .phone {
+          width: clamp(280px, 50vw, 320px);
+          height: clamp(560px, 50vh, 640px);
+          background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
+          border-radius: clamp(32px, 5vw, 48px);
+          padding: 6px;
+          box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.25),
+            0 20px 40px rgba(0, 0, 0, 0.15);
+          position: relative;
+        }
+        
+        .phone::before {
+          content: '';
+          position: absolute;
+          top: -1px;
+          left: -1px;
+          right: -1px;
+          bottom: -1px;
+          background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), transparent);
+          border-radius: inherit;
+          z-index: -1;
+        }
+        
+        .screen {
+          width: 100%;
+          height: 100%;
+          background: #000;
+          border-radius: clamp(26px, 4.5vw, 42px);
+          overflow: hidden;
+          position: relative;
+        }
+        
+        .videoContainer {
+          width: 100%;
+          height: 100%;
+          position: relative;
+          background: #000;
+        }
+        
+        .videoContainer video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        
+        .videoPlaceholder {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 1rem;
+          z-index: 1;
+        }
+        
+        .videoPlaceholder span {
+          font-size: 0.875rem;
+          color: var(--text-light);
+          font-weight: 500;
+        }
+        
+        .spinner {
+          width: 32px;
+          height: 32px;
+          border: 3px solid #e2e8f0;
+          border-top: 3px solid var(--accent-color);
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+        
+        .playBtn {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 56px;
+          height: 56px;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(8px);
+          border: none;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+          color: var(--accent-color);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 2;
+        }
+        
+        .muteBtn {
+          position: absolute;
+          bottom: 1rem;
+          right: 1rem;
+          width: 40px;
+          height: 40px;
+          background: rgba(0, 0, 0, 0.7);
+          backdrop-filter: blur(8px);
+          border: none;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          color: white;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          z-index: 2;
+        }
+        
+        .videoContainer:hover .muteBtn,
+        .muteBtn:focus-visible {
+          opacity: 1;
+        }
+        
+        .fallback {
+          width: 100%;
+          height: 100%;
+          background: #FDFBF7;
+          display: flex;
+          flex-direction: column;
+        }
+        
+        .statusBar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem 1.5rem 0.5rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: var(--text-dark);
+        }
+        
+        .statusBar div {
+          display: flex;
+          gap: 0.25rem;
+        }
+        
+        .appContent {
+          flex: 1;
+          padding: 1.5rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+        }
+        
+        .greeting h2 {
+          font-size: 1.5rem;
+          margin: 0 0 0.25rem 0;
+          color: var(--text-dark);
+          font-weight: 700;
+        }
+        
+        .greeting p {
+          font-size: 1rem;
+          color: var(--text-light);
+          margin: 0;
+        }
+        
+        .cards {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+        }
+        
+        .card {
+          background: white;
+          border: 1px solid rgba(232, 180, 184, 0.15);
+          border-radius: var(--border-radius);
+          padding: 1.25rem 1rem;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          transition: all 0.2s ease;
+          cursor: pointer;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        
+        .cardAccent {
+          background: linear-gradient(135deg, rgba(232, 180, 184, 0.1), rgba(255, 237, 213, 0.1));
+          border-color: rgba(232, 180, 184, 0.25);
+        }
+        
+        .cardIcon {
+          font-size: 1.5rem;
+          line-height: 1;
+        }
+        
+        .card strong {
+          font-size: 1.75rem;
+          line-height: 1;
+          color: var(--text-dark);
+          font-weight: 800;
+        }
+        
+        .card span:last-child {
+          font-size: 0.75rem;
+          color: var(--text-light);
+        }
+        
+        .nextAppointment {
+          display: flex;
+          gap: 1rem;
+          background: white;
+          padding: 1.25rem;
+          border-radius: var(--border-radius);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+          margin-top: auto;
+          border: 1px solid rgba(232, 180, 184, 0.1);
+        }
+        
+        .appointmentTime {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          min-width: 3.5rem;
+        }
+        
+        .time {
+          font-weight: 800;
+          color: var(--accent-color);
+          font-size: 1.1rem;
+          line-height: 1;
+        }
+        
+        .status {
+          font-size: 0.7rem;
+          color: var(--text-light);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-top: 0.25rem;
+        }
+        
+        .appointmentDetails {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 0.25rem;
+          text-align: left;
+        }
+        
+        .appointmentDetails strong {
+          font-size: 0.9rem;
+          color: var(--text-dark);
+          font-weight: 600;
+        }
+        
+        .appointmentDetails span {
+          font-size: 0.8rem;
+          color: var(--text-light);
+        }
+        
+        .notch {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: clamp(80px, 20vw, 120px);
+          height: clamp(16px, 3vw, 20px);
+          background: #1a1a1a;
+          border-radius: 0 0 1rem 1rem;
+          z-index: 3;
+        }
+        
+        /* Responsive Design */
+        @media (min-width: 640px) {
+          .primaryActions {
+            flex-direction: row;
+            max-width: none;
+          }
+          
+          .btn {
+            flex: 1;
+            min-width: 180px;
+          }
+          
+          .appStores {
+            flex-direction: row;
+            max-width: none;
+          }
+        }
+        
+        @media (min-width: 768px) {
+          .container {
+            gap: 4rem;
+          }
+          
+          .content {
+            max-width: 700px;
+          }
+          
+          .trustSignals {
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+          }
+        }
+        
+        @media (min-width: 1024px) {
+          .hero {
+            padding: 2rem;
+          }
+          
+          .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+            max-width: 1400px;
+          }
+          
+          .content {
+            text-align: left;
+            align-items: flex-start;
+            max-width: none;
+          }
+          
+          .ctaGroup {
+            align-items: flex-start;
+          }
+          
+          .primaryActions {
+            max-width: 450px;
+          }
+          
+          .appStores {
+            max-width: 450px;
+          }
+          
+          .trustSignals {
+            justify-content: flex-start;
+            max-width: none;
+          }
+          
+          .stats {
+            justify-self: start;
+            max-width: 450px;
+          }
+          
+          .phoneWrapper {
+            justify-self: center;
+          }
+        }
+        
+        @media (min-width: 1280px) {
+          .container {
+            gap: 6rem;
+          }
+          
+          .phone {
+            width: 350px;
+            height: 700px;
+          }
+        }
+        
+        /* Accessibility & Performance */
+        @media (prefers-reduced-motion: reduce) {
+          *,
+          *::before,
+          *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
+          
+          .orb1,
+          .orb2 {
+            animation: none !important;
+          }
+          
+          .spinner {
+            animation: none !important;
+          }
+        }
+        
+        @media (prefers-contrast: high) {
+          .badge {
+            background: white;
+            border: 2px solid var(--text-dark);
+          }
+          
+          .btnSecondary {
+            border-width: 3px;
+          }
+        }
+        
+        /* Focus styles para accesibilidad */
+        .btn:focus-visible,
+        .storeBtn:focus-visible,
+        .playBtn:focus-visible,
+        .muteBtn:focus-visible {
+          outline: 3px solid var(--accent-color);
+          outline-offset: 2px;
+        }
+        
+        /* Mejoras de rendimiento */
+        .orb,
+        .phoneWrapper,
+        .playBtn {
+          transform: translateZ(0);
+          backface-visibility: hidden;
+        }
+      `}</style>
+
       {/* Orbs optimizados */}
-      <div className={styles.orbs} aria-hidden="true">
-        <div className={`${styles.orb} ${styles.orb1}`} />
-        <div className={`${styles.orb} ${styles.orb2}`} />
+      <div className="orbs" aria-hidden="true">
+        <div className="orb orb1" />
+        <div className="orb orb2" />
       </div>
 
-      <div className={styles.container}>
-        <div className={styles.content}>
+      <div className="container">
+        <div className="content">
           <motion.div 
-            className={styles.badge}
+            className="badge"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
@@ -101,17 +797,17 @@ const HeroSection = () => {
           </motion.div>
           
           <motion.h1 
-            className={styles.title}
+            className="title"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             Gestiona tu clínica estética<br/>
-            <span className={styles.accent}>simple y rentable</span>
+            <span className="accent">simple y rentable</span>
           </motion.h1>
           
           <motion.p 
-            className={styles.subtitle}
+            className="subtitle"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -121,15 +817,15 @@ const HeroSection = () => {
           </motion.p>
           
           <motion.div 
-            className={styles.ctaGroup}
+            className="ctaGroup"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <div className={styles.primaryActions}>
+            <div className="primaryActions">
               <a 
                 href="https://calendly.com/tu-demo" 
-                className={`${styles.btn} ${styles.btnPrimary}`}
+                className="btn btnPrimary"
                 aria-label="Agendar demo gratuita"
               >
                 <span>Agendar Demo Gratis</span>
@@ -139,7 +835,7 @@ const HeroSection = () => {
               </a>
               
               <button 
-                className={`${styles.btn} ${styles.btnSecondary}`}
+                className="btn btnSecondary"
                 onClick={scrollToPricing}
                 aria-label="Ver precios y planes"
               >
@@ -147,10 +843,10 @@ const HeroSection = () => {
               </button>
             </div>
             
-            <div className={styles.appStores}>
+            <div className="appStores">
               <a 
                 href="https://play.google.com/store/apps" 
-                className={styles.storeBtn}
+                className="storeBtn"
                 aria-label="Descargar en Google Play"
               >
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -164,172 +860,8 @@ const HeroSection = () => {
               
               <a 
                 href="https://apps.apple.com" 
-                className={styles.storeBtn}
+                className="storeBtn"
                 aria-label="Descargar en App Store"
               >
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M18.71,19.5C17.88,20.74 17,21.95 15.66,21.97C14.32,22 13.89,21.18 12.37,21.18C10.84,21.18 10.37,21.95 9.1,22C7.79,22.05 6.8,20.68 5.96,19.47C4.25,17 2.94,12.45 4.7,9.39C5.57,7.87 7.13,6.91 8.82,6.88C10.1,6.86 11.32,7.75 12.11,7.75C12.89,7.75 14.37,6.68 15.92,6.84C16.57,6.87 18.39,7.1 19.56,8.82C19.47,8.88 17.39,10.1 17.41,12.63C17.44,15.65 20.06,16.66 20.09,16.67C20.06,16.74 19.67,18.11 18.71,19.5M13,3.5C13.73,2.67 14.94,2.04 15.94,2C16.07,3.17 15.6,4.35 14.9,5.19C14.21,6.04 13.07,6.7 11.95,6.61C11.8,5.46 12.36,4.26 13,3.5Z" />
-                </svg>
-                <div>
-                  <span>Disponible en</span>
-                  <strong>App Store</strong>
-                </div>
-              </a>
-            </div>
-            
-            <div className={styles.trustSignals}>
-              <span>🔒 Datos seguros y privados</span>
-              <span>✓ Configuración en 5 minutos</span>
-              <span>📞 Soporte inmediato</span>
-            </div>
-          </motion.div>
-          
-          <motion.div 
-            className={styles.stats}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <div>
-              <strong>500+</strong>
-              <span>Clínicas activas</span>
-            </div>
-            <div>
-              <strong>4.9</strong>
-              <span>Rating promedio</span>
-            </div>
-            <div>
-              <strong>+30%</strong>
-              <span>Más ingresos</span>
-            </div>
-          </motion.div>
-        </div>
-        
-        <motion.div 
-          className={styles.phoneWrapper}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          style={{ rotateX, rotateY }}
-        >
-          <div className={styles.phone}>
-            <div className={styles.screen}>
-              {!hasError ? (
-                <div className={styles.videoContainer}>
-                  <video
-                    ref={videoRef}
-                    poster="/images/app-preview.jpg"
-                    preload="metadata"
-                    muted={isMuted}
-                    loop
-                    playsInline
-                    onCanPlay={() => {
-                      setIsLoaded(true)
-                    }}
-                    onLoadedData={() => {
-                      // Auto-play solo en desktop
-                      if (window.innerWidth >= 1024) {
-                        videoRef.current?.play()
-                          .then(() => setIsPlaying(true))
-                          .catch(() => {
-                            console.log('Auto-play failed, showing fallback')
-                            setHasError(true)
-                          })
-                      }
-                    }}
-                    onError={(e) => {
-                      console.error('Video error:', e)
-                      setHasError(true)
-                    }}
-                  >
-                    <source src="/videos/presentacion.mov" type="video/quicktime" />
-                    <source src="/videos/presentacion.mp4" type="video/mp4" />
-                  </video>
-                  
-                  {!isLoaded && !hasError && (
-                    <div className={styles.videoPlaceholder}>
-                      <div className={styles.spinner} />
-                      <span>Cargando demo...</span>
-                    </div>
-                  )}
-                  
-                  <motion.button
-                    className={styles.playBtn}
-                    onClick={togglePlay}
-                    animate={{ opacity: isPlaying ? 0 : 1 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    aria-label={isPlaying ? "Pausar video" : "Reproducir video"}
-                  >
-                    {isPlaying ? <Pause size={20} /> : <Play size={20} />}
-                  </motion.button>
-                  
-                  <button 
-                    className={styles.muteBtn} 
-                    onClick={toggleMute} 
-                    aria-label={isMuted ? "Activar sonido" : "Silenciar"}
-                  >
-                    {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-                  </button>
-                </div>
-              ) : (
-                <div className={styles.fallback}>
-                  <div className={styles.statusBar}>
-                    <span>9:41</span>
-                    <div>
-                      <span>📶</span>
-                      <span>🔋</span>
-                    </div>
-                  </div>
-                  
-                  <div className={styles.appContent}>
-                    <div className={styles.greeting}>
-                      <h2>¡Hola, Dra. García! ✨</h2>
-                      <p>Tu clínica está funcionando perfectamente</p>
-                    </div>
-                    
-                    <div className={styles.cards}>
-                      <motion.div 
-                        className={styles.card}
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      >
-                        <span className={styles.cardIcon}>💉</span>
-                        <strong>12</strong>
-                        <span>Citas hoy</span>
-                      </motion.div>
-                      
-                      <motion.div 
-                        className={`${styles.card} ${styles.cardAccent}`}
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      >
-                        <span className={styles.cardIcon}>💎</span>
-                        <strong>€5.8k</strong>
-                        <span>Ingresos hoy</span>
-                      </motion.div>
-                    </div>
-                    
-                    <div className={styles.nextAppointment}>
-                      <div className={styles.appointmentTime}>
-                        <span className={styles.time}>10:30</span>
-                        <span className={styles.status}>Próxima</span>
-                      </div>
-                      <div className={styles.appointmentDetails}>
-                        <strong>Ana Rodríguez</strong>
-                        <span>Botox + Ácido Hialurónico</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div className={styles.notch} />
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  )
-}
-
-export default HeroSection
