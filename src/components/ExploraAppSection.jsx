@@ -131,7 +131,7 @@ const ExploraAppSection = () => {
       clearInterval(autoplayTimerRef.current)
     }
     
-    if (isAutoplay && isInView) {
+    if (isAutoplay) {
       autoplayTimerRef.current = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % slides.length)
       }, 6000) // Reducido de 8s a 6s para mejor engagement

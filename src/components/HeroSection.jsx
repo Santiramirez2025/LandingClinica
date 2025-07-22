@@ -8,6 +8,7 @@ const HeroSection = () => {
   const [isMuted, setIsMuted] = useState(true)
   const [hasError, setHasError] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [videoLoadAttempted, setVideoLoadAttempted] = useState(false)
   const videoRef = useRef(null)
   
   // Mouse tracking optimizado
@@ -53,6 +54,16 @@ const HeroSection = () => {
     }
   }, [handleMouseMove])
 
+  // Función mejorada para verificar si el video existe
+  const checkVideoExists = useCallback(async (src) => {
+    try {
+      const response = await fetch(src, { method: 'HEAD' })
+      return response.ok
+    } catch {
+      return false
+    }
+  }, [])
+
   const togglePlay = useCallback(() => {
     if (!videoRef.current || hasError) return
     
@@ -62,7 +73,10 @@ const HeroSection = () => {
     } else {
       videoRef.current.play()
         .then(() => setIsPlaying(true))
-        .catch(() => setIsPlaying(false))
+        .catch((error) => {
+          console.error('Error playing video:', error)
+          setIsPlaying(false)
+        })
     }
   }, [isPlaying, hasError])
 
@@ -80,6 +94,26 @@ const HeroSection = () => {
       block: 'start'
     })
   }, [])
+
+  // Efecto para intentar cargar el video
+  useEffect(() => {
+    if (!videoLoadAttempted) {
+      setVideoLoadAttempted(true)
+      
+      // Verificar si el archivo de video existe
+      checkVideoExists('/videos/presentacion.mov').then(exists => {
+        if (!exists) {
+          console.warn('Video presentacion.mov no encontrado en /public/videos/')
+          checkVideoExists('/videos/presentacion.mp4').then(mp4Exists => {
+            if (!mp4Exists) {
+              console.error('No se encontró ningún archivo de video')
+              setHasError(true)
+            }
+          })
+        }
+      })
+    }
+  }, [videoLoadAttempted, checkVideoExists])
 
   return (
     <section className={styles.hero} aria-label="Gestiona tu clínica estética de forma simple y rentable">
@@ -223,27 +257,41 @@ const HeroSection = () => {
                     muted={isMuted}
                     loop
                     playsInline
+                    webkit-playsinline="true"
                     onCanPlay={() => {
                       setIsLoaded(true)
+                      console.log('Video can play')
                     }}
                     onLoadedData={() => {
+                      console.log('Video loaded successfully')
                       // Auto-play solo en desktop
                       if (window.innerWidth >= 1024) {
-                        videoRef.current?.play()
-                          .then(() => setIsPlaying(true))
-                          .catch(() => {
-                            console.log('Auto-play failed, showing fallback')
-                            setHasError(true)
-                          })
+                        setTimeout(() => {
+                          videoRef.current?.play()
+                            .then(() => {
+                              console.log('Auto-play successful')
+                              setIsPlaying(true)
+                            })
+                            .catch((error) => {
+                              console.log('Auto-play failed:', error)
+                            })
+                        }, 500)
                       }
                     }}
                     onError={(e) => {
-                      console.error('Video error:', e)
+                      console.error('Video error:', e.target.error)
+                      console.error('Error code:', e.target.error?.code)
+                      console.error('Error message:', e.target.error?.message)
                       setHasError(true)
                     }}
+                    onLoadStart={() => {
+                      console.log('Video load started')
+                    }}
                   >
-                    <source src="/videos/presentacion.mov" type="video/quicktime" />
                     <source src="/videos/presentacion.mp4" type="video/mp4" />
+                    <source src="/videos/presentacion.mov" type="video/quicktime" />
+                    <source src="/videos/presentacion.webm" type="video/webm" />
+                    Su navegador no soporta el elemento de video.
                   </video>
                   
                   {!isLoaded && !hasError && (

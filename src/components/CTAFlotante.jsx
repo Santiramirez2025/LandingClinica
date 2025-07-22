@@ -1,13 +1,12 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 
-const CTAFlotante = () => {
+const ModernFloatingCTA = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    // Detectar si es mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768)
     }
@@ -16,15 +15,14 @@ const CTAFlotante = () => {
     window.addEventListener('resize', checkMobile)
 
     const handleScroll = () => {
-      // Mostrar después de hacer scroll de 200px en mobile, 300px en desktop
-      const scrollThreshold = isMobile ? 200 : 300
+      const scrollThreshold = isMobile ? 150 : 200
       setIsVisible(window.scrollY > scrollThreshold)
     }
 
-    // Mostrar automáticamente después de 2 segundos en mobile, 3 en desktop
+    // Auto-show after delay
     const timer = setTimeout(() => {
       setIsVisible(true)
-    }, isMobile ? 2000 : 3000)
+    }, isMobile ? 1500 : 2000)
 
     window.addEventListener('scroll', handleScroll)
     
@@ -36,7 +34,6 @@ const CTAFlotante = () => {
   }, [isMobile])
 
   const handleClick = () => {
-    // Scroll suave hacia arriba para mostrar el demo
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -44,84 +41,188 @@ const CTAFlotante = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.div 
-          className="cta-flotante-container"
-          initial={{ opacity: 0, scale: 0, y: 100 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0, y: 100 }}
+          className="cta-container"
+          initial={{ 
+            opacity: 0, 
+            scale: 0.8, 
+            y: 100,
+            rotate: -5 
+          }}
+          animate={{ 
+            opacity: 1, 
+            scale: 1, 
+            y: 0,
+            rotate: 0
+          }}
+          exit={{ 
+            opacity: 0, 
+            scale: 0.6, 
+            y: 150,
+            rotate: 5
+          }}
           transition={{ 
-            type: "spring", 
-            stiffness: isMobile ? 250 : 300, 
-            damping: isMobile ? 25 : 20,
-            duration: isMobile ? 0.4 : 0.6
+            type: "spring",
+            stiffness: isMobile ? 200 : 260,
+            damping: isMobile ? 22 : 18,
+            duration: isMobile ? 0.5 : 0.7
           }}
         >
-          <motion.button
-            className="cta-flotante"
-            onClick={handleClick}
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
-            whileHover={!isMobile ? { 
-              scale: 1.05,
-              y: -4
-            } : {}}
-            whileTap={{ scale: 0.95 }}
+          {/* Background Glow */}
+          <motion.div 
+            className="glow-bg"
             animate={{
-              y: isHovered || isMobile ? 0 : [0, -8, 0],
+              scale: [1, 1.1, 1],
+              opacity: [0.3, 0.5, 0.3]
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          
+          <motion.button
+            className="cta-button"
+            onClick={handleClick}
+            onHoverStart={() => !isMobile && setIsHovered(true)}
+            onHoverEnd={() => !isMobile && setIsHovered(false)}
+            whileHover={!isMobile ? { 
+              scale: 1.08,
+              y: -6,
+              rotateX: 5
+            } : {}}
+            whileTap={{ 
+              scale: 0.92,
+              y: 2
+            }}
+            animate={{
+              y: isHovered ? -4 : [0, -3, 0],
+              rotateY: [0, 2, 0, -2, 0]
             }}
             transition={{
               y: {
-                duration: isMobile ? 3 : 2,
-                repeat: isHovered || isMobile ? 0 : Infinity,
+                duration: isHovered ? 0.3 : 3.5,
+                repeat: isHovered ? 0 : Infinity,
+                ease: "easeInOut"
+              },
+              rotateY: {
+                duration: 6,
+                repeat: Infinity,
                 ease: "easeInOut"
               }
             }}
           >
-            {/* Gradient ring animation - reducida en mobile */}
+            {/* Animated border */}
             <motion.div 
-              className="cta-ring"
+              className="animated-border"
               animate={{
-                scale: [1, isMobile ? 1.1 : 1.2, 1],
-                opacity: [0.6, 0, 0.6]
+                rotate: [0, 360]
               }}
               transition={{
-                duration: isMobile ? 3 : 2,
+                duration: 8,
                 repeat: Infinity,
-                ease: "easeInOut"
+                ease: "linear"
               }}
             />
             
-            {/* Button content */}
+            {/* Main content */}
             <div className="cta-content">
-              <span className="cta-icon">🚀</span>
-              <div className="cta-text">
-                <span className="cta-main">Demo gratuito</span>
-                <span className="cta-sub">¡Probalo ahora!</span>
+              <motion.div 
+                className="icon-container"
+                animate={{
+                  rotate: isHovered ? [0, 15, -10, 0] : 0,
+                  scale: isHovered ? 1.1 : 1
+                }}
+                transition={{ duration: 0.4 }}
+              >
+                <span className="rocket-icon">🚀</span>
+              </motion.div>
+              
+              <div className="text-content">
+                <motion.span 
+                  className="main-text"
+                  animate={{
+                    scale: isHovered ? 1.02 : 1
+                  }}
+                >
+                  Demo Gratuito
+                </motion.span>
+                <motion.span 
+                  className="sub-text"
+                  animate={{
+                    opacity: isHovered ? 0.9 : 0.8,
+                    x: isHovered ? 2 : 0
+                  }}
+                >
+                  ¡Pruébalo ahora!
+                </motion.span>
               </div>
             </div>
             
-            {/* Shine effect - menos frecuente en mobile */}
+            {/* Shine effect */}
             <motion.div 
-              className="cta-shine"
+              className="shine-effect"
               animate={{
-                x: ['-100%', '200%']
+                x: ['-120%', '220%']
               }}
               transition={{
-                duration: isMobile ? 2.5 : 2,
+                duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut",
-                repeatDelay: isMobile ? 5 : 3
+                repeatDelay: 4
               }}
             />
+            
+            {/* Particle effects */}
+            <motion.div className="particles">
+              {[...Array(3)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="particle"
+                  animate={{
+                    y: [-10, -30, -10],
+                    x: [0, Math.sin(i * 2) * 10, 0],
+                    opacity: [0, 1, 0],
+                    scale: [0.5, 1, 0.5]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    delay: i * 0.4,
+                    ease: "easeOut"
+                  }}
+                />
+              ))}
+            </motion.div>
           </motion.button>
 
-          {/* Notification dot - más pequeño en mobile */}
+          {/* Pulsing notification */}
           <motion.div 
-            className="notification-dot"
+            className="notification-pulse"
             animate={{
-              scale: [1, isMobile ? 1.2 : 1.3, 1],
+              scale: [1, 1.4, 1],
+              opacity: [0.8, 0, 0.8]
             }}
             transition={{
-              duration: isMobile ? 2 : 1.5,
+              duration: 2.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          
+          {/* Status indicator */}
+          <motion.div 
+            className="status-dot"
+            animate={{
+              scale: [1, 1.2, 1],
+              boxShadow: [
+                '0 0 10px rgba(34, 197, 94, 0.5)',
+                '0 0 20px rgba(34, 197, 94, 0.8)',
+                '0 0 10px rgba(34, 197, 94, 0.5)'
+              ]
+            }}
+            transition={{
+              duration: 1.8,
               repeat: Infinity,
               ease: "easeInOut"
             }}
@@ -132,406 +233,338 @@ const CTAFlotante = () => {
   )
 }
 
-const CTAFlotanteWithStyles = () => {
+const ModernFloatingCTAWithStyles = () => {
   return (
     <>
-      <CTAFlotante />
+      <ModernFloatingCTA />
       <style jsx>{`
-        .cta-flotante-container {
-          position: fixed;
-          bottom: 32px;
-          right: 32px;
-          z-index: 1000;
-          pointer-events: none;
+        :root {
+          --primary-gradient: linear-gradient(135deg, #E8B4B8 0%, #D4AF37 100%);
+          --glow-color: rgba(232, 180, 184, 0.3);
+          --text-dark: #1a1a1a;
+          --border-radius: clamp(20px, 3vw, 28px);
+          --shadow-strong: 0 25px 60px rgba(0, 0, 0, 0.15);
         }
         
-        .cta-flotante {
+        .cta-container {
+          position: fixed;
+          bottom: clamp(20px, 4vw, 36px);
+          right: clamp(16px, 4vw, 36px);
+          z-index: 1000;
+          pointer-events: none;
+          perspective: 1000px;
+        }
+        
+        .glow-bg {
+          position: absolute;
+          top: -20px;
+          left: -20px;
+          right: -20px;
+          bottom: -20px;
+          background: var(--glow-color);
+          border-radius: 50%;
+          filter: blur(25px);
+          pointer-events: none;
+          z-index: 0;
+        }
+        
+        .cta-button {
           position: relative;
-          background: linear-gradient(135deg, #E8B4B8 0%, #D9A5A9 100%);
+          background: white;
+          backdrop-filter: blur(20px);
           border: none;
-          border-radius: 28px;
-          padding: 16px 24px;
+          border-radius: var(--border-radius);
+          padding: clamp(14px, 3vw, 18px) clamp(20px, 4vw, 26px);
           cursor: pointer;
           box-shadow: 
-            0 8px 32px rgba(232, 180, 184, 0.4),
-            0 4px 16px rgba(0, 0, 0, 0.1);
-          backdrop-filter: blur(10px);
-          border: 2px solid rgba(255, 255, 255, 0.2);
+            var(--shadow-strong),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
           pointer-events: auto;
           overflow: hidden;
-          min-width: 160px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          min-width: clamp(140px, 30vw, 180px);
+          transform-style: preserve-3d;
           user-select: none;
           -webkit-tap-highlight-color: transparent;
         }
         
-        .cta-flotante:hover {
-          box-shadow: 
-            0 12px 48px rgba(232, 180, 184, 0.5),
-            0 8px 24px rgba(0, 0, 0, 0.15);
-          border-color: rgba(255, 255, 255, 0.3);
-        }
-        
-        .cta-ring {
+        .animated-border {
           position: absolute;
-          top: -4px;
-          left: -4px;
-          right: -4px;
-          bottom: -4px;
-          background: linear-gradient(135deg, #E8B4B8 0%, #D9A5A9 100%);
-          border-radius: 32px;
+          top: -2px;
+          left: -2px;
+          right: -2px;
+          bottom: -2px;
+          background: conic-gradient(
+            from 0deg,
+            transparent 70%,
+            var(--primary-gradient),
+            transparent 100%
+          );
+          border-radius: calc(var(--border-radius) + 2px);
           pointer-events: none;
+          opacity: 0.6;
         }
         
         .cta-content {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: clamp(10px, 2.5vw, 14px);
           position: relative;
           z-index: 2;
         }
         
-        .cta-icon {
-          font-size: 24px;
-          line-height: 1;
-          flex-shrink: 0;
+        .icon-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: clamp(32px, 6vw, 38px);
+          height: clamp(32px, 6vw, 38px);
+          background: var(--primary-gradient);
+          border-radius: 50%;
+          box-shadow: 0 4px 12px rgba(232, 180, 184, 0.3);
         }
         
-        .cta-text {
+        .rocket-icon {
+          font-size: clamp(16px, 3.5vw, 20px);
+          line-height: 1;
+          filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+        }
+        
+        .text-content {
           display: flex;
           flex-direction: column;
-          gap: 2px;
+          gap: 1px;
           text-align: left;
           min-width: 0;
         }
         
-        .cta-main {
-          color: white;
-          font-weight: 700;
-          font-size: 16px;
-          line-height: 1.2;
-          letter-spacing: 0.3px;
-          white-space: nowrap;
+        .main-text {
+          color: var(--text-dark);
+          font-weight: 800;
+          font-size: clamp(14px, 3.2vw, 17px);
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          background: var(--primary-gradient);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
         
-        .cta-sub {
-          color: rgba(255, 255, 255, 0.9);
-          font-weight: 500;
-          font-size: 12px;
+        .sub-text {
+          color: #6b7280;
+          font-weight: 600;
+          font-size: clamp(11px, 2.5vw, 13px);
           line-height: 1;
-          letter-spacing: 0.2px;
-          white-space: nowrap;
+          letter-spacing: 0.01em;
         }
         
-        .cta-shine {
+        .shine-effect {
           position: absolute;
           top: 0;
           left: 0;
-          width: 30%;
+          width: 40%;
           height: 100%;
           background: linear-gradient(
-            90deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.3) 50%,
-            transparent 100%
+            110deg,
+            transparent 20%,
+            rgba(255, 255, 255, 0.6) 50%,
+            transparent 80%
           );
-          transform: skewX(-20deg);
+          transform: skewX(-15deg);
+          pointer-events: none;
+          z-index: 3;
+        }
+        
+        .particles {
+          position: absolute;
+          top: -10px;
+          right: 10px;
           pointer-events: none;
         }
         
-        .notification-dot {
+        .particle {
           position: absolute;
-          top: -4px;
-          right: -4px;
+          width: 4px;
+          height: 4px;
+          background: var(--primary-gradient);
+          border-radius: 50%;
+          box-shadow: 0 0 6px rgba(232, 180, 184, 0.6);
+        }
+        
+        .notification-pulse {
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          width: 20px;
+          height: 20px;
+          background: #ef4444;
+          border-radius: 50%;
+          pointer-events: none;
+        }
+        
+        .status-dot {
+          position: absolute;
+          top: -6px;
+          right: -6px;
           width: 16px;
           height: 16px;
-          background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+          background: #22c55e;
+          border: 3px solid white;
           border-radius: 50%;
-          border: 2px solid white;
-          box-shadow: 0 2px 8px rgba(255, 71, 87, 0.4);
+          box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
         }
         
-        /* Tablet styles */
-        @media (max-width: 1024px) {
-          .cta-flotante-container {
-            bottom: 28px;
-            right: 28px;
-          }
-        }
-        
-        /* Mobile Large - 768px and down */
+        /* Mobile Optimizations */
         @media (max-width: 768px) {
-          .cta-flotante-container {
-            bottom: 20px;
-            right: 20px;
+          .cta-container {
+            bottom: clamp(16px, 5vw, 24px);
+            right: clamp(12px, 4vw, 20px);
           }
           
-          .cta-flotante {
-            padding: 14px 20px;
-            border-radius: 24px;
-            min-width: 140px;
+          .glow-bg {
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            filter: blur(20px);
+          }
+          
+          .cta-button {
             box-shadow: 
-              0 6px 24px rgba(232, 180, 184, 0.4),
-              0 3px 12px rgba(0, 0, 0, 0.1);
+              0 15px 40px rgba(0, 0, 0, 0.12),
+              0 0 0 1px rgba(255, 255, 255, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
           }
           
-          .cta-flotante:hover {
-            box-shadow: 
-              0 8px 32px rgba(232, 180, 184, 0.5),
-              0 4px 16px rgba(0, 0, 0, 0.15);
+          .particles {
+            display: none; /* Hide particles on mobile for performance */
           }
           
-          .cta-ring {
-            top: -3px;
-            left: -3px;
-            right: -3px;
-            bottom: -3px;
-            border-radius: 27px;
-          }
-          
-          .cta-content {
-            gap: 10px;
-          }
-          
-          .cta-icon {
-            font-size: 20px;
-          }
-          
-          .cta-main {
-            font-size: 14px;
-            font-weight: 600;
-          }
-          
-          .cta-sub {
-            font-size: 11px;
-          }
-          
-          .notification-dot {
+          .status-dot {
             width: 12px;
             height: 12px;
-            top: -2px;
-            right: -2px;
+            border-width: 2px;
+          }
+          
+          .notification-pulse {
+            width: 16px;
+            height: 16px;
           }
         }
         
-        /* Mobile Medium - 480px and down */
         @media (max-width: 480px) {
-          .cta-flotante-container {
-            bottom: 16px;
-            right: 16px;
+          .cta-container {
+            bottom: 14px;
+            right: 10px;
           }
           
-          .cta-flotante {
-            padding: 12px 16px;
-            border-radius: 20px;
+          .cta-button {
             min-width: 120px;
-            box-shadow: 
-              0 4px 16px rgba(232, 180, 184, 0.4),
-              0 2px 8px rgba(0, 0, 0, 0.1);
           }
           
-          .cta-flotante:hover {
-            box-shadow: 
-              0 6px 24px rgba(232, 180, 184, 0.5),
-              0 3px 12px rgba(0, 0, 0, 0.15);
-          }
-          
-          .cta-ring {
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 22px;
-          }
-          
-          .cta-content {
-            gap: 8px;
-          }
-          
-          .cta-icon {
-            font-size: 18px;
-          }
-          
-          .cta-main {
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.2px;
-          }
-          
-          .cta-sub {
-            font-size: 10px;
-            letter-spacing: 0.1px;
-          }
-          
-          .notification-dot {
+          .status-dot {
             width: 10px;
             height: 10px;
-            top: -1px;
-            right: -1px;
-            border-width: 1px;
+            top: -4px;
+            right: -4px;
           }
         }
         
-        /* Mobile Small - 360px and down */
-        @media (max-width: 360px) {
-          .cta-flotante-container {
-            bottom: 12px;
-            right: 12px;
-          }
-          
-          .cta-flotante {
-            padding: 10px 14px;
-            border-radius: 18px;
-            min-width: 100px;
-          }
-          
-          .cta-content {
-            gap: 6px;
-          }
-          
-          .cta-icon {
-            font-size: 16px;
-          }
-          
-          .cta-main {
-            font-size: 12px;
-          }
-          
-          .cta-sub {
-            font-size: 9px;
-          }
-          
-          .notification-dot {
-            width: 8px;
-            height: 8px;
-            top: 0px;
-            right: 0px;
-          }
-        }
-        
-        /* Landscape mobile orientation */
-        @media (max-height: 500px) and (orientation: landscape) {
-          .cta-flotante-container {
-            bottom: 12px;
-            right: 12px;
-          }
-          
-          .cta-flotante {
-            padding: 10px 16px;
-            border-radius: 18px;
-          }
-          
-          .cta-main {
-            font-size: 12px;
-          }
-          
-          .cta-sub {
-            font-size: 9px;
-          }
-        }
-        
-        /* Touch device optimizations */
+        /* Touch Device Optimizations */
         @media (hover: none) and (pointer: coarse) {
-          .cta-flotante {
-            /* Increase touch target size */
-            min-height: 48px;
+          .cta-button {
+            min-height: 52px;
             display: flex;
             align-items: center;
           }
           
-          .cta-flotante:hover {
-            /* Reset hover styles for touch devices */
-            box-shadow: 
-              0 8px 32px rgba(232, 180, 184, 0.4),
-              0 4px 16px rgba(0, 0, 0, 0.1);
-          }
-          
-          .cta-flotante:active {
+          .cta-button:active {
             transform: scale(0.95);
-            transition: transform 0.1s ease;
+            box-shadow: 
+              0 8px 25px rgba(0, 0, 0, 0.15),
+              inset 0 2px 4px rgba(0, 0, 0, 0.1);
           }
         }
         
-        /* Accessibility improvements */
+        /* Accessibility & Performance */
         @media (prefers-reduced-motion: reduce) {
-          .cta-flotante,
-          .cta-ring,
-          .cta-shine,
-          .notification-dot {
+          .glow-bg,
+          .animated-border,
+          .shine-effect,
+          .particles .particle,
+          .notification-pulse,
+          .status-dot {
             animation: none !important;
           }
           
           * {
             animation-duration: 0.01ms !important;
             animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
+            transition-duration: 0.2s !important;
           }
         }
         
-        /* High contrast mode */
         @media (prefers-contrast: high) {
-          .cta-flotante {
-            background: #000;
-            border: 3px solid #fff;
-            color: #fff;
+          .cta-button {
+            background: #ffffff;
+            border: 3px solid var(--text-dark);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
           }
           
-          .cta-main,
-          .cta-sub {
-            color: #fff;
+          .main-text {
+            -webkit-text-fill-color: var(--text-dark);
+            color: var(--text-dark);
           }
           
-          .cta-ring {
-            background: #fff;
-          }
-          
-          .notification-dot {
-            background: #ff0000;
-            border-color: #fff;
+          .sub-text {
+            color: var(--text-dark);
           }
         }
         
         /* Dark mode support */
         @media (prefers-color-scheme: dark) {
-          .cta-flotante {
-            background: linear-gradient(135deg, #E8B4B8 0%, #D9A5A9 100%);
-            border-color: rgba(255, 255, 255, 0.3);
+          .cta-button {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 
-              0 8px 32px rgba(232, 180, 184, 0.3),
-              0 4px 16px rgba(0, 0, 0, 0.3);
-          }
-          
-          .cta-flotante:hover {
-            box-shadow: 
-              0 12px 48px rgba(232, 180, 184, 0.4),
-              0 8px 24px rgba(0, 0, 0, 0.4);
+              0 25px 60px rgba(0, 0, 0, 0.4),
+              0 0 0 1px rgba(255, 255, 255, 0.05);
           }
         }
         
-        /* Safe area handling for devices with notches */
+        /* Safe area handling */
         @supports (padding: env(safe-area-inset-bottom)) {
-          .cta-flotante-container {
-            bottom: calc(32px + env(safe-area-inset-bottom));
-            right: calc(32px + env(safe-area-inset-right));
+          .cta-container {
+            bottom: calc(clamp(20px, 4vw, 36px) + env(safe-area-inset-bottom));
+            right: calc(clamp(16px, 4vw, 36px) + env(safe-area-inset-right));
           }
           
           @media (max-width: 768px) {
-            .cta-flotante-container {
-              bottom: calc(20px + env(safe-area-inset-bottom));
-              right: calc(20px + env(safe-area-inset-right));
+            .cta-container {
+              bottom: calc(clamp(16px, 5vw, 24px) + env(safe-area-inset-bottom));
+              right: calc(clamp(12px, 4vw, 20px) + env(safe-area-inset-right));
             }
           }
-          
-          @media (max-width: 480px) {
-            .cta-flotante-container {
-              bottom: calc(16px + env(safe-area-inset-bottom));
-              right: calc(16px + env(safe-area-inset-right));
-            }
-          }
+        }
+        
+        /* Focus styles */
+        .cta-button:focus-visible {
+          outline: 3px solid #E8B4B8;
+          outline-offset: 4px;
+        }
+        
+        /* Performance optimizations */
+        .glow-bg,
+        .animated-border,
+        .cta-button,
+        .particles .particle {
+          transform: translateZ(0);
+          backface-visibility: hidden;
+          will-change: transform;
         }
       `}</style>
     </>
   )
 }
 
-export default CTAFlotanteWithStyles
+export default ModernFloatingCTAWithStyles
