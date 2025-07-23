@@ -304,7 +304,7 @@ const HeroSection = () => {
   )
 
   return (
-    <section className={styles.hero} aria-label="Gestiona tu clínica estética de forma simple y rentable">
+    <section className={styles.hero} aria-label="Software para clínicas estéticas que quieren crecer sin caos">
       {/* Orbs optimizados */}
       <div className={styles.orbs} aria-hidden="true">
         <div className={`${styles.orb} ${styles.orb1}`} />
@@ -319,7 +319,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            ✨ Experiencia Premium
+            🚀 Para clínicas que quieren crecer
           </motion.div>
           
           <motion.h1 
@@ -328,8 +328,8 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Gestiona tu clínica estética<br/>
-            <span className={styles.accent}>simple y rentable</span>
+            Deja de perder dinero<br/>
+            <span className={styles.accent}>por desorganización</span>
           </motion.h1>
           
           <motion.p 
@@ -338,8 +338,8 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Software profesional que simplifica citas, tratamientos y pagos. 
-            Aumenta tus ingresos hasta 30% con herramientas diseñadas para tu éxito.
+            El software que convierte el caos de tu clínica en un negocio rentable. 
+            <strong>Sin complicaciones, sin pérdida de tiempo.</strong>
           </motion.p>
           
           <motion.div 
@@ -352,9 +352,9 @@ const HeroSection = () => {
               <a 
                 href="https://calendly.com/tu-demo" 
                 className={`${styles.btn} ${styles.btnPrimary}`}
-                aria-label="Agendar demo gratuita"
+                aria-label="Ver la demo ahora"
               >
-                <span>Agendar Demo Gratis</span>
+                <span>Ver Demo de 3 Minutos</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                   <path d="m9 18 6-6-6-6"/>
                 </svg>
@@ -363,9 +363,9 @@ const HeroSection = () => {
               <button 
                 className={`${styles.btn} ${styles.btnSecondary}`}
                 onClick={scrollToPricing}
-                aria-label="Ver precios y planes"
+                aria-label="Ver precios"
               >
-                Ver Precios
+                Desde €89/mes
               </button>
             </div>
             
@@ -402,9 +402,9 @@ const HeroSection = () => {
             </div>
             
             <div className={styles.trustSignals}>
-              <span>🔒 Datos seguros y privados</span>
-              <span>✓ Configuración en 5 minutos</span>
-              <span>📞 Soporte inmediato</span>
+              <span>⚡ Listo en 10 minutos</span>
+              <span>💰 30 días gratis</span>
+              <span>🔒 Sin permanencia</span>
             </div>
           </motion.div>
           
@@ -415,16 +415,16 @@ const HeroSection = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <div>
-              <strong>200+</strong>
-              <span>Clínicas activas</span>
+              <strong>€2.3M+</strong>
+              <span>Facturado por clientes</span>
             </div>
             <div>
-              <strong>4.9</strong>
-              <span>Rating promedio</span>
+              <strong>4.8★</strong>
+              <span>Valoración real</span>
             </div>
             <div>
-              <strong>+30%</strong>
-              <span>Más ingresos</span>
+              <strong>127</strong>
+              <span>Clínicas confían en nosotros</span>
             </div>
           </motion.div>
         </div>

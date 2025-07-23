@@ -660,46 +660,45 @@ const LeadMagnet = () => {
         </div>
         
         <div className="container">
-          <div className="badge">🎁 Oferta Limitada - Solo Hoy</div>
+          <div className="badge">⚠️ Antes que tu competencia</div>
           
           <h1 className="title">
-            <span className="accent">Convierte Pacientes</span>
+            <span className="accent">Pacientes que Regresan</span>
             <br />
-            en Fans VIP
+            Sin Suplicar
           </h1>
           
           <p className="subtitle">
-            La guía secreta que usan las clínicas más exitosas para 
-            <strong> fidelizar pacientes premium</strong> y 
-            <strong> triplicar su facturación</strong> en 90 días
+            El método que usan las <strong>clínicas TOP</strong> para que sus pacientes 
+            <strong> vuelvan por voluntad propia</strong> y recomienden sin parar
           </p>
 
           <div className="benefits">
-            <div className="benefit">👥 +87% Retención</div>
-            <div className="benefit">⭐ 5★ Reseñas</div>
-            <div className="benefit">🛡️ 100% Probado</div>
+            <div className="benefit">💰 Más ingresos</div>
+            <div className="benefit">🔄 Pacientes fieles</div>
+            <div className="benefit">⏰ 5 min lectura</div>
           </div>
 
           <button 
             className={`cta ${clicked ? 'loading' : ''}`}
             onClick={handleDownload}
             disabled={clicked}
-            aria-label="Descargar guía gratuita para fidelizar pacientes"
+            aria-label="Descargar método gratuito"
           >
             {clicked ? (
               <>
                 <span>📥</span>
-                <span>¡Descargando tu guía!</span>
+                <span>¡Ya es tuyo!</span>
               </>
             ) : (
               <>
-                <span>🎁</span>
-                <span>Descargar Guía Gratis</span>
+                <span>⚡</span>
+                <span>Quiero el Método Gratis</span>
               </>
             )}
           </button>
           
-          <p className="urgency">137 profesionales ya la descargaron hoy</p>
+          <p className="urgency">67 clínicas lo aplicaron esta semana</p>
         </div>
       </section>
       
@@ -715,78 +714,70 @@ const LeadMagnet = () => {
             </button>
             
             <div className="modal-header">
-              <h2>🎉 ¡Descarga Completada!</h2>
-              <p>Tu Guía VIP ya está guardada en tu dispositivo</p>
+              <h2>✅ ¡Listo para usar!</h2>
+              <p>Tu método está descargado y esperándote</p>
             </div>
 
             <div className="download-success">
-              <div className="success-icon">✅</div>
-              <h3>Archivo descargado exitosamente</h3>
-              <p>Busca <strong>"guia-fidelizacion-pacientes-vip.pdf"</strong> en tu carpeta de descargas</p>
+              <div className="success-icon">🎯</div>
+              <h3>Descarga completada</h3>
+              <p>Revisa tu carpeta de <strong>Descargas</strong> y abre el PDF</p>
               
               <div className="tips">
-                <h4>💡 Consejos para aprovechar tu guía:</h4>
-                <div className="tip">📖 Abre el PDF con cualquier lector</div>
-                <div className="tip">📱 Descárgalo en tu móvil también</div>
-                <div className="tip">🖨️ Imprímelo para referencia rápida</div>
-                <div className="tip">📤 Compártelo con tu equipo</div>
+                <h4>🚀 Para obtener mejores resultados:</h4>
+                <div className="tip">📖 Léelo completo (solo 5 minutos)</div>
+                <div className="tip">✅ Aplica 1 estrategia por semana</div>
+                <div className="tip">📱 Guárdalo en tu móvil</div>
+                <div className="tip">👥 Compártelo con tu equipo</div>
               </div>
             </div>
 
             <div className="strategies">
-              <h3>Vista previa de lo que encontrarás:</h3>
+              <h3>Lo que vas a descubrir:</h3>
               
               <div className="strategy">
-                <div className="icon">💖</div>
+                <div className="icon">💎</div>
                 <div>
-                  <h3>El Toque Personal que Enamora</h3>
-                  <p>Crea experiencias únicas recordando cada detalle importante de tus pacientes.</p>
+                  <h3>El Sistema VIP</h3>
+                  <p>Cómo crear una experiencia que tus pacientes no puedan encontrar en otro lado.</p>
                 </div>
               </div>
 
               <div className="strategy">
-                <div className="icon">⭐</div>
+                <div className="icon">🎯</div>
                 <div>
-                  <h3>Club VIP de Beneficios Exclusivos</h3>
-                  <p>Diseña un programa de lealtad irresistible con acceso anticipado.</p>
+                  <h3>Seguimiento Inteligente</h3>
+                  <p>La secuencia exacta de mensajes que hace que vuelvan sin presionar.</p>
                 </div>
               </div>
 
               <div className="strategy">
-                <div className="icon">✨</div>
+                <div className="icon">💝</div>
                 <div>
-                  <h3>Experiencia 360° Memorable</h3>
-                  <p>Cada punto de contacto debe brillar: bienvenida, tratamiento y seguimiento.</p>
+                  <h3>Momentos de Sorpresa</h3>
+                  <p>Los pequeños detalles que crean vínculos emocionales duraderos.</p>
                 </div>
               </div>
 
               <div className="strategy">
-                <div className="icon">💬</div>
+                <div className="icon">📈</div>
                 <div>
-                  <h3>Comunicación que Conecta</h3>
-                  <p>Mantén una relación continua con contenido de valor personalizado.</p>
-                </div>
-              </div>
-
-              <div className="strategy">
-                <div className="icon">🎁</div>
-                <div>
-                  <h3>Sorpresas que Crean Vínculos</h3>
-                  <p>Los detalles inesperados marcan la diferencia y generan lealtad.</p>
+                  <h3>Resultados Medibles</h3>
+                  <p>Cómo trackear tu progreso y optimizar cada mejora.</p>
                 </div>
               </div>
             </div>
 
             <div className="modal-cta">
-              <h3>¿Lista para transformar tu clínica?</h3>
-              <button onClick={() => window.open('mailto:info@tuclinica.com', '_blank')}>
-                💬 Solicitar Consultoría Gratuita
+              <h3>¿Quieres implementarlo ya?</h3>
+              <button onClick={() => window.open('https://calendly.com/tu-consulta', '_blank')}>
+                🚀 Agendar Consulta Gratuita
               </button>
               <button 
                 className="secondary-btn"
                 onClick={handleDownload}
               >
-                📥 Descargar Nuevamente
+                📥 Descargar de Nuevo
               </button>
             </div>
           </div>

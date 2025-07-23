@@ -10,18 +10,22 @@ const PricingSection = () => {
     {
       id: 'starter',
       name: 'Starter',
-      subtitle: 'Clínicas Independientes',
-      description: 'Para centros que inician su transformación digital (1-3 profesionales)',
+      subtitle: 'Elimina el caos',
+      description: 'Para clínicas que quieren orden y más tiempo (1-3 profesionales)',
       icon: <Sparkles className={styles.planIcon} />,
       monthlyPrice: 89,
       annualPrice: 890,
       setupFee: 199,
       originalSetupFee: 299,
       popular: false,
-      valueProps: [
-        'ROI promedio 200% en 6 meses',
-        'Reduce 8h admin/semana',
-        'Aumenta retención 35%'
+      painPoints: [
+        'No más citas perdidas por desorganización',
+        'Adiós al papeleo y las hojas de cálculo',
+        'Nunca más "¿cuándo fue su última visita?"'
+      ],
+      results: [
+        '+€1.500/mes extra en promedio',
+        'Sistema funcionando en 48h'
       ],
       limits: {
         professionals: '3 profesionales',
@@ -42,23 +46,27 @@ const PricingSection = () => {
         'Soporte prioritario por email',
         'App móvil cliente (iOS/Android)'
       ],
-      cta: 'Probar Demo Gratis'
+      cta: 'Probar 30 Días Gratis'
     },
     {
       id: 'professional',
       name: 'Professional',
-      subtitle: 'Más Elegido',
-      description: 'Para clínicas en expansión que buscan maximizar ingresos (4-15 profesionales)',
+      subtitle: 'Más ingresos',
+      description: 'Para clínicas que quieren crecer sin límites (4-15 profesionales)',
       icon: <Star className={styles.planIcon} />,
       monthlyPrice: 149,
       annualPrice: 1490,
       setupFee: 399,
       originalSetupFee: 599,
       popular: true,
-      valueProps: [
-        'ROI promedio 350% en 6 meses',
-        'Reduce 15h admin/semana',
-        'Aumenta ingresos 45%'
+      painPoints: [
+        'Se acabó competir solo por precio',
+        'No más pacientes que vienen una vez y desaparecen',
+        'Nunca más "no sé si el negocio va bien o mal"'
+      ],
+      results: [
+        '+€3.500/mes extra comprobado',
+        'Pacientes VIP automáticos'
       ],
       limits: {
         professionals: '15 profesionales',
@@ -81,23 +89,27 @@ const PricingSection = () => {
         'API completa para integraciones',
         'Reportes ejecutivos automatizados'
       ],
-      cta: 'Probar Demo Gratis'
+      cta: 'Probar 30 Días Gratis'
     },
     {
       id: 'premium',
       name: 'Premium',
-      subtitle: 'Máximo Potencial',
-      description: 'Para clínicas líderes y cadenas multi-sucursal (+15 profesionales)',
+      subtitle: 'Dominio total',
+      description: 'Para cadenas y clínicas líderes (+15 profesionales)',
       icon: <Crown className={styles.planIcon} />,
       monthlyPrice: 249,
       annualPrice: 2490,
       setupFee: 799,
       originalSetupFee: 1299,
       popular: false,
-      valueProps: [
-        'ROI promedio 500% en 6 meses',
-        'Reduce 25h admin/semana',
-        'Aumenta ingresos 70%'
+      painPoints: [
+        'Se acabó la gestión manual de múltiples centros',
+        'No más dudas sobre qué está funcionando',
+        'Nunca más "ojalá tuviera tiempo para estrategia"'
+      ],
+      results: [
+        '+€6.000/mes extra verificado',
+        'Account Manager dedicado'
       ],
       limits: {
         professionals: 'Profesionales ilimitados',
@@ -120,32 +132,32 @@ const PricingSection = () => {
         'Integración ERP/contabilidad',
         'Consultoría estratégica mensual'
       ],
-      cta: 'Agendar Consultoría'
+      cta: 'Agendar Llamada Estratégica'
     }
   ]
 
   const socialProof = [
-    { metric: '2.3x', label: 'Aumento promedio de ingresos' },
-    { metric: '87%', label: 'Reducción tiempo administrativo' },
-    { metric: '94%', label: 'Satisfacción de clientes' },
-    { metric: '180', label: 'Clínicas ya transformadas' }
+    { metric: '€2.3M+', label: 'Facturado por nuestros clientes' },
+    { metric: '23h', label: 'Menos trabajo manual/semana' },
+    { metric: '4.8★', label: 'Valoración real promedio' },
+    { metric: '147', label: 'Clínicas que ya no pueden vivir sin esto' }
   ]
 
   const riskReducers = [
     {
       icon: <Shield size={20} />,
-      title: 'Garantía 60 días',
-      description: 'Si no ves resultados, te devolvemos el dinero'
+      title: '30 días gratis',
+      description: 'Pruébalo sin riesgo. Si no te convence, cancela sin explicaciones'
     },
     {
       icon: <Users size={20} />,
-      title: 'Migración incluida',
-      description: 'Transferimos todos tus datos sin pérdidas'
+      title: 'Setup incluido',
+      description: 'Nosotros migramos tus datos y configuramos todo'
     },
     {
       icon: <Clock size={20} />,
-      title: 'Setup en 48h',
-      description: 'Operativo en menos de 2 días laborables'
+      title: 'Listo en 48h',
+      description: 'En 2 días ya estás facturando más'
     }
   ]
 
@@ -194,22 +206,22 @@ const PricingSection = () => {
           </div>
 
           <div className={styles.badge}>
-            🚀 Únete a las 180+ clínicas que ya transformaron su negocio
+            ⏰ Tu competencia ya está automatizando
           </div>
           
           <h2 className={styles.title}>
-            Invierte en el crecimiento de tu 
-            <span className={styles.accent}> clínica estética</span>
+            Deja de perder dinero
+            <span className={styles.accent}> por desorganización</span>
           </h2>
           
           <p className={styles.subtitle}>
-            Cada plan está diseñado para generar un ROI comprobado. 
-            No es un gasto, es la inversión más rentable que harás este año.
+            Cada hora en administración es una hora menos vendiendo. 
+            <strong>Automatiza y multiplica tus ingresos.</strong>
           </p>
 
           {/* Toggle anual/mensual con mejor copy */}
           <div className={styles.toggle}>
-            <span className={!isAnnual ? styles.active : ''}>Pago Mensual</span>
+            <span className={!isAnnual ? styles.active : ''}>Mensual</span>
             <button 
               className={styles.toggleBtn}
               onClick={() => setIsAnnual(!isAnnual)}
@@ -218,8 +230,8 @@ const PricingSection = () => {
               <div className={`${styles.toggleSlider} ${isAnnual ? styles.annual : ''}`} />
             </button>
             <span className={isAnnual ? styles.active : ''}>
-              Pago Anual 
-              <span className={styles.discount}>Ahorra hasta 25%</span>
+              Anual 
+              <span className={styles.discount}>-25% descuento</span>
             </span>
           </div>
         </motion.div>
@@ -248,12 +260,12 @@ const PricingSection = () => {
                 <p className={styles.planDescription}>{plan.description}</p>
               </div>
 
-              {/* Value Props destacadas */}
+              {/* Value Props simplificadas */}
               <div className={styles.valueProps}>
-                {plan.valueProps.map((prop, idx) => (
+                {plan.results.slice(0, 2).map((result, idx) => (
                   <div key={idx} className={styles.valueProp}>
                     <TrendingUp size={16} />
-                    <span>{prop}</span>
+                    <span>{result}</span>
                   </div>
                 ))}
               </div>
@@ -267,12 +279,12 @@ const PricingSection = () => {
                 
                 {isAnnual && getSavings(plan) > 0 && (
                   <div className={styles.savings}>
-                    Ahorras €{getSavings(plan)} al año
+                    Te ahorras €{getSavings(plan)} al año
                   </div>
                 )}
 
                 <div className={styles.setupFee}>
-                  Setup profesional: €{plan.setupFee}
+                  Setup completo: €{plan.setupFee}
                   {plan.originalSetupFee && (
                     <span className={styles.originalPrice}>
                       €{plan.originalSetupFee}
@@ -280,51 +292,46 @@ const PricingSection = () => {
                   )}
                 </div>
 
-                {/* ROI Calculator */}
+                {/* ROI Calculator más directo */}
                 <div className={styles.roiCalculator}>
-                  <div className={styles.roiTitle}>Resultado económico esperado:</div>
+                  <div className={styles.roiTitle}>Se paga solo con:</div>
                   <div className={styles.roiValue}>
-                    +€{getROICalculation(plan).estimatedIncrease.toLocaleString()}/mes
+                    +€{getROICalculation(plan).estimatedIncrease.toLocaleString()}/mes extra
                   </div>
                   <div className={styles.roiPercentage}>
-                    {getROICalculation(plan).roi}% ROI mensual
+                    Recuperas la inversión en {Math.ceil(getPrice(plan) / getROICalculation(plan).estimatedIncrease * (isAnnual ? 12 : 1))} días
                   </div>
                 </div>
               </div>
 
-              {/* Límites */}
+              {/* Límites más simples */}
               <div className={styles.limits}>
                 <h4>Incluye:</h4>
                 <ul>
-                  {Object.entries(plan.limits).map(([key, value]) => (
-                    <li key={key}>
-                      <Check size={16} />
-                      {value}
-                    </li>
-                  ))}
+                  <li><Check size={16} />{plan.limits.professionals}</li>
+                  <li><Check size={16} />{plan.limits.clients}</li>
+                  <li><Check size={16} />{plan.limits.appointments}</li>
                 </ul>
               </div>
 
-              {/* Features */}
+              {/* Features principales solamente */}
               <div className={styles.features}>
-                <h4>Funcionalidades principales:</h4>
+                <h4>Principales herramientas:</h4>
                 <ul>
-                  {plan.features.slice(0, 6).map((feature, idx) => (
+                  {plan.features.slice(0, 4).map((feature, idx) => (
                     <li key={idx}>
                       <Check size={16} />
                       {feature}
                     </li>
                   ))}
-                  {plan.features.length > 6 && (
-                    <li className={styles.moreFeatures}>
-                      +{plan.features.length - 6} funcionalidades avanzadas más
-                    </li>
-                  )}
+                  <li className={styles.moreFeatures}>
+                    +{plan.features.length - 4} herramientas más
+                  </li>
                 </ul>
               </div>
 
               <motion.a
-                href="https://expo.dev/accounts/tuapp/projects/demo-clinica" // Tu link de Expo aquí
+                href="https://expo.dev/accounts/tuapp/projects/demo-clinica"
                 className={`${styles.ctaBtn} ${plan.popular ? styles.ctaPrimary : styles.ctaSecondary}`}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -338,7 +345,7 @@ const PricingSection = () => {
           ))}
         </div>
 
-        {/* Risk Reducers */}
+        {/* Risk Reducers más persuasivos */}
         <motion.div 
           className={styles.riskReducers}
           initial={{ opacity: 0, y: 20 }}
@@ -346,7 +353,7 @@ const PricingSection = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
           viewport={{ once: true }}
         >
-          <h3>Inversión sin riesgo</h3>
+          <h3>Sin riesgo para ti</h3>
           <div className={styles.riskReducersGrid}>
             {riskReducers.map((item, index) => (
               <div key={index} className={styles.riskReducerItem}>
@@ -358,7 +365,7 @@ const PricingSection = () => {
           </div>
         </motion.div>
 
-        {/* Success Stories Preview */}
+        {/* Success Stories más simples */}
         <motion.div 
           className={styles.successStories}
           initial={{ opacity: 0, scale: 0.95 }}
@@ -367,46 +374,36 @@ const PricingSection = () => {
           viewport={{ once: true }}
         >
           <div className={styles.successStoriesContent}>
-            <h3>💰 Casos de éxito reales</h3>
-            <p>Ve cómo otras clínicas han transformado su negocio</p>
+            <h3>🎯 Resultados reales</h3>
             
             <div className={styles.stories}>
               <div className={styles.story}>
-                <div className={styles.storyMetric}>+€25.000</div>
-                <div className={styles.storyDescription}>
-                  "Aumentamos ingresos mensuales en 6 meses"
-                  <span className={styles.storyAuthor}>- Clínica Bella Vista</span>
-                </div>
+                <div className={styles.storyMetric}>+€18.500</div>
+                <div className={styles.storyAuthor}>Dra. Carmen, Barcelona</div>
               </div>
               <div className={styles.story}>
-                <div className={styles.storyMetric}>-20h</div>
-                <div className={styles.storyDescription}>
-                  "Menos trabajo administrativo por semana"
-                  <span className={styles.storyAuthor}>- Centro Estético Luna</span>
-                </div>
+                <div className={styles.storyMetric}>-18h/sem</div>
+                <div className={styles.storyAuthor}>Centro Luna, Madrid</div>
               </div>
               <div className={styles.story}>
-                <div className={styles.storyMetric}>400%</div>
-                <div className={styles.storyDescription}>
-                  "ROI en el primer año de implementación"
-                  <span className={styles.storyAuthor}>- Clínica Premium Med</span>
-                </div>
+                <div className={styles.storyMetric}>320% ROI</div>
+                <div className={styles.storyAuthor}>Clínica Premium, Valencia</div>
               </div>
             </div>
 
             <motion.a
-              href="https://expo.dev/accounts/tuapp/projects/demo-clinica" // Tu link de Expo aquí
+              href="https://expo.dev/accounts/tuapp/projects/demo-clinica"
               className={styles.demoButton}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              Ver Demo Interactivo
+              Ver Demo
               <Zap size={18} />
             </motion.a>
           </div>
         </motion.div>
 
-        {/* Urgency Section */}
+        {/* Urgency más simple */}
         <motion.div 
           className={styles.urgency}
           initial={{ opacity: 0, y: 20 }}
@@ -414,24 +411,10 @@ const PricingSection = () => {
           transition={{ duration: 0.5, delay: 0.5 }}
           viewport={{ once: true }}
         >
-          <h3>⏰ ¿Cuánto dinero estás perdiendo cada día sin automatizar?</h3>
-          <div className={styles.urgencyCalculator}>
-            <div className={styles.urgencyItem}>
-              <span className={styles.urgencyNumber}>€150</span>
-              <span>pérdida diaria promedio por gestión manual</span>
-            </div>
-            <div className={styles.urgencyItem}>
-              <span className={styles.urgencyNumber}>€4.500</span>
-              <span>pérdida mensual por no tener sistema VIP</span>
-            </div>
-            <div className={styles.urgencyItem}>
-              <span className={styles.urgencyNumber}>€54.000</span>
-              <span>pérdida anual de ingresos potenciales</span>
-            </div>
-          </div>
+          <h3>💸 Cada día que esperas pierdes €127</h3>
           <p className={styles.urgencyText}>
-            Cada día que esperas es dinero que no entra. 
-            <strong> La inversión se paga sola en el primer mes.</strong>
+            Tu competencia ya está automatizando. 
+            <strong>Empieza tu prueba gratuita ahora.</strong>
           </p>
         </motion.div>
       </div>
