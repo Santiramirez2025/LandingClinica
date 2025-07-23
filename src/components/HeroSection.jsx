@@ -9,6 +9,7 @@ const HeroSection = () => {
   const [hasError, setHasError] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
   const [videoLoadAttempted, setVideoLoadAttempted] = useState(false)
+  const [showNotification, setShowNotification] = useState(true)
   const videoRef = useRef(null)
   
   // Mouse tracking optimizado
@@ -54,6 +55,14 @@ const HeroSection = () => {
     }
   }, [handleMouseMove])
 
+  // Auto-hide notification after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowNotification(false)
+    }, 5000)
+    return () => clearTimeout(timer)
+  }, [])
+
   // Función mejorada para verificar si el video existe
   const checkVideoExists = useCallback(async (src) => {
     try {
@@ -95,6 +104,17 @@ const HeroSection = () => {
     })
   }, [])
 
+  // Función para manejar clic en botones de tienda (desactivados)
+  const handleStoreClick = useCallback((e, store) => {
+    e.preventDefault()
+    console.log(`${store} - Próximamente disponible`)
+    // Opcional: mostrar un toast o modal informativo
+  }, [])
+
+  const handleNotificationClose = useCallback(() => {
+    setShowNotification(false)
+  }, [])
+
   // Efecto para intentar cargar el video
   useEffect(() => {
     if (!videoLoadAttempted) {
@@ -114,6 +134,174 @@ const HeroSection = () => {
       })
     }
   }, [videoLoadAttempted, checkVideoExists])
+
+  // Componente de fallback optimizado para clínicas estéticas
+  const OptimizedFallback = () => (
+    <div className={styles.fallback}>
+      {/* Status Bar Mejorado */}
+      <div className={styles.statusBar}>
+        <span>9:41</span>
+        <div className={styles.statusIcons}>
+          <span className={styles.signal}>📶</span>
+          <span className={styles.wifi}>📶</span>
+          <span className={styles.battery}>🔋</span>
+        </div>
+      </div>
+      
+      {/* Header con branding de clínica */}
+      <div className={styles.appHeader}>
+        <div className={styles.clinicBranding}>
+          <div className={styles.clinicLogo}>
+            <span className={styles.logoIcon}>✨</span>
+          </div>
+          <div className={styles.clinicInfo}>
+            <h3>Clínica Estética Premium</h3>
+            <span>Dashboard Principal</span>
+          </div>
+        </div>
+        <div className={styles.headerActions}>
+          <button className={styles.notificationBtn} aria-label="Notificaciones">
+            🔔
+            <span className={styles.notificationBadge}>3</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Métricas Principales del Dashboard */}
+      <div className={styles.metricsGrid}>
+        <motion.div 
+          className={`${styles.metricCard} ${styles.revenueCard}`}
+          whileHover={{ scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        >
+          <div className={styles.metricHeader}>
+            <span className={styles.metricIcon}>💰</span>
+            <span className={styles.metricLabel}>Ingresos Hoy</span>
+          </div>
+          <div className={styles.metricValue}>€8.450</div>
+          <div className={styles.metricGrowth}>+23% vs ayer</div>
+        </motion.div>
+
+        <motion.div 
+          className={`${styles.metricCard} ${styles.appointmentCard}`}
+          whileHover={{ scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        >
+          <div className={styles.metricHeader}>
+            <span className={styles.metricIcon}>📅</span>
+            <span className={styles.metricLabel}>Citas Hoy</span>
+          </div>
+          <div className={styles.metricValue}>18</div>
+          <div className={styles.metricStatus}>3 pendientes</div>
+        </motion.div>
+      </div>
+
+      {/* Próxima Cita con más detalles */}
+      <motion.div 
+        className={styles.nextAppointmentCard}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <div className={styles.appointmentHeader}>
+          <span className={styles.appointmentLabel}>Próxima Cita</span>
+          <span className={styles.appointmentTime}>10:30 AM</span>
+        </div>
+        
+        <div className={styles.appointmentDetails}>
+          <div className={styles.patientInfo}>
+            <div className={styles.patientAvatar}>ML</div>
+            <div className={styles.patientData}>
+              <strong>María López</strong>
+              <span className={styles.patientType}>Cliente VIP 💎</span>
+            </div>
+          </div>
+          
+          <div className={styles.treatmentInfo}>
+            <div className={styles.treatmentName}>Botox + Ácido Hialurónico</div>
+            <div className={styles.treatmentMeta}>
+              <span>120 min</span>
+              <span>•</span>
+              <span>Dr. García</span>
+              <span>•</span>
+              <span className={styles.treatmentPrice}>€450</span>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.appointmentActions}>
+          <button className={styles.actionBtn}>
+            📋 Ver Historial
+          </button>
+          <button className={`${styles.actionBtn} ${styles.primaryAction}`}>
+            ✓ Confirmar
+          </button>
+        </div>
+      </motion.div>
+
+      {/* Quick Actions relevantes */}
+      <div className={styles.quickActions}>
+        <motion.button 
+          className={styles.quickActionBtn}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <span className={styles.actionIcon}>👥</span>
+          <span>Gestionar Citas</span>
+        </motion.button>
+        <motion.button 
+          className={styles.quickActionBtn}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <span className={styles.actionIcon}>💎</span>
+          <span>Clientes VIP</span>
+        </motion.button>
+        <motion.button 
+          className={styles.quickActionBtn}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <span className={styles.actionIcon}>🎁</span>
+          <span>Ofertas Activas</span>
+        </motion.button>
+        <motion.button 
+          className={styles.quickActionBtn}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <span className={styles.actionIcon}>📊</span>
+          <span>Reportes</span>
+        </motion.button>
+      </div>
+
+      {/* Notificación push simulada */}
+      {showNotification && (
+        <motion.div 
+          className={styles.pushNotification}
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -100, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        >
+          <div className={styles.notificationContent}>
+            <div className={styles.notificationIcon}>🎉</div>
+            <div className={styles.notificationText}>
+              <strong>¡Nueva suscripción VIP!</strong>
+              <span>Ana Rodríguez se ha unido al plan Premium</span>
+            </div>
+          </div>
+          <button 
+            className={styles.notificationClose}
+            onClick={handleNotificationClose}
+            aria-label="Cerrar notificación"
+          >
+            ×
+          </button>
+        </motion.div>
+      )}
+    </div>
+  )
 
   return (
     <section className={styles.hero} aria-label="Gestiona tu clínica estética de forma simple y rentable">
@@ -167,7 +355,7 @@ const HeroSection = () => {
                 aria-label="Agendar demo gratuita"
               >
                 <span>Agendar Demo Gratis</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                   <path d="m9 18 6-6-6-6"/>
                 </svg>
               </a>
@@ -182,33 +370,35 @@ const HeroSection = () => {
             </div>
             
             <div className={styles.appStores}>
-              <a 
-                href="https://play.google.com/store/apps" 
-                className={styles.storeBtn}
-                aria-label="Descargar en Google Play"
+              <button 
+                className={`${styles.storeBtn} ${styles.storeBtnDisabled}`}
+                onClick={(e) => handleStoreClick(e, 'Google Play')}
+                aria-label="Google Play - Próximamente disponible"
+                disabled
               >
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
                 </svg>
                 <div>
-                  <span>Disponible en</span>
+                  <span>Próximamente en</span>
                   <strong>Google Play</strong>
                 </div>
-              </a>
+              </button>
               
-              <a 
-                href="https://apps.apple.com" 
-                className={styles.storeBtn}
-                aria-label="Descargar en App Store"
+              <button 
+                className={`${styles.storeBtn} ${styles.storeBtnDisabled}`}
+                onClick={(e) => handleStoreClick(e, 'App Store')}
+                aria-label="App Store - Próximamente disponible"
+                disabled
               >
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M18.71,19.5C17.88,20.74 17,21.95 15.66,21.97C14.32,22 13.89,21.18 12.37,21.18C10.84,21.18 10.37,21.95 9.1,22C7.79,22.05 6.8,20.68 5.96,19.47C4.25,17 2.94,12.45 4.7,9.39C5.57,7.87 7.13,6.91 8.82,6.88C10.1,6.86 11.32,7.75 12.11,7.75C12.89,7.75 14.37,6.68 15.92,6.84C16.57,6.87 18.39,7.1 19.56,8.82C19.47,8.88 17.39,10.1 17.41,12.63C17.44,15.65 20.06,16.66 20.09,16.67C20.06,16.74 19.67,18.11 18.71,19.5M13,3.5C13.73,2.67 14.94,2.04 15.94,2C16.07,3.17 15.6,4.35 14.9,5.19C14.21,6.04 13.07,6.7 11.95,6.61C11.8,5.46 12.36,4.26 13,3.5Z" />
                 </svg>
                 <div>
-                  <span>Disponible en</span>
+                  <span>Próximamente en</span>
                   <strong>App Store</strong>
                 </div>
-              </a>
+              </button>
             </div>
             
             <div className={styles.trustSignals}>
@@ -225,7 +415,7 @@ const HeroSection = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <div>
-              <strong>500+</strong>
+              <strong>200+</strong>
               <span>Clínicas activas</span>
             </div>
             <div>
@@ -321,55 +511,7 @@ const HeroSection = () => {
                   </button>
                 </div>
               ) : (
-                <div className={styles.fallback}>
-                  <div className={styles.statusBar}>
-                    <span>9:41</span>
-                    <div>
-                      <span>📶</span>
-                      <span>🔋</span>
-                    </div>
-                  </div>
-                  
-                  <div className={styles.appContent}>
-                    <div className={styles.greeting}>
-                      <h2>¡Hola, Dra. García! ✨</h2>
-                      <p>Tu clínica está funcionando perfectamente</p>
-                    </div>
-                    
-                    <div className={styles.cards}>
-                      <motion.div 
-                        className={styles.card}
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      >
-                        <span className={styles.cardIcon}>💉</span>
-                        <strong>12</strong>
-                        <span>Citas hoy</span>
-                      </motion.div>
-                      
-                      <motion.div 
-                        className={`${styles.card} ${styles.cardAccent}`}
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      >
-                        <span className={styles.cardIcon}>💎</span>
-                        <strong>€5.8k</strong>
-                        <span>Ingresos hoy</span>
-                      </motion.div>
-                    </div>
-                    
-                    <div className={styles.nextAppointment}>
-                      <div className={styles.appointmentTime}>
-                        <span className={styles.time}>10:30</span>
-                        <span className={styles.status}>Próxima</span>
-                      </div>
-                      <div className={styles.appointmentDetails}>
-                        <strong>Ana Rodríguez</strong>
-                        <span>Botox + Ácido Hialurónico</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <OptimizedFallback />
               )}
               <div className={styles.notch} />
             </div>

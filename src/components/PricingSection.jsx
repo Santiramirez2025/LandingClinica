@@ -1,437 +1,442 @@
-import React, { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Check, Star, Shield, Clock, Users, HeartHandshake, Phone, MessageCircle, ChevronRight, Zap, TrendingUp, Award } from 'lucide-react'
-import './PricingSection.css'
+import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { Check, Star, Zap, Crown, Sparkles, TrendingUp, Shield, Clock, Users } from 'lucide-react'
+import styles from './PricingSection.module.css'
 
-const plans = [
-  {
-    id: 'esencial',
-    name: 'Esencial',
-    tagline: 'Inicia tu transformación digital',
-    type: 'Clínicas independientes',
-    setup: 599,
-    monthly: 79,
-    setupTime: '3-7 días',
-    description: 'Ideal para clínicas que buscan digitalizar su gestión de pacientes y aumentar la fidelización',
-    features: [
-      { text: 'Configuración personalizada completa', highlight: false },
-      { text: 'Formación inicial intensiva (2 sesiones)', highlight: false },
-      { text: 'Seguimiento automático post-tratamiento', highlight: true },
-      { text: 'WhatsApp Business API integrado', highlight: true },
-      { text: 'Sistema básico de fidelización', highlight: false },
-      { text: 'Soporte técnico por email', highlight: false },
-      { text: 'Reportes mensuales de rendimiento', highlight: false },
-      { text: 'Hasta 500 pacientes activos', highlight: false }
-    ],
-    metrics: {
-      retention: '+15%',
-      revenue: '+20%',
-      time: '-3h/semana'
+const PricingSection = () => {
+  const [isAnnual, setIsAnnual] = useState(true)
+
+  const plans = [
+    {
+      id: 'starter',
+      name: 'Starter',
+      subtitle: 'Clínicas Independientes',
+      description: 'Para centros que inician su transformación digital (1-3 profesionales)',
+      icon: <Sparkles className={styles.planIcon} />,
+      monthlyPrice: 89,
+      annualPrice: 890,
+      setupFee: 199,
+      originalSetupFee: 299,
+      popular: false,
+      valueProps: [
+        'ROI promedio 200% en 6 meses',
+        'Reduce 8h admin/semana',
+        'Aumenta retención 35%'
+      ],
+      limits: {
+        professionals: '3 profesionales',
+        clients: '500 clientes activos',
+        appointments: '500 citas/mes',
+        transactions: '100 transacciones Stripe/mes',
+        notifications: '1.000 notificaciones/mes',
+        storage: '5GB almacenamiento'
+      },
+      features: [
+        'Agenda inteligente con IA predictiva',
+        'CRM avanzado con historial completo',
+        'Sistema de tratamientos y precios dinámicos',
+        'Stripe integrado + pasarela propia',
+        'Notificaciones push + SMS automáticas',
+        'Sistema de fidelización gamificado',
+        'Reportes financieros con analytics',
+        'Soporte prioritario por email',
+        'App móvil cliente (iOS/Android)'
+      ],
+      cta: 'Probar Demo Gratis'
     },
-    highlight: false,
-    icon: '🏥',
-    bestFor: '1-2 especialistas',
-    color: '#94A3B8',
-    popular: false
-  },
-  {
-    id: 'profesional',
-    name: 'Profesional',
-    tagline: 'Maximiza tu retención',
-    type: 'Clínicas en crecimiento',
-    setup: 899,
-    monthly: 119,
-    setupTime: '3-7 días',
-    description: 'Para clínicas que quieren automatizar completamente su comunicación y maximizar el lifetime value',
-    features: [
-      { text: 'Todo lo del plan Esencial', highlight: false },
-      { text: 'IA para mensajes personalizados', highlight: true },
-      { text: 'Segmentación avanzada de pacientes', highlight: true },
-      { text: 'ROI tracking en tiempo real', highlight: true },
-      { text: 'Soporte prioritario multicanal', highlight: false },
-      { text: 'Formación trimestral especializada', highlight: false },
-      { text: 'API e integraciones ilimitadas', highlight: true },
-      { text: 'Hasta 2.000 pacientes activos', highlight: false }
-    ],
-    metrics: {
-      retention: '+35%',
-      revenue: '+45%',
-      time: '-8h/semana'
+    {
+      id: 'professional',
+      name: 'Professional',
+      subtitle: 'Más Elegido',
+      description: 'Para clínicas en expansión que buscan maximizar ingresos (4-15 profesionales)',
+      icon: <Star className={styles.planIcon} />,
+      monthlyPrice: 149,
+      annualPrice: 1490,
+      setupFee: 399,
+      originalSetupFee: 599,
+      popular: true,
+      valueProps: [
+        'ROI promedio 350% en 6 meses',
+        'Reduce 15h admin/semana',
+        'Aumenta ingresos 45%'
+      ],
+      limits: {
+        professionals: '15 profesionales',
+        clients: '5.000 clientes activos',
+        appointments: 'Citas ilimitadas',
+        transactions: '1.000 transacciones Stripe/mes',
+        notifications: '10.000 notificaciones/mes',
+        storage: '50GB almacenamiento'
+      },
+      features: [
+        'Todo del plan Starter',
+        'Sistema VIP con suscripciones automáticas',
+        'Motor de ofertas con IA personalizada',
+        'Analytics predictivo de abandono',
+        'Segmentación automática avanzada',
+        'Programa VIP multi-tier personalizable',
+        'Marketing automation con workflows',
+        'Sistema de referidos con recompensas',
+        'Soporte prioritario (chat + teléfono)',
+        'API completa para integraciones',
+        'Reportes ejecutivos automatizados'
+      ],
+      cta: 'Probar Demo Gratis'
     },
-    highlight: true,
-    icon: '⭐',
-    bestFor: '3-10 especialistas',
-    color: '#E8B4B8',
-    popular: true,
-    savings: 'Ahorra 180€/año'
-  },
-  {
-    id: 'premium',
-    name: 'Premium',
-    tagline: 'Crecimiento exponencial',
-    type: 'Clínicas líderes',
-    setup: 1199,
-    monthly: 149,
-    setupTime: '3-7 días',
-    description: 'Solución completa con consultoría estratégica para dominar tu mercado local',
-    features: [
-      { text: 'Todo lo del plan Profesional', highlight: false },
-      { text: 'Account Manager dedicado', highlight: true },
-      { text: 'Análisis predictivo con IA', highlight: true },
-      { text: 'Campañas multicanal automatizadas', highlight: true },
-      { text: 'Soporte VIP 24/7', highlight: true },
-      { text: 'Formación continua ilimitada', highlight: false },
-      { text: 'Desarrollo de features a medida', highlight: true },
-      { text: 'Pacientes ilimitados', highlight: true }
-    ],
-    metrics: {
-      retention: '+50%',
-      revenue: '+75%',
-      time: '-15h/semana'
+    {
+      id: 'premium',
+      name: 'Premium',
+      subtitle: 'Máximo Potencial',
+      description: 'Para clínicas líderes y cadenas multi-sucursal (+15 profesionales)',
+      icon: <Crown className={styles.planIcon} />,
+      monthlyPrice: 249,
+      annualPrice: 2490,
+      setupFee: 799,
+      originalSetupFee: 1299,
+      popular: false,
+      valueProps: [
+        'ROI promedio 500% en 6 meses',
+        'Reduce 25h admin/semana',
+        'Aumenta ingresos 70%'
+      ],
+      limits: {
+        professionals: 'Profesionales ilimitados',
+        clients: 'Clientes ilimitados',
+        appointments: 'Todo ilimitado',
+        transactions: 'Transacciones ilimitadas',
+        notifications: 'Notificaciones ilimitadas',
+        storage: 'Almacenamiento ilimitado'
+      },
+      features: [
+        'Todo del plan Professional',
+        'IA predictiva para retención y upselling',
+        'Account Manager dedicado',
+        'Multi-sucursal con dashboard centralizado',
+        'Análisis predictivo con machine learning',
+        'App móvil white-label personalizada',
+        'Desarrollo de features exclusivas',
+        'Sistema avanzado de loyalty scoring',
+        'Soporte 24/7 con SLA garantizado',
+        'Integración ERP/contabilidad',
+        'Consultoría estratégica mensual'
+      ],
+      cta: 'Agendar Consultoría'
+    }
+  ]
+
+  const socialProof = [
+    { metric: '2.3x', label: 'Aumento promedio de ingresos' },
+    { metric: '87%', label: 'Reducción tiempo administrativo' },
+    { metric: '94%', label: 'Satisfacción de clientes' },
+    { metric: '180', label: 'Clínicas ya transformadas' }
+  ]
+
+  const riskReducers = [
+    {
+      icon: <Shield size={20} />,
+      title: 'Garantía 60 días',
+      description: 'Si no ves resultados, te devolvemos el dinero'
     },
-    highlight: false,
-    icon: '👑',
-    bestFor: '+10 especialistas',
-    color: '#D4A574',
-    popular: false
-  }
-]
+    {
+      icon: <Users size={20} />,
+      title: 'Migración incluida',
+      description: 'Transferimos todos tus datos sin pérdidas'
+    },
+    {
+      icon: <Clock size={20} />,
+      title: 'Setup en 48h',
+      description: 'Operativo en menos de 2 días laborables'
+    }
+  ]
 
-const testimonials = [
-  {
-    name: "Dra. María García",
-    clinic: "Clínica Belleza Madrid",
-    text: "En 3 meses aumentamos un 40% la recurrencia de tratamientos",
-    rating: 5,
-    plan: "Profesional"
-  },
-  {
-    name: "Dr. Carlos Ruiz",
-    clinic: "Centro Estético Barcelona",
-    text: "El ROI es increíble. Recuperamos la inversión en 2 meses",
-    rating: 5,
-    plan: "Premium"
-  }
-]
-
-export default function ClinicPricingSection() {
-  const [selectedPlan, setSelectedPlan] = useState('profesional')
-  const [billingCycle, setBillingCycle] = useState('monthly')
-  const [showComparison, setShowComparison] = useState(false)
-  const [hoveredPlan, setHoveredPlan] = useState(null)
-
-  // Calcular descuentos para pago anual
-  const getAnnualPrice = (monthlyPrice) => {
-    const annual = monthlyPrice * 12
-    const discount = annual * 0.15 // 15% descuento
-    return Math.round(annual - discount)
+  const getPrice = (plan) => {
+    return isAnnual ? plan.annualPrice : plan.monthlyPrice
   }
 
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('es-ES', {
-      style: 'currency',
-      currency: 'EUR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(price)
+  const getSavings = (plan) => {
+    if (!isAnnual) return 0
+    const monthlyTotal = plan.monthlyPrice * 12
+    return monthlyTotal - plan.annualPrice
+  }
+
+  const getROICalculation = (plan) => {
+    const monthlyInvestment = isAnnual ? plan.annualPrice / 12 : plan.monthlyPrice
+    const estimatedIncrease = plan.id === 'starter' ? 1500 : plan.id === 'professional' ? 3500 : 6000
+    const roi = ((estimatedIncrease - monthlyInvestment) / monthlyInvestment * 100).toFixed(0)
+    return { monthlyInvestment, estimatedIncrease, roi }
   }
 
   return (
-    <section className="pricing-section">
-      {/* Animated Background */}
-      <div className="animated-bg">
-        <div className="gradient-sphere gradient-1" />
-        <div className="gradient-sphere gradient-2" />
-        <div className="gradient-sphere gradient-3" />
+    <section className={`${styles.pricing} pricing-section`} id="pricing">
+      {/* Background orbs */}
+      <div className={styles.orbs} aria-hidden="true">
+        <div className={`${styles.orb} ${styles.orb1}`} />
+        <div className={`${styles.orb} ${styles.orb2}`} />
       </div>
 
-      <div className="container">
-        {/* Header Section */}
+      <div className={styles.container}>
+        {/* Header con Social Proof */}
         <motion.div 
-          className="pricing-header"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          className={styles.header}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
         >
-          <motion.div className="header-badge">
-            <Zap className="badge-icon" />
-            <span>Planes adaptados al sector estético español</span>
-          </motion.div>
+          {/* Social Proof Metrics */}
+          <div className={styles.socialProof}>
+            {socialProof.map((item, index) => (
+              <div key={index} className={styles.socialProofItem}>
+                <span className={styles.metric}>{item.metric}</span>
+                <span className={styles.metricLabel}>{item.label}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.badge}>
+            🚀 Únete a las 180+ clínicas que ya transformaron su negocio
+          </div>
           
-          <h1 className="main-title">
-            Precios transparentes que
-            <span className="title-gradient"> impulsan tu clínica</span>
-          </h1>
+          <h2 className={styles.title}>
+            Invierte en el crecimiento de tu 
+            <span className={styles.accent}> clínica estética</span>
+          </h2>
           
-          <p className="subtitle">
-            Sin comisiones ocultas, sin sorpresas. Inversión clara con ROI garantizado
+          <p className={styles.subtitle}>
+            Cada plan está diseñado para generar un ROI comprobado. 
+            No es un gasto, es la inversión más rentable que harás este año.
           </p>
 
-          {/* Billing Toggle */}
-          <div className="billing-toggle">
-            <button
-              className={`toggle-option ${billingCycle === 'monthly' ? 'active' : ''}`}
-              onClick={() => setBillingCycle('monthly')}
+          {/* Toggle anual/mensual con mejor copy */}
+          <div className={styles.toggle}>
+            <span className={!isAnnual ? styles.active : ''}>Pago Mensual</span>
+            <button 
+              className={styles.toggleBtn}
+              onClick={() => setIsAnnual(!isAnnual)}
+              aria-label={`Cambiar a facturación ${isAnnual ? 'mensual' : 'anual'}`}
             >
-              Mensual
+              <div className={`${styles.toggleSlider} ${isAnnual ? styles.annual : ''}`} />
             </button>
-            <button
-              className={`toggle-option ${billingCycle === 'annual' ? 'active' : ''}`}
-              onClick={() => setBillingCycle('annual')}
-            >
-              <span>Anual</span>
-              <span className="discount-badge">-15%</span>
-            </button>
+            <span className={isAnnual ? styles.active : ''}>
+              Pago Anual 
+              <span className={styles.discount}>Ahorra hasta 25%</span>
+            </span>
           </div>
         </motion.div>
 
-        {/* Trust Indicators */}
-        <motion.div 
-          className="trust-indicators"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <div className="indicator">
-            <Users className="indicator-icon" />
-            <div className="indicator-content">
-              <strong>+500</strong>
-              <span>Clínicas activas</span>
-            </div>
-          </div>
-          <div className="indicator">
-            <TrendingUp className="indicator-icon" />
-            <div className="indicator-content">
-              <strong>+40%</strong>
-              <span>Aumento medio ingresos</span>
-            </div>
-          </div>
-          <div className="indicator">
-            <Award className="indicator-icon" />
-            <div className="indicator-content">
-              <strong>4.9/5</strong>
-              <span>Satisfacción clientes</span>
-            </div>
-          </div>
-          <div className="indicator">
-            <Shield className="indicator-icon" />
-            <div className="indicator-content">
-              <strong>RGPD</strong>
-              <span>100% Compliance</span>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Pricing Cards */}
-        <div className="plans-grid">
+        {/* Plans Grid */}
+        <div className={styles.plansGrid}>
           {plans.map((plan, index) => (
             <motion.div
               key={plan.id}
-              className={`plan-card ${plan.highlight ? 'featured' : ''} ${selectedPlan === plan.id ? 'selected' : ''}`}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 + 0.3 }}
-              onMouseEnter={() => setHoveredPlan(plan.id)}
-              onMouseLeave={() => setHoveredPlan(null)}
-              onClick={() => setSelectedPlan(plan.id)}
-              style={{
-                '--plan-color': plan.color
-              }}
+              className={`${styles.planCard} ${plan.popular ? styles.popular : ''}`}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
             >
               {plan.popular && (
-                <div className="popular-badge">
-                  <Star size={14} />
-                  <span>Más elegido</span>
+                <div className={styles.popularBadge}>
+                  <Zap size={16} />
+                  {plan.subtitle}
                 </div>
               )}
 
-              <div className="plan-header">
-                <div className="plan-icon">{plan.icon}</div>
-                <h3 className="plan-name">{plan.name}</h3>
-                <p className="plan-tagline">{plan.tagline}</p>
-                <p className="plan-target">{plan.bestFor}</p>
+              <div className={styles.planHeader}>
+                {plan.icon}
+                <h3 className={styles.planName}>{plan.name}</h3>
+                <p className={styles.planDescription}>{plan.description}</p>
               </div>
 
-              <div className="plan-pricing">
-                <div className="setup-fee">
-                  <span className="fee-label">Configuración inicial</span>
-                  <div className="fee-amount">
-                    <span className="amount">{formatPrice(plan.setup)}</span>
-                    <span className="time">({plan.setupTime})</span>
+              {/* Value Props destacadas */}
+              <div className={styles.valueProps}>
+                {plan.valueProps.map((prop, idx) => (
+                  <div key={idx} className={styles.valueProp}>
+                    <TrendingUp size={16} />
+                    <span>{prop}</span>
                   </div>
+                ))}
+              </div>
+
+              <div className={styles.pricing}>
+                <div className={styles.priceWrapper}>
+                  <span className={styles.currency}>€</span>
+                  <span className={styles.price}>{getPrice(plan)}</span>
+                  <span className={styles.period}>/{isAnnual ? 'año' : 'mes'}</span>
                 </div>
                 
-                <div className="monthly-fee">
-                  <span className="fee-label">
-                    {billingCycle === 'monthly' ? 'Mensualidad' : 'Precio anual'}
-                  </span>
-                  <div className="fee-amount-main">
-                    <span className="currency">€</span>
-                    <span className="amount">
-                      {billingCycle === 'monthly' 
-                        ? plan.monthly 
-                        : Math.round(getAnnualPrice(plan.monthly) / 12)
-                      }
-                    </span>
-                    <span className="period">/mes</span>
+                {isAnnual && getSavings(plan) > 0 && (
+                  <div className={styles.savings}>
+                    Ahorras €{getSavings(plan)} al año
                   </div>
-                  {billingCycle === 'annual' && plan.savings && (
-                    <span className="savings">{plan.savings}</span>
+                )}
+
+                <div className={styles.setupFee}>
+                  Setup profesional: €{plan.setupFee}
+                  {plan.originalSetupFee && (
+                    <span className={styles.originalPrice}>
+                      €{plan.originalSetupFee}
+                    </span>
                   )}
                 </div>
-              </div>
 
-              <div className="plan-metrics">
-                <div className="metric">
-                  <span className="metric-value">{plan.metrics.retention}</span>
-                  <span className="metric-label">Retención</span>
-                </div>
-                <div className="metric">
-                  <span className="metric-value">{plan.metrics.revenue}</span>
-                  <span className="metric-label">Ingresos</span>
-                </div>
-                <div className="metric">
-                  <span className="metric-value">{plan.metrics.time}</span>
-                  <span className="metric-label">Tiempo</span>
+                {/* ROI Calculator */}
+                <div className={styles.roiCalculator}>
+                  <div className={styles.roiTitle}>Resultado económico esperado:</div>
+                  <div className={styles.roiValue}>
+                    +€{getROICalculation(plan).estimatedIncrease.toLocaleString()}/mes
+                  </div>
+                  <div className={styles.roiPercentage}>
+                    {getROICalculation(plan).roi}% ROI mensual
+                  </div>
                 </div>
               </div>
 
-              <div className="plan-features">
-                <h4 className="features-title">Incluye:</h4>
-                <ul className="features-list">
-                  {plan.features.slice(0, hoveredPlan === plan.id ? plan.features.length : 5).map((feature, i) => (
-                    <motion.li 
-                      key={i}
-                      className={`feature ${feature.highlight ? 'highlight' : ''}`}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                    >
-                      <Check className="feature-icon" />
-                      <span>{feature.text}</span>
-                    </motion.li>
+              {/* Límites */}
+              <div className={styles.limits}>
+                <h4>Incluye:</h4>
+                <ul>
+                  {Object.entries(plan.limits).map(([key, value]) => (
+                    <li key={key}>
+                      <Check size={16} />
+                      {value}
+                    </li>
                   ))}
                 </ul>
-                {plan.features.length > 5 && hoveredPlan !== plan.id && (
-                  <button className="show-more">
-                    Ver más características
-                  </button>
-                )}
               </div>
 
-              <div className="plan-actions">
-                <motion.button
-                  className={`cta-button ${plan.highlight ? 'primary' : 'secondary'}`}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <span>Solicitar demo gratuita</span>
-                  <ChevronRight className="button-icon" />
-                </motion.button>
-                
-                <button className="contact-button">
-                  <Phone size={16} />
-                  <span>Hablar con ventas</span>
-                </button>
+              {/* Features */}
+              <div className={styles.features}>
+                <h4>Funcionalidades principales:</h4>
+                <ul>
+                  {plan.features.slice(0, 6).map((feature, idx) => (
+                    <li key={idx}>
+                      <Check size={16} />
+                      {feature}
+                    </li>
+                  ))}
+                  {plan.features.length > 6 && (
+                    <li className={styles.moreFeatures}>
+                      +{plan.features.length - 6} funcionalidades avanzadas más
+                    </li>
+                  )}
+                </ul>
               </div>
+
+              <motion.a
+                href="https://expo.dev/accounts/tuapp/projects/demo-clinica" // Tu link de Expo aquí
+                className={`${styles.ctaBtn} ${plan.popular ? styles.ctaPrimary : styles.ctaSecondary}`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {plan.cta}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
+              </motion.a>
             </motion.div>
           ))}
         </div>
 
-        {/* Comparison Table Button */}
+        {/* Risk Reducers */}
         <motion.div 
-          className="comparison-toggle"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
+          className={styles.riskReducers}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          viewport={{ once: true }}
         >
-          <button 
-            className="comparison-button"
-            onClick={() => setShowComparison(!showComparison)}
-          >
-            {showComparison ? 'Ocultar' : 'Ver'} comparación detallada
-          </button>
-        </motion.div>
-
-        {/* Testimonials */}
-        <motion.div 
-          className="testimonials-section"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          <h3 className="testimonials-title">Lo que dicen nuestras clínicas</h3>
-          <div className="testimonials-grid">
-            {testimonials.map((testimonial, i) => (
-              <div key={i} className="testimonial-card">
-                <div className="testimonial-header">
-                  <div className="testimonial-info">
-                    <h4>{testimonial.name}</h4>
-                    <p>{testimonial.clinic}</p>
-                  </div>
-                  <span className="testimonial-plan">{testimonial.plan}</span>
-                </div>
-                <p className="testimonial-text">"{testimonial.text}"</p>
-                <div className="testimonial-rating">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" />
-                  ))}
-                </div>
+          <h3>Inversión sin riesgo</h3>
+          <div className={styles.riskReducersGrid}>
+            {riskReducers.map((item, index) => (
+              <div key={index} className={styles.riskReducerItem}>
+                {item.icon}
+                <h4>{item.title}</h4>
+                <p>{item.description}</p>
               </div>
             ))}
           </div>
         </motion.div>
 
-        {/* Guarantees */}
+        {/* Success Stories Preview */}
         <motion.div 
-          className="guarantees-section"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 }}
+          className={styles.successStories}
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          viewport={{ once: true }}
         >
-          <div className="guarantee-card">
-            <Shield className="guarantee-icon" />
-            <h4>Sin permanencia</h4>
-            <p>Cancela cuando quieras</p>
-          </div>
-          <div className="guarantee-card">
-            <Clock className="guarantee-icon" />
-            <h4>30 días de prueba</h4>
-            <p>Garantía de devolución</p>
-          </div>
-          <div className="guarantee-card">
-            <HeartHandshake className="guarantee-icon" />
-            <h4>Soporte dedicado</h4>
-            <p>Equipo especializado</p>
-          </div>
-          <div className="guarantee-card">
-            <MessageCircle className="guarantee-icon" />
-            <h4>Onboarding premium</h4>
-            <p>Te acompañamos siempre</p>
+          <div className={styles.successStoriesContent}>
+            <h3>💰 Casos de éxito reales</h3>
+            <p>Ve cómo otras clínicas han transformado su negocio</p>
+            
+            <div className={styles.stories}>
+              <div className={styles.story}>
+                <div className={styles.storyMetric}>+€25.000</div>
+                <div className={styles.storyDescription}>
+                  "Aumentamos ingresos mensuales en 6 meses"
+                  <span className={styles.storyAuthor}>- Clínica Bella Vista</span>
+                </div>
+              </div>
+              <div className={styles.story}>
+                <div className={styles.storyMetric}>-20h</div>
+                <div className={styles.storyDescription}>
+                  "Menos trabajo administrativo por semana"
+                  <span className={styles.storyAuthor}>- Centro Estético Luna</span>
+                </div>
+              </div>
+              <div className={styles.story}>
+                <div className={styles.storyMetric}>400%</div>
+                <div className={styles.storyDescription}>
+                  "ROI en el primer año de implementación"
+                  <span className={styles.storyAuthor}>- Clínica Premium Med</span>
+                </div>
+              </div>
+            </div>
+
+            <motion.a
+              href="https://expo.dev/accounts/tuapp/projects/demo-clinica" // Tu link de Expo aquí
+              className={styles.demoButton}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Ver Demo Interactivo
+              <Zap size={18} />
+            </motion.a>
           </div>
         </motion.div>
 
-        {/* CTA Section */}
+        {/* Urgency Section */}
         <motion.div 
-          className="final-cta"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1 }}
+          className={styles.urgency}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          viewport={{ once: true }}
         >
-          <h3>¿Listo para transformar tu clínica?</h3>
-          <p>Únete a las +200 clínicas que ya confían en nosotros</p>
-          <div className="cta-buttons">
-            <button className="cta-primary">
-              Empezar demo gratuita
-              <ChevronRight />
-            </button>
-            <button className="cta-secondary">
-              <Phone size={18} />
-              Llamar ahora: 900 123 456
-            </button>
+          <h3>⏰ ¿Cuánto dinero estás perdiendo cada día sin automatizar?</h3>
+          <div className={styles.urgencyCalculator}>
+            <div className={styles.urgencyItem}>
+              <span className={styles.urgencyNumber}>€150</span>
+              <span>pérdida diaria promedio por gestión manual</span>
+            </div>
+            <div className={styles.urgencyItem}>
+              <span className={styles.urgencyNumber}>€4.500</span>
+              <span>pérdida mensual por no tener sistema VIP</span>
+            </div>
+            <div className={styles.urgencyItem}>
+              <span className={styles.urgencyNumber}>€54.000</span>
+              <span>pérdida anual de ingresos potenciales</span>
+            </div>
           </div>
+          <p className={styles.urgencyText}>
+            Cada día que esperas es dinero que no entra. 
+            <strong> La inversión se paga sola en el primer mes.</strong>
+          </p>
         </motion.div>
       </div>
     </section>
   )
 }
+
+export default PricingSection

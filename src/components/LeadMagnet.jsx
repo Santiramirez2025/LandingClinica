@@ -1,13 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const LeadMagnet = () => {
   const [clicked, setClicked] = useState(false)
   const [showGuide, setShowGuide] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+
+  // Animación de entrada progresiva
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
 
   const handleDownload = () => {
     setClicked(true)
     
-    // Simular descarga
+    // Crear y ejecutar descarga real del PDF
+    const link = document.createElement('a')
+    link.href = './guia-fidelizacion.pdf'
+    link.download = 'guia-fidelizacion-pacientes-vip.pdf'
+    link.style.display = 'none'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    
+    // Mostrar modal de confirmación después de iniciar descarga
     setTimeout(() => {
       setShowGuide(true)
       setClicked(false)
@@ -17,7 +32,7 @@ const LeadMagnet = () => {
   return (
     <>
       <style jsx>{`
-        /* Variables CSS para mantener coherencia con el hero */
+        /* Variables CSS optimizadas */
         :root {
           --primary-gradient: linear-gradient(135deg, #E8B4B8 0%, #D4AF37 100%);
           --bg-gradient: linear-gradient(180deg, #FDFBF7 0%, #FFF8F3 100%);
@@ -25,9 +40,11 @@ const LeadMagnet = () => {
           --text-medium: #4a4a4a;
           --text-light: #6a6a6a;
           --accent-color: #E8B4B8;
-          --border-radius: clamp(16px, 2vw, 24px);
-          --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.06);
-          --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.15);
+          --success-color: #10B981;
+          --border-radius: clamp(12px, 2vw, 20px);
+          --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+          --shadow-strong: 0 8px 40px rgba(0, 0, 0, 0.12);
+          --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -37,7 +54,9 @@ const LeadMagnet = () => {
         }
 
         body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
         }
 
         .hero {
@@ -46,110 +65,105 @@ const LeadMagnet = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: clamp(2rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem);
+          padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 3vw, 1.5rem);
           position: relative;
           overflow: hidden;
           background: var(--bg-gradient);
         }
 
-        /* Orbs de fondo igual que el hero original */
+        /* Orbs optimizados para performance */
         .orbs {
           position: absolute;
           inset: 0;
           pointer-events: none;
           will-change: transform;
+          opacity: 0.6;
         }
 
         .orb {
           position: absolute;
           border-radius: 50%;
-          filter: blur(60px);
-          opacity: 0.4;
+          filter: blur(40px);
           will-change: transform;
         }
 
         .orb1 {
-          width: min(40vw, 400px);
-          height: min(40vw, 400px);
-          background: radial-gradient(circle, rgba(255, 218, 225, 0.6) 0%, transparent 70%);
-          top: -15%;
-          right: -15%;
-          animation: float1 25s ease-in-out infinite;
+          width: min(35vw, 300px);
+          height: min(35vw, 300px);
+          background: radial-gradient(circle, rgba(255, 218, 225, 0.4) 0%, transparent 70%);
+          top: -10%;
+          right: -10%;
+          animation: float1 20s ease-in-out infinite;
         }
 
         .orb2 {
-          width: min(35vw, 350px);
-          height: min(35vw, 350px);
-          background: radial-gradient(circle, rgba(255, 237, 213, 0.6) 0%, transparent 70%);
-          bottom: -15%;
-          left: -15%;
-          animation: float2 30s ease-in-out infinite;
-        }
-
-        .orb3 {
-          width: min(30vw, 300px);
-          height: min(30vw, 300px);
-          background: radial-gradient(circle, rgba(232, 180, 184, 0.4) 0%, transparent 70%);
-          top: 50%;
-          left: 20%;
-          animation: float3 35s ease-in-out infinite;
+          width: min(30vw, 250px);
+          height: min(30vw, 250px);
+          background: radial-gradient(circle, rgba(255, 237, 213, 0.4) 0%, transparent 70%);
+          bottom: -10%;
+          left: -10%;
+          animation: float2 25s ease-in-out infinite;
         }
 
         @keyframes float1 {
           0%, 100% { transform: translate(0, 0) rotate(0deg); }
-          33% { transform: translate(30px, -20px) rotate(120deg); }
-          66% { transform: translate(-20px, 10px) rotate(240deg); }
+          50% { transform: translate(20px, -15px) rotate(180deg); }
         }
 
         @keyframes float2 {
           0%, 100% { transform: translate(0, 0) rotate(0deg); }
-          33% { transform: translate(-40px, 30px) rotate(-120deg); }
-          66% { transform: translate(20px, -15px) rotate(-240deg); }
-        }
-
-        @keyframes float3 {
-          0%, 100% { transform: translate(0, 0) rotate(0deg); }
-          33% { transform: translate(25px, 35px) rotate(180deg); }
-          66% { transform: translate(-30px, -20px) rotate(-180deg); }
+          50% { transform: translate(-20px, 15px) rotate(-180deg); }
         }
 
         .container {
           width: 100%;
-          max-width: 800px;
+          max-width: 720px;
           display: flex;
           flex-direction: column;
           align-items: center;
           position: relative;
           z-index: 1;
-          gap: clamp(1.5rem, 3vw, 2rem);
+          gap: clamp(1.25rem, 2.5vw, 1.75rem);
           text-align: center;
+          opacity: 0;
+          transform: translateY(30px);
+          animation: ${isVisible ? 'slideInUp 0.8s ease forwards' : 'none'};
+        }
+
+        @keyframes slideInUp {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         .badge {
-          background: linear-gradient(135deg, rgba(232, 180, 184, 0.15) 0%, rgba(255, 237, 213, 0.15) 100%);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(232, 180, 184, 0.2);
+          background: linear-gradient(135deg, rgba(232, 180, 184, 0.2) 0%, rgba(255, 237, 213, 0.2) 100%);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(232, 180, 184, 0.3);
           padding: 0.75rem 1.5rem;
           border-radius: 50px;
-          font-size: 0.9rem;
+          font-size: 0.875rem;
           font-weight: 600;
           color: #B86B6B;
           box-shadow: var(--shadow-soft);
-          animation: bounce 2s infinite ease-in-out;
+          animation: ${isVisible ? 'badge-pulse 2s ease infinite' : 'none'};
+          animation-delay: 0.3s;
         }
 
-        @keyframes bounce {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-5px); }
+        @keyframes badge-pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.05); }
         }
 
         .title {
-          font-size: clamp(2.5rem, 8vw, 4.5rem);
+          font-size: clamp(2.25rem, 7vw, 4rem);
           font-weight: 800;
           line-height: 1.1;
-          letter-spacing: -0.03em;
+          letter-spacing: -0.02em;
           color: var(--text-dark);
           margin: 0;
+          animation-delay: 0.1s;
         }
 
         .accent {
@@ -158,19 +172,21 @@ const LeadMagnet = () => {
           -webkit-text-fill-color: transparent;
           background-clip: text;
           background-size: 200% auto;
-          animation: gradient-shift 3s linear infinite;
+          animation: gradient-shift 4s ease-in-out infinite;
         }
 
         @keyframes gradient-shift {
-          to { background-position: 200% center; }
+          0%, 100% { background-position: 0% center; }
+          50% { background-position: 100% center; }
         }
 
         .subtitle {
-          font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+          font-size: clamp(1rem, 2.2vw, 1.25rem);
           line-height: 1.6;
           color: var(--text-medium);
           margin: 0;
-          max-width: 600px;
+          max-width: 580px;
+          animation-delay: 0.2s;
         }
 
         .subtitle strong {
@@ -180,23 +196,25 @@ const LeadMagnet = () => {
 
         .benefits {
           display: flex;
-          gap: clamp(1rem, 3vw, 1.5rem);
+          gap: clamp(0.75rem, 2vw, 1.25rem);
           justify-content: center;
           flex-wrap: wrap;
-          margin: clamp(1rem, 3vw, 2rem) 0;
+          margin: clamp(0.75rem, 2vw, 1.5rem) 0;
+          animation-delay: 0.4s;
         }
 
         .benefit {
-          background: rgba(255, 255, 255, 0.8);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(232, 180, 184, 0.1);
-          padding: 0.875rem 1.5rem;
+          background: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(232, 180, 184, 0.15);
+          padding: 0.75rem 1.25rem;
           border-radius: var(--border-radius);
           font-weight: 600;
           color: var(--text-dark);
-          font-size: 0.9rem;
-          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          font-size: 0.875rem;
+          transition: var(--transition);
           box-shadow: var(--shadow-soft);
+          cursor: default;
         }
 
         .benefit:hover {
@@ -208,25 +226,46 @@ const LeadMagnet = () => {
         .cta {
           background: linear-gradient(135deg, var(--text-dark) 0%, #333 100%);
           color: white;
-          padding: 1.25rem 3rem;
+          padding: 1.25rem 2.5rem;
           border: none;
           border-radius: 50px;
           font-size: 1.1rem;
           font-weight: 700;
           cursor: pointer;
-          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: var(--transition);
           box-shadow: var(--shadow-strong);
           position: relative;
           overflow: hidden;
+          min-height: 56px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          animation-delay: 0.5s;
+        }
+
+        .cta:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+          transition: left 0.5s;
+        }
+
+        .cta:hover:not(:disabled):before {
+          left: 100%;
         }
 
         .cta:hover:not(:disabled) {
           transform: translateY(-3px);
-          box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
         }
 
         .cta:active {
-          transform: translateY(0);
+          transform: translateY(-1px);
         }
 
         .cta:disabled {
@@ -235,34 +274,43 @@ const LeadMagnet = () => {
         }
 
         .cta.loading {
-          animation: pulse 1.5s infinite;
+          animation: loading-pulse 1.5s infinite;
         }
 
-        @keyframes pulse {
-          0%, 100% { opacity: 0.8; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.02); }
+        @keyframes loading-pulse {
+          0%, 100% { opacity: 0.8; }
+          50% { opacity: 1; }
         }
 
         .urgency {
           font-size: 0.875rem;
           color: var(--text-light);
           font-weight: 500;
-          animation: subtle-pulse 3s infinite;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          justify-content: center;
+          animation-delay: 0.6s;
         }
 
-        @keyframes subtle-pulse {
-          0%, 100% { opacity: 0.7; }
-          50% { opacity: 1; }
+        .urgency::before {
+          content: '🔥';
+          animation: flicker 2s infinite;
         }
 
-        /* Modal con el mismo estilo */
+        @keyframes flicker {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.7; }
+        }
+
+        /* Modal mejorado */
         .modal {
           position: fixed;
           top: 0;
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(26, 26, 26, 0.6);
+          background: rgba(26, 26, 26, 0.7);
           backdrop-filter: blur(8px);
           display: flex;
           align-items: center;
@@ -279,20 +327,20 @@ const LeadMagnet = () => {
 
         .modal-content {
           background: var(--bg-gradient);
-          border-radius: clamp(20px, 3vw, 32px);
-          max-width: 900px;
+          border-radius: clamp(16px, 2.5vw, 24px);
+          max-width: 800px;
           width: 100%;
           max-height: 90vh;
           overflow-y: auto;
           position: relative;
           animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: var(--shadow-strong);
-          border: 1px solid rgba(232, 180, 184, 0.1);
+          box-shadow: 0 20px 80px rgba(0, 0, 0, 0.15);
+          border: 1px solid rgba(232, 180, 184, 0.2);
         }
 
         @keyframes slideIn {
           from {
-            transform: translateY(50px) scale(0.95);
+            transform: translateY(40px) scale(0.95);
             opacity: 0;
           }
           to {
@@ -303,23 +351,23 @@ const LeadMagnet = () => {
 
         .close {
           position: absolute;
-          top: 1.5rem;
-          right: 1.5rem;
-          background: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(12px);
+          top: 1rem;
+          right: 1rem;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(8px);
           border: 1px solid rgba(232, 180, 184, 0.2);
-          width: 40px;
-          height: 40px;
+          width: 36px;
+          height: 36px;
           border-radius: 50%;
-          font-size: 20px;
+          font-size: 18px;
           cursor: pointer;
-          transition: all 0.25s ease;
+          transition: var(--transition);
           z-index: 10;
           display: flex;
           align-items: center;
           justify-content: center;
           color: var(--text-dark);
-          font-weight: 600;
+          font-weight: 500;
         }
 
         .close:hover {
@@ -330,130 +378,129 @@ const LeadMagnet = () => {
 
         .modal-header {
           background: var(--primary-gradient);
-          padding: 3rem 2rem 2rem;
+          padding: 2.5rem 2rem 2rem;
           text-align: center;
           color: white;
           position: relative;
         }
 
         .modal-header h2 {
-          font-size: clamp(1.8rem, 4vw, 2.5rem);
+          font-size: clamp(1.5rem, 3.5vw, 2.25rem);
           margin-bottom: 0.5rem;
           font-weight: 800;
           text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .modal-header p {
-          opacity: 0.9;
-          font-size: 1.1rem;
+          opacity: 0.95;
+          font-size: 1rem;
           font-weight: 500;
         }
 
         .download-success {
-          padding: 2.5rem 2rem;
+          padding: 2rem;
           text-align: center;
-          background: rgba(255, 255, 255, 0.6);
-          backdrop-filter: blur(12px);
-          border-bottom: 1px solid rgba(232, 180, 184, 0.1);
+          background: rgba(255, 255, 255, 0.7);
+          backdrop-filter: blur(8px);
         }
 
         .success-icon {
-          font-size: 4rem;
-          margin-bottom: 1.5rem;
+          font-size: 3rem;
+          margin-bottom: 1rem;
           animation: bounce-in 0.6s ease;
         }
 
         @keyframes bounce-in {
           0% { transform: scale(0); opacity: 0; }
-          50% { transform: scale(1.2); opacity: 0.8; }
+          50% { transform: scale(1.1); opacity: 0.8; }
           100% { transform: scale(1); opacity: 1; }
         }
 
         .download-success h3 {
           color: var(--text-dark);
           margin-bottom: 0.75rem;
-          font-size: 1.4rem;
+          font-size: 1.25rem;
           font-weight: 700;
         }
 
         .download-success p {
           color: var(--text-medium);
-          margin-bottom: 2rem;
-          line-height: 1.6;
+          margin-bottom: 1.5rem;
+          line-height: 1.5;
         }
 
         .tips {
-          text-align: left;
-          max-width: 450px;
+          max-width: 400px;
           margin: 0 auto;
         }
 
         .tips h4 {
           color: var(--text-dark);
           margin-bottom: 1rem;
-          text-align: center;
           font-weight: 600;
+          font-size: 1rem;
         }
 
         .tip {
-          background: rgba(255, 255, 255, 0.8);
-          backdrop-filter: blur(8px);
-          border: 1px solid rgba(232, 180, 184, 0.1);
-          padding: 0.875rem 1rem;
+          background: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(4px);
+          border: 1px solid rgba(232, 180, 184, 0.2);
+          padding: 0.75rem 1rem;
           border-radius: var(--border-radius);
           margin-bottom: 0.5rem;
           color: var(--text-medium);
-          font-size: 0.9rem;
+          font-size: 0.875rem;
           border-left: 3px solid var(--accent-color);
-          transition: all 0.2s ease;
+          transition: var(--transition);
+          text-align: left;
         }
 
         .tip:hover {
           background: white;
-          transform: translateX(5px);
+          transform: translateX(4px);
         }
 
         .strategies {
-          padding: 2.5rem 2rem;
+          padding: 2rem;
           display: flex;
           flex-direction: column;
-          gap: 1.5rem;
+          gap: 1rem;
         }
 
         .strategies > h3 {
           text-align: center;
           color: var(--text-dark);
           margin-bottom: 1rem;
-          font-size: 1.6rem;
+          font-size: 1.4rem;
           font-weight: 700;
         }
 
         .strategy {
           display: flex;
-          gap: 1.5rem;
-          padding: 1.8rem;
-          background: rgba(255, 255, 255, 0.7);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(232, 180, 184, 0.1);
+          gap: 1rem;
+          padding: 1.5rem;
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(232, 180, 184, 0.15);
           border-radius: var(--border-radius);
-          border-left: 4px solid var(--accent-color);
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border-left: 3px solid var(--accent-color);
+          transition: var(--transition);
           box-shadow: var(--shadow-soft);
         }
 
         .strategy:hover {
-          background: rgba(255, 255, 255, 0.9);
+          background: rgba(255, 255, 255, 0.95);
           box-shadow: var(--shadow-strong);
-          transform: translateX(8px);
-          border-color: #D4AF37;
+          transform: translateX(4px);
+          border-left-color: #D4AF37;
         }
 
         .icon {
-          font-size: 1.8rem;
-          width: 50px;
-          height: 50px;
+          font-size: 1.5rem;
+          width: 44px;
+          height: 44px;
           background: var(--primary-gradient);
-          border-radius: 12px;
+          border-radius: 10px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -464,53 +511,54 @@ const LeadMagnet = () => {
         .strategy h3 {
           color: var(--text-dark);
           margin-bottom: 0.5rem;
-          font-size: 1.2rem;
+          font-size: 1.1rem;
           font-weight: 600;
         }
 
         .strategy p {
           color: var(--text-medium);
-          line-height: 1.6;
+          line-height: 1.5;
+          font-size: 0.9rem;
         }
 
         .modal-cta {
-          padding: 2.5rem 2rem;
+          padding: 2rem;
           text-align: center;
-          background: rgba(255, 255, 255, 0.6);
-          backdrop-filter: blur(12px);
-          border-top: 1px solid rgba(232, 180, 184, 0.1);
+          background: rgba(255, 255, 255, 0.7);
+          backdrop-filter: blur(8px);
+          border-top: 1px solid rgba(232, 180, 184, 0.15);
         }
 
         .modal-cta h3 {
           color: var(--text-dark);
-          margin-bottom: 1.5rem;
-          font-size: 1.5rem;
+          margin-bottom: 1.25rem;
+          font-size: 1.3rem;
           font-weight: 700;
         }
 
         .modal-cta button {
           background: linear-gradient(135deg, var(--text-dark) 0%, #333 100%);
           color: white;
-          padding: 1rem 2rem;
+          padding: 1rem 1.75rem;
           border: none;
           border-radius: 50px;
-          font-size: 1rem;
+          font-size: 0.95rem;
           font-weight: 600;
           cursor: pointer;
-          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: var(--transition);
           margin: 0.5rem;
           box-shadow: var(--shadow-strong);
         }
 
         .modal-cta button:hover {
           transform: translateY(-2px);
-          box-shadow: 0 15px 40px rgba(26, 26, 26, 0.2);
+          box-shadow: 0 12px 30px rgba(26, 26, 26, 0.2);
         }
 
         .secondary-btn {
-          background: rgba(255, 255, 255, 0.9) !important;
+          background: rgba(255, 255, 255, 0.95) !important;
           color: var(--text-dark) !important;
-          border: 2px solid rgba(232, 180, 184, 0.3) !important;
+          border: 2px solid rgba(232, 180, 184, 0.4) !important;
         }
 
         .secondary-btn:hover {
@@ -519,25 +567,31 @@ const LeadMagnet = () => {
           box-shadow: var(--shadow-soft) !important;
         }
 
-        /* Responsive */
+        /* Responsive optimizado */
         @media (max-width: 768px) {
           .hero {
             padding: 1.5rem 1rem;
           }
 
-          .benefits {
-            flex-direction: column;
+          .container {
             gap: 1rem;
           }
 
+          .benefits {
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+
           .benefit {
-            font-size: 0.85rem;
-            padding: 0.75rem 1.25rem;
+            font-size: 0.8rem;
+            padding: 0.6rem 1rem;
           }
 
           .cta {
             font-size: 1rem;
-            padding: 1rem 2rem;
+            padding: 1rem 1.5rem;
+            width: 100%;
+            max-width: 280px;
           }
 
           .modal-header {
@@ -546,30 +600,28 @@ const LeadMagnet = () => {
 
           .strategies {
             padding: 1.5rem 1rem;
+            gap: 0.75rem;
           }
 
           .strategy {
             flex-direction: column;
-            padding: 1.5rem;
-            gap: 1rem;
-          }
-
-          .download-success {
-            padding: 2rem 1.5rem;
-          }
-
-          .tips {
+            padding: 1.25rem;
+            gap: 0.75rem;
             text-align: center;
           }
 
+          .download-success {
+            padding: 1.5rem 1rem;
+          }
+
           .modal-cta {
-            padding: 2rem 1.5rem;
+            padding: 1.5rem 1rem;
           }
 
           .modal-cta button {
             display: block;
             width: 100%;
-            margin: 0.75rem 0;
+            margin: 0.5rem 0;
           }
         }
 
@@ -587,8 +639,16 @@ const LeadMagnet = () => {
         .cta:focus-visible,
         .close:focus-visible,
         .modal-cta button:focus-visible {
-          outline: 3px solid var(--accent-color);
+          outline: 2px solid var(--accent-color);
           outline-offset: 2px;
+        }
+
+        /* Optimización de contraste */
+        @media (prefers-contrast: high) {
+          :root {
+            --text-medium: #2a2a2a;
+            --text-light: #4a4a4a;
+          }
         }
       `}</style>
 
@@ -596,7 +656,6 @@ const LeadMagnet = () => {
         <div className="orbs">
           <div className="orb orb1"></div>
           <div className="orb orb2"></div>
-          <div className="orb orb3"></div>
         </div>
         
         <div className="container">
@@ -609,9 +668,9 @@ const LeadMagnet = () => {
           </h1>
           
           <p className="subtitle">
-            Descubre la guía secreta que las clínicas más exitosas usan para 
+            La guía secreta que usan las clínicas más exitosas para 
             <strong> fidelizar pacientes premium</strong> y 
-            <strong> triplicar su facturación</strong>
+            <strong> triplicar su facturación</strong> en 90 días
           </p>
 
           <div className="benefits">
@@ -624,18 +683,35 @@ const LeadMagnet = () => {
             className={`cta ${clicked ? 'loading' : ''}`}
             onClick={handleDownload}
             disabled={clicked}
+            aria-label="Descargar guía gratuita para fidelizar pacientes"
           >
-            {clicked ? '📥 ¡Descargando tu guía!' : '🎁 Descargar Guía Gratis Ahora →'}
+            {clicked ? (
+              <>
+                <span>📥</span>
+                <span>¡Descargando tu guía!</span>
+              </>
+            ) : (
+              <>
+                <span>🎁</span>
+                <span>Descargar Guía Gratis</span>
+              </>
+            )}
           </button>
           
-          <p className="urgency">🔥 137 profesionales ya la descargaron hoy</p>
+          <p className="urgency">137 profesionales ya la descargaron hoy</p>
         </div>
       </section>
       
       {showGuide && (
         <div className="modal" onClick={() => setShowGuide(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <button className="close" onClick={() => setShowGuide(false)}>×</button>
+            <button 
+              className="close" 
+              onClick={() => setShowGuide(false)}
+              aria-label="Cerrar modal"
+            >
+              ×
+            </button>
             
             <div className="modal-header">
               <h2>🎉 ¡Descarga Completada!</h2>
@@ -645,14 +721,14 @@ const LeadMagnet = () => {
             <div className="download-success">
               <div className="success-icon">✅</div>
               <h3>Archivo descargado exitosamente</h3>
-              <p>Busca el archivo <strong>"guia-fidelizacion-pacientes-vip.html"</strong> en tu carpeta de descargas</p>
+              <p>Busca <strong>"guia-fidelizacion-pacientes-vip.pdf"</strong> en tu carpeta de descargas</p>
               
               <div className="tips">
                 <h4>💡 Consejos para aprovechar tu guía:</h4>
-                <div className="tip">🖥️ Abre el archivo con cualquier navegador web</div>
-                <div className="tip">📱 Funciona perfectamente en móvil y tablet</div>
-                <div className="tip">📋 Guárdalo en favoritos para acceso rápido</div>
-                <div className="tip">📤 Compártelo con tu equipo de trabajo</div>
+                <div className="tip">📖 Abre el PDF con cualquier lector</div>
+                <div className="tip">📱 Descárgalo en tu móvil también</div>
+                <div className="tip">🖨️ Imprímelo para referencia rápida</div>
+                <div className="tip">📤 Compártelo con tu equipo</div>
               </div>
             </div>
 
@@ -663,7 +739,7 @@ const LeadMagnet = () => {
                 <div className="icon">💖</div>
                 <div>
                   <h3>El Toque Personal que Enamora</h3>
-                  <p>Crea experiencias únicas recordando cada detalle. Usa un CRM inteligente para anticiparte a sus necesidades.</p>
+                  <p>Crea experiencias únicas recordando cada detalle importante de tus pacientes.</p>
                 </div>
               </div>
 
@@ -671,7 +747,7 @@ const LeadMagnet = () => {
                 <div className="icon">⭐</div>
                 <div>
                   <h3>Club VIP de Beneficios Exclusivos</h3>
-                  <p>Diseña un programa de lealtad irresistible con acceso anticipado a tratamientos innovadores.</p>
+                  <p>Diseña un programa de lealtad irresistible con acceso anticipado.</p>
                 </div>
               </div>
 
@@ -679,7 +755,7 @@ const LeadMagnet = () => {
                 <div className="icon">✨</div>
                 <div>
                   <h3>Experiencia 360° Memorable</h3>
-                  <p>Cada punto de contacto debe brillar: desde la bienvenida hasta el seguimiento post-tratamiento.</p>
+                  <p>Cada punto de contacto debe brillar: bienvenida, tratamiento y seguimiento.</p>
                 </div>
               </div>
 
@@ -687,7 +763,7 @@ const LeadMagnet = () => {
                 <div className="icon">💬</div>
                 <div>
                   <h3>Comunicación que Conecta</h3>
-                  <p>Mantén una relación continua con contenido de valor y newsletters exclusivas.</p>
+                  <p>Mantén una relación continua con contenido de valor personalizado.</p>
                 </div>
               </div>
 
@@ -695,7 +771,7 @@ const LeadMagnet = () => {
                 <div className="icon">🎁</div>
                 <div>
                   <h3>Sorpresas que Crean Vínculos</h3>
-                  <p>Los detalles inesperados marcan la diferencia: regalos y upgrades sorpresa.</p>
+                  <p>Los detalles inesperados marcan la diferencia y generan lealtad.</p>
                 </div>
               </div>
             </div>

@@ -227,53 +227,89 @@
   z-index: 5;
 }
 
-/* Contenedor de video */
+/* Contenedor de video premium */
 .video-container {
   width: 100%;
-  max-width: 320px;
-  height: 640px;
+  max-width: 340px;
+  height: 680px;
   position: relative;
   flex-shrink: 0;
+  filter: drop-shadow(0 50px 100px rgba(0, 0, 0, 0.3));
 }
 
 .phone-mockup {
   width: 100%;
   height: 100%;
-  perspective: 1200px;
+  perspective: 1500px;
+  transform-style: preserve-3d;
 }
 
 .phone-frame {
   width: 100%;
   height: 100%;
-  background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
-  border-radius: 48px;
-  padding: 6px;
-  box-shadow: 
-    0 40px 80px rgba(0, 0, 0, 0.25),
-    0 20px 40px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  background: linear-gradient(145deg, #0a0a0a 0%, #1c1c1c 50%, #2a2a2a 100%);
+  border-radius: 56px;
+  padding: 8px;
   position: relative;
+  transform-style: preserve-3d;
+  box-shadow: 
+    /* Sombra principal profunda */
+    0 60px 120px rgba(0, 0, 0, 0.4),
+    0 30px 60px rgba(0, 0, 0, 0.25),
+    0 15px 30px rgba(0, 0, 0, 0.15),
+    /* Sombras internas para realismo */
+    inset 0 2px 4px rgba(255, 255, 255, 0.08),
+    inset 0 1px 2px rgba(255, 255, 255, 0.12),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.3),
+    /* Borde metálico sutil */
+    0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .phone-frame::before {
   content: '';
   position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  bottom: -1px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), transparent);
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.05) 25%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.1) 75%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
   border-radius: inherit;
   z-index: -1;
+  filter: blur(1px);
+}
+
+.phone-frame::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 30px;
+  background: linear-gradient(to bottom, #333, #555);
+  border-radius: 2px;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
 .phone-screen {
   width: 100%;
   height: 100%;
   background: #000;
-  border-radius: 42px;
+  border-radius: 48px;
   overflow: hidden;
   position: relative;
+  box-shadow: 
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    inset 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 .phone-notch {
@@ -281,14 +317,41 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 120px;
-  height: 24px;
-  background: #1a1a1a;
-  border-radius: 0 0 1rem 1rem;
+  width: 140px;
+  height: 28px;
+  background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
+  border-radius: 0 0 14px 14px;
   z-index: 20;
+  box-shadow: 
+    inset 0 -1px 2px rgba(255, 255, 255, 0.05),
+    0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
-/* Video wrapper */
+.phone-notch::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #333 30%, transparent 70%);
+  border-radius: 50%;
+}
+
+.phone-notch::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 60%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 4px;
+  background: linear-gradient(to right, transparent, #222, transparent);
+  border-radius: 2px;
+}
+
+/* Video wrapper premium */
 .video-wrapper {
   width: 100%;
   height: 100%;
@@ -297,6 +360,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: inherit;
 }
 
 .phone-video {
@@ -305,9 +369,11 @@
   object-fit: cover;
   object-position: center;
   display: block;
+  border-radius: inherit;
+  filter: brightness(1.02) contrast(1.05) saturate(1.1);
 }
 
-/* Controles de video */
+/* Controles de video premium */
 .video-controls {
   position: absolute;
   inset: 0;
@@ -316,11 +382,18 @@
   justify-content: center;
   pointer-events: none;
   z-index: 10;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.video-wrapper:hover .video-controls {
+  opacity: 1;
 }
 
 .control-button {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(16px) saturate(180%);
   border: none;
   border-radius: 50%;
   display: flex;
@@ -328,46 +401,87 @@
   justify-content: center;
   cursor: pointer;
   color: var(--text-dark);
-  box-shadow: var(--shadow-soft);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.25),
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .play-button {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px) saturate(200%);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.3),
+    0 6px 24px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.play-button svg {
+  margin-left: 2px; /* Centrado visual del icono play */
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 }
 
 .mute-button {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  background: rgba(0, 0, 0, 0.8);
+  bottom: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(16px) saturate(180%);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .control-button:hover {
-  transform: scale(1.05);
-  box-shadow: var(--shadow-strong);
+  transform: scale(1.08);
+  box-shadow: 
+    0 16px 64px rgba(0, 0, 0, 0.35),
+    0 8px 32px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .play-button:hover {
-  transform: translate(-50%, -50%) scale(1.05);
+  transform: translate(-50%, -50%) scale(1.08);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 
+    0 20px 80px rgba(0, 0, 0, 0.4),
+    0 10px 40px rgba(0, 0, 0, 0.25),
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.mute-button:hover {
+  background: rgba(0, 0, 0, 0.95);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.5),
+    0 6px 24px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .control-button:active {
-  transform: scale(0.95);
+  transform: scale(1.02);
+  transition: transform 0.1s ease;
 }
 
 .play-button:active {
-  transform: translate(-50%, -50%) scale(0.95);
+  transform: translate(-50%, -50%) scale(1.02);
 }
 
 /* Loading de video */
@@ -610,7 +724,7 @@
   font-weight: 700;
 }
 
-/* Responsive Design */
+/* Responsive Design premium */
 @media (max-width: 640px) {
   .nav-button {
     display: none;
@@ -621,33 +735,46 @@
   }
   
   .video-container {
-    max-width: 280px;
-    height: 560px;
+    max-width: 300px;
+    height: 600px;
   }
   
   .phone-frame {
-    border-radius: 32px;
+    border-radius: 48px;
+    padding: 6px;
   }
   
   .phone-screen {
-    border-radius: 26px;
+    border-radius: 42px;
   }
   
   .phone-notch {
-    width: 80px;
-    height: 20px;
+    width: 120px;
+    height: 24px;
   }
   
   .play-button {
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
   }
   
   .mute-button {
-    width: 36px;
-    height: 36px;
-    bottom: 0.75rem;
-    right: 0.75rem;
+    width: 40px;
+    height: 40px;
+    bottom: 12px;
+    right: 12px;
+  }
+  
+  .placeholder-icon {
+    font-size: 3rem;
+  }
+  
+  .placeholder-text {
+    font-size: 1.25rem;
+  }
+  
+  .loading-content {
+    padding: 1.5rem;
   }
   
   .quick-benefits {
@@ -670,14 +797,162 @@
   }
   
   .video-container {
-    max-width: 340px;
-    height: 680px;
+    max-width: 360px;
+    height: 720px;
+  }
+  
+  .phone-frame {
+    border-radius: 60px;
+    padding: 10px;
+  }
+  
+  .phone-screen {
+    border-radius: 50px;
+  }
+  
+  .phone-notch {
+    width: 150px;
+    height: 30px;
+  }
+  
+  .play-button {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .mute-button {
+    width: 52px;
+    height: 52px;
+    bottom: 20px;
+    right: 20px;
   }
 }
 
 @media (min-width: 1024px) {
   .app-showcase-section {
     padding: clamp(6rem, 10vw, 10rem) 2rem;
+  }
+  
+  .nav-prev {
+    left: -100px;
+  }
+  
+  .nav-next {
+    right: -100px;
+  }
+  
+  .video-container {
+    max-width: 380px;
+    height: 760px;
+    filter: drop-shadow(0 60px 120px rgba(0, 0, 0, 0.35));
+  }
+  
+  .phone-frame {
+    border-radius: 64px;
+    padding: 12px;
+  }
+  
+  .phone-screen {
+    border-radius: 52px;
+  }
+  
+  .phone-notch {
+    width: 160px;
+    height: 32px;
+  }
+  
+  .play-button {
+    width: 88px;
+    height: 88px;
+  }
+  
+  .mute-button {
+    width: 56px;
+    height: 56px;
+    bottom: 24px;
+    right: 24px;
+  }
+  
+  .carousel-track {
+    --carousel-height: clamp(700px, 90vh, 900px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .video-container {
+    max-width: 400px;
+    height: 800px;
+    filter: drop-shadow(0 80px 160px rgba(0, 0, 0, 0.4));
+  }
+  
+  .phone-frame {
+    border-radius: 68px;
+    padding: 14px;
+  }
+  
+  .phone-screen {
+    border-radius: 54px;
+  }
+  
+  .phone-notch {
+    width: 170px;
+    height: 34px;
+  }
+  
+  .play-button {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+/* Animaciones premium */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  50% { 
+    transform: translateY(-10px) rotate(2deg); 
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  animation: spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.placeholder-icon {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Estados de hover mejorados premium */
+.slide:hover .mute-button {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+.video-wrapper:hover .mute-button {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+.phone-mockup:hover {
+  transform: rotateY(2deg) rotateX(1deg);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.phone-mockup:hover .phone-frame {
+  box-shadow: 
+    0 80px 160px rgba(0, 0, 0, 0.45),
+    0 40px 80px rgba(0, 0, 0, 0.3),
+    0 20px 40px rgba(0, 0, 0, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.12),
+    inset 0 1px 2px rgba(255, 255, 255, 0.15),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}) 2rem;
   }
   
   .nav-prev {
@@ -756,11 +1031,13 @@
   outline-offset: 2px;
 }
 
-/* Mejoras de rendimiento */
+/* Mejoras de rendimiento premium */
 .carousel-wrapper,
 .video-wrapper,
 .phone-mockup,
-.loading-spinner {
+.loading-spinner,
+.phone-frame,
+.control-button {
   transform: translateZ(0);
   backface-visibility: hidden;
   will-change: transform;
@@ -769,22 +1046,133 @@
 .phone-video {
   transform: translateZ(0);
   backface-visibility: hidden;
+  will-change: transform;
 }
 
-/* Animaciones personalizadas */
-@keyframes spin {
-  to { transform: rotate(360deg); }
+/* Efectos adicionales para impacto visual */
+.phone-frame {
+  position: relative;
 }
 
-.loading-spinner {
-  animation: spin 1s linear infinite;
+.phone-frame::before {
+  transition: opacity 0.4s ease;
 }
 
-/* Estados de hover mejorados */
-.slide:hover .mute-button {
-  opacity: 1;
+.phone-mockup:hover .phone-frame::before {
+  opacity: 0.8;
 }
 
-.video-wrapper:hover .mute-button {
-  opacity: 1;
+/* Efecto de reflexión en la pantalla */
+.phone-screen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 25%,
+    transparent 75%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+/* Botones laterales del teléfono */
+.phone-frame::after {
+  /* Botón de volumen */
+}
+
+/* Agregar botón de encendido */
+.phone-frame {
+  position: relative;
+}
+
+.phone-frame::before {
+  /* Ya definido arriba para el gradiente */
+}
+
+/* Botón de volumen lado izquierdo */
+.phone-frame .volume-buttons {
+  position: absolute;
+  left: -2px;
+  top: 25%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.phone-frame .volume-button {
+  width: 4px;
+  height: 32px;
+  background: linear-gradient(to right, #222, #444);
+  border-radius: 0 2px 2px 0;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    1px 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón de encendido lado derecho */
+.phone-frame .power-button {
+  position: absolute;
+  right: -2px;
+  top: 20%;
+  width: 4px;
+  height: 48px;
+  background: linear-gradient(to left, #222, #444);
+  border-radius: 2px 0 0 2px;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    -1px 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Mejorar la cámara en el notch */
+.phone-notch::before {
+  /* Cámara frontal */
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #1a1a1a 30%, #333 70%, #555 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  top: 10px;
+  left: 30%;
+}
+
+/* Altavoz en el notch */
+.phone-notch::after {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(to right, transparent 10%, #1a1a1a 30%, #222 50%, #1a1a1a 70%, transparent 90%);
+  border-radius: 2px;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Sensor de proximidad */
+.phone-notch .proximity-sensor {
+  position: absolute;
+  top: 10px;
+  right: 30%;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #0a0a0a, #222);
+  border-radius: 50%;
+}
+
+/* Flash lateral */
+.phone-notch .flash {
+  position: absolute;
+  top: 8px;
+  left: 20%;
+  width: 3px;
+  height: 3px;
+  background: radial-gradient(circle, #333, #555);
+  border-radius: 50%;
+  opacity: 0.7;
 }
