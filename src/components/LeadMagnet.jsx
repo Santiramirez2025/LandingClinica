@@ -15,7 +15,8 @@ const LeadMagnet = () => {
     
     // Crear y ejecutar descarga real del PDF
     const link = document.createElement('a')
-    link.href = './guia-fidelizacion.pdf'
+    // Cambiar la ruta para que apunte a la carpeta public
+    link.href = '/guia-fidelizacion.pdf'  // Sin el "./" inicial
     link.download = 'guia-fidelizacion-pacientes-vip.pdf'
     link.style.display = 'none'
     document.body.appendChild(link)
